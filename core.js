@@ -6,10 +6,10 @@ function spending(state,filter={}){
  const from=filter.from||'0000-01-01',to=filter.to||state.asOf;
  if(from>to)throw Error('开始日期不能晚于结束日期');
  const matches=t=>t.date>=from&&t.date<=to&&(!filter.currency||t.currency===filter.currency)&&(!filter.account||t.account===filter.account)&&(!filter.category||t.category===filter.category)&&(!filter.query||(t.description+' '+t.id).toLowerCase().includes(filter.query.toLowerCase()));
- const excluded=t=>!!state.exclusions?.[t.id]||!!(t.refundOf&&state.exclusions?.[t.refundOf]);
+ const excluded=t=>state.exclusions?.[t.id]===true||!!(t.refundOf&&state.exclusions?.[t.refundOf]===true);
  const all=state.transactions.filter(t=>['expense','refund'].includes(t.type)&&matches(t));
  const rows=all.filter(t=>filter.showExcluded||!excluded(t)).map(t=>({...t,excluded:excluded(t)})).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
- const totals={HKD:0,CNY:0},groups={};
+ const totals={HKD:0,CNY:0},groups=Object.create(null);
  for(const t of rows.filter(t=>!t.excluded)){const n=-t.amount;totals[t.currency]+=n;const g=groups[t.category||'未分类']||={HKD:0,CNY:0};g[t.currency]+=n;}
  return {rows,totals,groups,excludedCount:all.filter(excluded).length};
 }

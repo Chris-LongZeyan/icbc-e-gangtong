@@ -24,7 +24,7 @@ function reconcile(accounts,transactions,asOf){
  return {accounts:Object.values(byId),balances,liquid};
 }
 function spending(transactions,from,to){
- let cny=0,unvalued=0;const original={HKD:0,CNY:0},categories={};
+ let cny=0,unvalued=0;const original={HKD:0,CNY:0},categories=Object.create(null);
  for(const t of transactions.filter(t=>t.date>=from&&t.date<=to&&['expense','refund'].includes(t.type))){
   const sign=t.type==='refund'?-1:1,amount=Math.abs(t.amount)*sign;original[t.currency]+=amount;
   let value=t.cnyActual!=null?t.cnyActual*sign:t.currency==='CNY'?amount:t.fxRate?Math.round(amount*t.fxRate):null;
@@ -45,7 +45,7 @@ function quality(state){
 }
 function validatePlan(p){
  date(p.start);date(p.end);const days=(date(p.end)-date(p.start))/DAY;if(days<1||days>366)throw Error('规划期须为 1–366 天');
- integer(p.reserve,'应急金');integer(p.living,'生活费');if(!Number.isFinite(p.rate)||p.rate<=0||p.rate>100)throw Error('汇率无效');
+  integer(p.reserve,'应急金');integer(p.living,'生活费');integer(p.cnyLiving??0,'人民币生活费');if(!Number.isFinite(p.rate)||p.rate<=0||p.rate>100)throw Error('汇率无效');
  for(const e of p.events){date(e.date);integer(e.amount,'计划金额',-1e12);if(!CURRENCIES.includes(e.currency))throw Error('计划币种无效');if(!['income','expense'].includes(e.kind))throw Error('计划类型无效');if(e.kind==='income'&&e.amount<0||e.kind==='expense'&&e.amount>0)throw Error('计划金额方向无效');}
  return days;
 }
@@ -62,17 +62,18 @@ function forecast(state,options={}){
  const outside=events.filter(e=>e.date<=p.start||e.date>p.end);
  const cash={...current.liquid};let conversion=null;
  if(options.convertCny){const available=Math.max(0,cash.CNY),fee=Math.ceil(available*0.005);const hkd=Math.floor((available-fee)/rate);cash.CNY-=available;cash.HKD+=hkd;conversion={cny:available,fee,hkd,rate};}
- const initial={...cash};let dailySpent=0,minDaily=Infinity;const rows=[];
+ const initial={...cash};let dailySpent=0,cnySpent=0,minDaily=Infinity;const rows=[];
  for(let i=1;i<=days;i++){
   const d=addDays(p.start,i),today=events.filter(e=>e.date===d),before={...cash};
   // Conservative within-day ordering: obligations precede incoming allowance.
   for(const e of today.filter(e=>e.kind==='expense'))cash[e.currency]+=e.amount;
   const living=Math.floor(p.living*i/days)-dailySpent;dailySpent+=living;cash.HKD-=living;
+  const livingCNY=Math.floor((p.cnyLiving||0)*i/days)-cnySpent;cnySpent+=livingCNY;cash.CNY-=livingCNY;
   const low={...cash};
   for(const e of today.filter(e=>e.kind==='income'))if(options.includeExpected)cash[e.currency]+=e.amount;
   // Uniform daily spending ceiling, including food, protects every payment date.
   minDaily=Math.min(minDaily,Math.floor((low.HKD+dailySpent-p.reserve)/i));
-  rows.push({date:d,HKD:cash.HKD,CNY:cash.CNY,lowHKD:low.HKD,lowCNY:low.CNY,living,events:today.map(e=>e.name),before});
+  rows.push({date:d,HKD:cash.HKD,CNY:cash.CNY,lowHKD:low.HKD,lowCNY:low.CNY,living,livingCNY,events:today.map(e=>e.name),before});
  }
  const firstGap=rows.find(r=>r.lowHKD<0||r.lowCNY<0)||null;
  const firstReserve=rows.find(r=>r.lowHKD<p.reserve||r.lowCNY<cnyReserve)||null;

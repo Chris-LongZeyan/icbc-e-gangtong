@@ -30,7 +30,7 @@ function preview(existing,text){
  return {records:[...existing,...accepted],accepted:accepted.length,duplicates,warnings};
 }
 function summary(records,opening=null,closing=null){
- let expense=0,refund=0,topup=0,net=0;const groups={};
+ let expense=0,refund=0,topup=0,net=0;const groups=Object.create(null);
  for(const t of records){E.validateTransaction(t);net+=t.amount;
   if(t.type==='expense'){expense-=t.amount;groups[t.category]=(groups[t.category]||0)-t.amount;}
   if(t.type==='refund'){refund+=t.amount;groups[t.category]=(groups[t.category]||0)-t.amount;}

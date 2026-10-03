@@ -17,7 +17,9 @@ const dataAdapter={
   catch(e){hostReady=false;hostFailure=e.message;render();}
  },
  async save(){
-  if(embedded){await hostBridge.request('savePreferences',GangxueHost.preferences(state));notify('规划偏好已交给宿主保存；没有修改账户或发起交易。');}
-  else{localStorage.setItem('gangxue-poc-v1',JSON.stringify(state));notify('已保存到此浏览器；未加密，仅用于模拟 / 脱敏数据。');}
+  const saving=structuredClone(state),savingJournal=journal;
+  if(embedded){await hostBridge.request('savePreferences',GangxueHost.preferences(saving));notify('规划偏好已交给宿主保存；没有修改账户或发起交易。');}
+  else{localStorage.setItem('gangxue-poc-v1',JSON.stringify(saving));notify('已保存到此浏览器；未加密，仅用于模拟 / 脱敏数据。');}
+  savingJournal?.markSaved(saving);
  }
 };
