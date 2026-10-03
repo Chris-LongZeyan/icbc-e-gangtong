@@ -1,0 +1,29 @@
+'use strict';
+const Profile=GangxueProfile;
+let showDemoCards=false;
+function experienceStrip(){
+ if(embedded)return '';
+ return `<div class="experience-strip"><div><b>${state.experience==='manual'?'手动试算':'完整案例演示'}</b><small>${state.experience==='manual'?'余额由你填写，结果随计划变化':'模拟银行数据到位后的使用体验 · 无需登录'}</small></div><a href="#profile">我的账户</a><a href="#setup">${state.experience==='manual'?'新建试算':'用自己的数字试算'} →</a></div>`;
+}
+function profileView(){
+ const manual=state.experience==='manual',rows=E.reconcile(state.accounts,state.transactions,state.asOf).accounts;
+ return `<div class="card profile-heading"><div class="profile-avatar" aria-hidden="true">${esc(state.name.slice(0,1))}</div><div><h2>${esc(state.name)}</h2><p>${embedded?'宿主授权会话':manual?'我的试算空间':'赴港生活 · 演示用户'} · 无需另行登录</p></div><span class="badge">${embedded?'宿主演示':manual?'手动输入':'合成案例'}</span></div>
+ <div class="card"><div class="row"><h2>我的账户</h2>${!embedded&&!manual?`<button class="text-button" id="card-visibility" aria-pressed="${showDemoCards}">${showDemoCards?'隐藏':'显示'}演示卡号</button>`:''}</div><p class="muted">余额截至 ${esc(state.asOf)}。${embedded?'账户来自宿主快照；未提供卡号时仅显示账户标识。':manual?'使用你填写的余额与后续录入流水，没有绑定银行卡。':'卡号含 DEMO 标记，全部为虚构资料，不能用于交易。'}</p><div class="account-grid">${rows.map(a=>{const c=Profile.card(a,manual,embedded);return `<article class="account-tile"><div class="row"><b>${esc(a.name)}</b><span>${esc(a.currency)}</span></div><small>${esc(c.label)}</small><div class="card-number">${esc(showDemoCards&&c.full?c.full:c.masked)}</div><div class="account-amount">${fmt(a.balance,a.currency)}</div><small>${a.liquid?'纳入该币种付款能力':'钱包余额 · 不用于学费 / 租金付款'}</small></article>`;}).join('')}</div></div>
+ <div class="card"><h2>数据与连接</h2><div class="list-row"><div>银行账户与流水<small>${embedded?'通过宿主适配层读取授权快照':manual?'你手动填写 / 导入；本页无银行连接':'预置合成账户与流水，展示理想接入后的使用流程'}</small></div><span class="badge">${embedded?'宿主提供':manual?'手动':'演示数据'}</span></div><div class="list-row"><div>八达通明细<small>可导入记录并核对；直接读取接口尚未接通</small></div><a href="${embedded?'#integration':'#octopus'}">${embedded?'接入说明':'查看核对'} →</a></div><div class="list-row"><div>参考汇率<small>${officialRates?esc(officialRates.provider)+' · '+esc(officialRates.sourceUpdatedAt):'公开报价快照尚未加载'}</small></div><a href="#planner">查看来源 →</a></div></div>
+ <div class="card"><h2>继续体验</h2><div class="profile-actions"><a href="#calendar"><b>预留学费与房租</b><small>确认金额、日期和双币底线</small></a><a href="#planner"><b>检查一笔大额支出</b><small>逐币种检查，计算最少需要换多少</small></a><a href="#ledger"><b>记一笔 / 导入账本</b><small>分类、筛选与忽略统计</small></a></div>${!embedded?`<div class="actions"><a class="button secondary" href="#setup">用自己的数字试算</a><button class="text-button" id="return-demo">回到完整演示案例</button></div><small>修改先保留在会话中；点击顶部“保存”才写入此浏览器。请只使用模拟或脱敏数据。</small>`:''}</div>`;
+}
+function setupView(){
+ if(embedded)return '<div class="card"><h2>账户由宿主提供</h2><p>此入口不覆盖银行账户快照。请在独立原型体验手动录入。</p></div>';
+ const today=new Date(),day=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+ return `<div class="card"><span class="badge">约一分钟 · 无需注册</span><h2>用你的数字，看看钱够不够</h2><p>填写余额与接下来的一笔学费、房租。生成后还可以继续添加计划、记账和检查大额支出。</p><form id="setup-form"><div class="form-grid"><label>称呼<input name="name" value="我的试算" maxlength="40" required></label><label>余额日<input name="asOf" type="date" value="${day}" required></label><label>规划结束日<input name="end" type="date" value="${E.addDays(day,60)}" required></label><label>港币余额 HKD<input name="HKD" type="number" min="0" step="0.01" placeholder="例如 20000" required></label><label>人民币余额 CNY<input name="CNY" type="number" min="0" step="0.01" placeholder="例如 10000" required></label></div><h3>先留好日常用钱</h3><div class="form-grid"><label>港币应急金<input name="reserve" type="number" min="0" step="0.01" value="0" required></label><label>人民币应急金<input name="cnyReserve" type="number" min="0" step="0.01" value="0" required></label><label>整个规划期生活费 HKD<input name="living" type="number" min="0" step="0.01" value="0" required></label><label>整个规划期生活费 CNY<input name="cnyLiving" type="number" min="0" step="0.01" value="0" required></label></div><h3>下一笔学费 / 房租（可选）</h3>${[['tuition','学费'],['rent','房租']].map(([key,label])=>`<div class="form-grid"><label>${label}金额<input name="${key}" type="number" min="0" step="0.01" value="0"></label><label>${label}币种<select name="${key}Currency"><option>HKD</option><option>CNY</option></select></label><label>${label}付款日<input name="${key}Date" type="date"></label></div>`).join('')}<p class="muted">余额是余额日开始时的资金基数；之后录入的流水会改变余额。尚未填写的生活费及付款不会自动估算。此操作新建空白账本，不混入示例消费；当前案例保留在本次会话，可切换返回。</p>${caseSessions.has('manual')||state.id==='manual'?'<label class="checkbox"><input name="replace" type="checkbox" required>重新建立我的试算（原试算可通过“撤销”恢复）</label>':''}<button class="button">生成我的资金计划</button></form></div>`;
+}
+function useExperience(next,isNew=false){
+ if(isNew&&state.id!=='manual'&&!journalSessions.has('manual')){const h=U.history(next);h.markSaved({...next,name:'未保存的新试算'});journalSessions.set('manual',h);}
+ caseSessions.set(state.id,structuredClone(state));drafts.clear();showDemoCards=false;state=structuredClone(next);applyReferenceRate();scenario={};pending=null;editing=null;octopusPending=null;paymentOptions={target:'CNY',purchase:0,settlementDays:0,feeBps:0,fixedFee:0};spendFilter={from:'',to:state.asOf};reportMonth=state.asOf.slice(0,7);$('#persona').value=state.id;
+ if(location.hash==='#overview')render();else location.hash='overview';
+}
+function bindProfile(){
+ $('#card-visibility')?.addEventListener('click',()=>{showDemoCards=!showDemoCards;render();});
+ $('#return-demo')?.addEventListener('click',()=>useExperience(caseSessions.get('reserve')||F.make('reserve')));
+ $('#setup-form')?.addEventListener('submit',ev=>{ev.preventDefault();try{const next=Profile.createManual(Object.fromEntries(new FormData(ev.target)));if(!officialRates)throw Error('参考报价尚未加载，请稍后再试；没有生成假汇率');useExperience(next,true);}catch(e){notify(e.message,true);}});
+}
