@@ -51,6 +51,8 @@ function validatePlan(p){
 }
 function forecast(state,options={}){
  const p=JSON.parse(JSON.stringify(state.plan)),days=validatePlan(p),current=reconcile(state.accounts,state.transactions,state.asOf);
+ integer(p.cnyReserve||0,'人民币预留');integer(p.floors?.HKD||0,'港币底线');integer(p.floors?.CNY||0,'人民币底线');
+ p.reserve=Math.max(p.reserve,p.floors?.HKD||0);const cnyReserve=Math.max(p.cnyReserve||0,p.floors?.CNY||0);
  if(p.start!==state.asOf)throw Error('规划开始日须为对账日');
  const shift=options.delay??0,rate=p.rate*(1+(options.fxShock??0)/100);
  integer(shift,'延迟天数',0,90);integer(options.extra??0,'突发支出');if(!Number.isFinite(rate)||rate<=0)throw Error('情景汇率无效');if(options.tuitionDate)date(options.tuitionDate);
@@ -73,11 +75,11 @@ function forecast(state,options={}){
   rows.push({date:d,HKD:cash.HKD,CNY:cash.CNY,lowHKD:low.HKD,lowCNY:low.CNY,living,events:today.map(e=>e.name),before});
  }
  const firstGap=rows.find(r=>r.lowHKD<0||r.lowCNY<0)||null;
- const firstReserve=rows.find(r=>r.lowHKD<p.reserve)||null;
+ const firstReserve=rows.find(r=>r.lowHKD<p.reserve||r.lowCNY<cnyReserve)||null;
  const minHKD=Math.min(initial.HKD,...rows.map(r=>r.lowHKD));
  return {rows,events,outside,initial,current,rate,conversion,firstGap,firstReserve,minHKD,days,
-  maxGapHKD:Math.max(0,-minHKD),headroom:minHKD-p.reserve,free:rows.some(r=>r.lowCNY<0)?0:Math.max(0,minHKD-p.reserve),
-  weekly:rows.some(r=>r.lowCNY<0)?0:Math.max(0,Math.min(7,days)*minDaily),plannedWeekly:Math.floor(p.living/days*Math.min(7,days)),reserve:p.reserve,
+  maxGapHKD:Math.max(0,-minHKD),headroom:minHKD-p.reserve,free:rows.some(r=>r.lowCNY<cnyReserve)?0:Math.max(0,minHKD-p.reserve),
+  weekly:rows.some(r=>r.lowCNY<cnyReserve)?0:Math.max(0,Math.min(7,days)*minDaily),plannedWeekly:Math.floor(p.living/days*Math.min(7,days)),reserve:p.reserve,cnyReserve,
   totalCny:current.balances.CNY+Math.round(current.balances.HKD*rate),includeExpected:!!options.includeExpected};
 }
 function deposits(state,options={}){

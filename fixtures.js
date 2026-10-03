@@ -1,5 +1,6 @@
 (function(root,factory){const api=factory(typeof module==='object'?require('./engine.js'):root.Gangxue);if(typeof module==='object')module.exports=api;else root.GangxueFixtures=api;})(globalThis,function(E){
 function make(id){
+ if(id==='purchase')return {id,name:'双币购买 · 用户提出的案例',asOf:'2026-10-02',transactions:[],accounts:[{id:'hkd',name:'港币储蓄（合成案例）',currency:'HKD',liquid:true,openingDate:'2026-10-02',opening:2000000,expectedClosing:2000000},{id:'cny',name:'人民币账户（合成案例）',currency:'CNY',liquid:true,openingDate:'2026-10-02',opening:1000000,expectedClosing:1000000}],plan:{start:'2026-10-02',end:'2026-11-01',rate:0.91,reserve:0,living:0,events:[]}};
  if(id==='career'){
   const s=make('currency');s.id='career';s.name='小许 · 首份工作与首月安居';
   s.plan.end='2026-11-16';s.plan.living=600000;s.plan.reserve=500000;
@@ -34,5 +35,5 @@ function make(id){
   {id:'rent2',name:'11 月房租',date:'2026-11-05',currency:'HKD',amount:-E.money(config.rent),kind:'expense'},
   {id:'allowance',name:'预计生活费（假设到账为港币）',date:'2026-10-20',currency:'HKD',amount:E.money(config.allowance),kind:'income'}]}};
 }
-return {make,ids:['reserve','timing','currency','career']};
+return {make,ids:['reserve','timing','currency','career','purchase']};
 });

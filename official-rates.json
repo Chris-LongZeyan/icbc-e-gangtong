@@ -1,0 +1,18 @@
+{
+  "provider": "中银香港 BOCHK",
+  "kind": "官方公开电汇参考报价，非锁定成交价",
+  "unit": "HKD per CNY/CNH",
+  "source": "https://www.bochk.com/whk/rates/exchangeRatesHKD/exchangeRatesHKD-input.action?lang=en",
+  "sourceUpdatedAt": "2026-10-03T18:07:55+08:00",
+  "retrievedAt": "2026-10-03T10:12:36.985Z",
+  "markets": {
+    "CNY": {
+      "customerSell": 1.16329,
+      "customerBuy": 1.17594
+    },
+    "CNH": {
+      "customerSell": 1.16284,
+      "customerBuy": 1.17699
+    }
+  }
+}

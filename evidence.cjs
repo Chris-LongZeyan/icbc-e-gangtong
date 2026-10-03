@@ -1,3 +1,6 @@
-const fs=require('node:fs'),F=require('./fixtures'),E=require('./engine'),P=require('./planner'),O=require('./octopus');
-const out={schema:'gangxue-evidence-v1',data:'synthetic',asOf:'2026-10-02',cases:F.ids.map(id=>{const s=F.make(id),f=E.forecast(s),p=P.optimize(s);return {id,name:s.name,headroom:f.headroom,firstGap:f.firstGap?.date||null,optimizerStatus:p.status,minimumCny:p.solution?.cny??null,hkdReceived:p.solution?.hkd??null,minCnyRemaining:p.solution?.minCNY??null,latestOrder:p.latestOrder};}),octopus:O.summary(O.preview([],O.sample).records)};
+const fs=require('node:fs'),F=require('./fixtures'),E=require('./engine'),C=require('./core'),rates=require('./official-rates.json');
+const purchase=F.make('purchase'),o={target:'CNY',purchase:1200000,due:'2026-10-08'},r=C.solve(purchase,rates.markets.CNH,o);
+purchase.plan.events.push({id:'rent',name:'Protected rent',currency:'HKD',amount:-1900000,date:'2026-10-20',kind:'expense'});
+const blocked=C.solve(purchase,rates.markets.CNH,o),reserve=F.make('reserve');
+const out={schema:'gangxue-evidence-v0.3',accountData:'synthetic',accountAsOf:'2026-10-02',quote:rates,purchase:{required:r.required,solution:r.solution,previous:r.previous},protectedRent:{cap:blocked.cap,status:blocked.status},reserve:{redline:C.redline(reserve),free:E.forecast(reserve).free},september:C.monthly(reserve,'2026-09').totals};
 fs.mkdirSync('docs',{recursive:true});fs.writeFileSync('docs/evidence.json',JSON.stringify(out,null,2)+'\n');console.log(JSON.stringify(out,null,2));

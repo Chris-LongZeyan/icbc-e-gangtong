@@ -1,6 +1,11 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=__dirname,types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.csv':'text/csv; charset=utf-8','.txt':'text/plain; charset=utf-8'};
-http.createServer((req,res)=>{let pathname;try{pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{res.writeHead(400).end();return;}
+http.createServer(async(req,res)=>{let pathname;try{pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{res.writeHead(400).end();return;}
+ if(pathname==='/api/rates'){
+  if(req.method!=='GET'){res.writeHead(405).end();return;}
+  try{const data=await require('./rates.cjs').refresh();res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify(data));}
+  catch(e){res.writeHead(502,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify({error:'官方来源暂不可用；保留有日期的快照，不伪装为实时。'}));}return;
+ }
  const base=root;
  const relative=pathname==='/'?'index.html':pathname.slice(1);
  if(relative.split(/[\\/]/).some(p=>p.startsWith('.')||p==='private')){res.writeHead(403).end('Forbidden');return;}
