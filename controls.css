@@ -1,0 +1,12 @@
+/* Native disclosure semantics, with open-stroke plus/minus markers. */
+summary{list-style:none;position:relative;padding-right:32px!important;min-height:28px;display:flex;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::marker{content:""}
+summary::before,summary::after{content:"";position:absolute;right:3px;top:50%;width:12px;height:1px;background:currentColor;opacity:.65;pointer-events:none}
+summary::after{transform:rotate(90deg);transition:transform .15s ease}
+details[open]>summary::after{transform:rotate(0deg)}
+summary:hover{color:var(--brand,#c4161c)}
+summary:focus-visible{outline:2px solid var(--brand,#c4161c);outline-offset:4px;border-radius:3px}
+select{appearance:none;-webkit-appearance:none;padding-right:34px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%23757575' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:16px}
+@media(prefers-reduced-motion:reduce){summary::after{transition:none}}
+@media(forced-colors:active){select{appearance:auto;background-image:none}summary::before,summary::after{background:ButtonText}}

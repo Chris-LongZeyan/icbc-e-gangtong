@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: dual-currency-e-manager
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: node generate.cjs && node evidence.cjs && node --test tests/*.test.cjs
+    startCommand: node server.cjs
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.0
+      - key: HOST
+        value: 0.0.0.0
