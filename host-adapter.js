@@ -28,6 +28,6 @@
   for(const m of ['CNY','CNH']){const r=q.markets?.[m];if(!r||!Number.isFinite(r.customerSell)||!Number.isFinite(r.customerBuy)||r.customerSell<=0||r.customerBuy<r.customerSell)throw Error('买卖报价无效');}
   return structuredClone(q);
  }
- function preferences(s){return {schema:'gangxue.preferences.v1',asOf:s.asOf,plan:structuredClone(s.plan),budgets:structuredClone(s.budgets||[]),exclusions:structuredClone(s.exclusions||{}),categories:Object.fromEntries(s.transactions.map(t=>[t.id,t.category||'未分类']))};}
+ function preferences(s){return {schema:'gangxue.preferences.v1',asOf:s.asOf,wealth:structuredClone(s.wealth||{}),care:structuredClone(s.care||{}),plan:structuredClone(s.plan),budgets:structuredClone(s.budgets||[]),exclusions:structuredClone(s.exclusions||{}),categories:Object.fromEntries(s.transactions.map(t=>[t.id,t.category||'未分类']))};}
  return {CHANNEL,METHODS,accept,createBridge,validateSnapshot,validateRates,preferences};
 });

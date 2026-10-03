@@ -1,0 +1,54 @@
+(function(root,factory){const api=factory(typeof module==='object'?require('./engine'):root.Gangxue,typeof module==='object'?require('./core'):root.GangxueCore);if(typeof module==='object')module.exports=api;else root.GangxueBeyond=api;})(globalThis,function(E,C){
+'use strict';
+const currencies=['HKD','CNY'];
+const catalog={source:'https://www.icbcasia.com/hk/sc/personal/latest-promotion/online-time-deposit.html',checked:'2026-10-03',published:'2026-09-29',tier:'e时代／综合客户',minimum:5000000,months:[1,2,3,6,12]};
+function addMonths(day,n){E.date(day);if(!Number.isInteger(n)||n<1||n>12)throw Error('期限无效');const d=new Date(day+'T00:00:00Z'),date=d.getUTCDate();d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+n);const last=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate();d.setUTCDate(Math.min(date,last));return d.toISOString().slice(0,10);}
+// Principal remains unavailable through the assumed availability day's payments.
+// Protected obligations remain liquid even when the deposit would mature earlier.
+function capacity(state,{currency='HKD',months=1,bufferDays=2}={}){
+ if(!currencies.includes(currency)||!Number.isInteger(bufferDays)||bufferDays<1||bufferDays>14)throw Error('币种或到账缓冲无效');
+ const maturity=addMonths(state.asOf,months),available=E.addDays(maturity,bufferDays),f=E.forecast(state),now=C.redline(state);
+ const result={currency,months,bufferDays,maturity,available,max:0,status:'blocked',reason:''};
+ if(available>state.plan.end||f.outside.length)return {...result,reason:'期限或已有事项超出规划覆盖，请先延长并核实资金计划。'};
+ const checks=[{date:state.asOf,lowHKD:f.current.liquid.HKD,lowCNY:f.current.liquid.CNY},...f.rows];
+ const gap=checks.find(row=>currencies.some(c=>row['low'+c]<C.redline(state,row.date).floor[c]));
+ if(gap)return {...result,reason:gap.date+' 存在币种资金或预留不足；先解决付款计划。',gap:gap.date};
+ let max=now.headroom[currency],binding=state.asOf;
+ for(const row of checks.filter(r=>r.date<=available)){const headroom=row['low'+currency]-C.redline(state,row.date).floor[currency];if(headroom<max){max=headroom;binding=row.date;}}
+ return {...result,max:Math.max(0,max),binding,status:'evaluated',reason:'保留全部受保护用途、生活预算和双币底线；不计预计收入及利息。'};
+}
+function match(state,options={}){
+ const amount=options.amount??0;if(!Number.isSafeInteger(amount)||amount<0||amount>1e12)throw Error('金额须为非负整数分');
+ return catalog.months.map(months=>{const r=capacity(state,{...options,months});let reason=r.reason;
+ const fits=r.status==='evaluated'&&amount>0&&amount<=r.max&&amount>=catalog.minimum;
+ if(r.status==='evaluated')reason=amount>r.max?'拟存金额会占用已规划的资金。':amount<catalog.minimum?'未达到此公开存款方案的 50,000 原币起存额。':'金额与期限初筛通过；客户资格、营业时段、到期处理和当日条款仍须银行确认。';
+ return {...r,amount,fits,reason};});
+}
+function review(state,month){
+ const current=C.monthly(state,month),d=new Date(month+'-01T00:00:00Z');d.setUTCMonth(d.getUTCMonth()-1);const previousMonth=d.toISOString().slice(0,7),previous=C.monthly(state,previousMonth);
+ const budgets=(state.budgets||[]).filter(b=>b.month===month).map(b=>({...b,spent:current.groups[b.category]?.[b.currency]||0}));
+ const unknown=current.rows.filter(t=>!t.category||['未分类','待确认','其他'].includes(t.category));
+ const changes=Object.fromEntries(currencies.map(c=>{const a=current.rows.some(t=>t.currency===c),b=previous.rows.some(t=>t.currency===c);return [c,a&&b?current.totals[c]-previous.totals[c]:null];}));
+ const actions=budgets.filter(b=>b.spent>b.amount).map(b=>({text:b.category+' 超过分类预算；检查是否一次性支出，再调整后续计划。',currency:b.currency,amount:b.spent-b.amount,ids:current.rows.filter(t=>t.category===b.category&&t.currency===b.currency).map(t=>t.id)}));
+ if(unknown.length)actions.push({text:'核对 '+unknown.length+' 笔用途未明确的记录。',ids:unknown.map(t=>t.id)});
+ const wallet=current.rows.filter(t=>t.category==='未细分钱包支出');if(wallet.length)actions.push({text:'钱包汇总尚未拆分用途。取得同区间明细并对账后才能细化，不能把独立样本再加一次。',ids:wallet.map(t=>t.id)});
+ const f=E.forecast(state);if(f.firstReserve)actions.unshift({text:f.firstReserve.date+' 预计低于资金底线；先核实大额付款与资金来源。',ids:[]});
+ if(!actions.length)actions.push({text:'已知记录中未触发超预算提示；确认下一笔付款日期和账单覆盖范围。',ids:[]});
+ return {current,previousMonth,previous,changes,budgets,unknown,actions};
+}
+function stamp(state,kind,month){
+ let payload;
+ if(kind==='plan')payload=[state.asOf,state.plan];
+ else if(kind==='ledger'){C.monthly(state,month);payload=[state.asOf,month,C.spending(state,{from:month+'-01',to:new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5)),0)).toISOString().slice(0,10),showExcluded:true}).rows];}
+ else throw Error('核对类型无效');
+ // Non-security change detection only; do not export raw ledger bodies in preferences.
+ const text=JSON.stringify(payload);let hash=2166136261;for(let i=0;i<text.length;i++)hash=Math.imul(hash^text.charCodeAt(i),16777619);
+ return 'v1-'+text.length+'-'+(hash>>>0).toString(16);
+}
+function tasks(state,month){const r=review(state,month),care=state.care||{};return [
+ {id:'plan',label:'核实付款日期与预留',done:care.planStamp===stamp(state,'plan',month)},
+ {id:'ledger',label:'核对本月分类与忽略项',done:!r.unknown.length&&r.current.rows.length>0&&care.ledgerStamp===stamp(state,'ledger',month)},
+ {id:'budget',label:'设置本月分类预算',done:r.budgets.some(b=>b.amount>0)}
+ ];}
+return {catalog,addMonths,capacity,match,review,stamp,tasks};
+});

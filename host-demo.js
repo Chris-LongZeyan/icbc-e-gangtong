@@ -10,7 +10,7 @@ window.addEventListener('message',async event=>{
   const persona=document.querySelector('#host-persona').value;
   if(d.method==='getSnapshot'){
    response.result=GangxueFixtures.make(persona);const overlay=saved.get(persona);
-   if(overlay){response.result.plan=overlay.plan;response.result.budgets=overlay.budgets;response.result.exclusions=overlay.exclusions;response.result.transactions.forEach(t=>{if(overlay.categories[t.id])t.category=overlay.categories[t.id];});}
+   if(overlay){response.result.wealth=overlay.wealth;response.result.care=overlay.care;response.result.plan=overlay.plan;response.result.budgets=overlay.budgets;response.result.exclusions=overlay.exclusions;response.result.transactions.forEach(t=>{if(overlay.categories[t.id])t.category=overlay.categories[t.id];});}
   }else if(d.method==='getRates'){
    const r=await fetch(d.params.refresh?'api/rates':'official-rates.json');response.result=await r.json();if(!r.ok)throw Error(response.result.error);
   }else if(d.method==='savePreferences'){
