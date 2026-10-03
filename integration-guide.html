@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>宿主接入契约 v1</title><style>body{font:15px/1.8 Arial,'Microsoft YaHei',sans-serif;color:#252525;max-width:1000px;margin:30px auto;padding:20px}h1,h2{color:#b41620}pre{background:#f6f6f6;padding:20px;overflow:auto}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:12px;text-align:left}a{color:#b41620}</style></head><body><h1>独立壳 + 可嵌入规划模块</h1><p>本契约由项目定义，不是工行 SDK、内部接口文档或已获准合作。目标是把银行专属变化集中到边界，复用已有模型。</p><pre>独立：Node外壳 → index.html → UI + core.js / engine.js
+       dataAdapter → 模拟账户 / 公开报价 / 本地保存
+
+嵌入：银行宿主（导航、登录、授权、交易复核）
+        ↕ HostAdapter v1：四个受限方法
+      embedded.html → 同一 UI 和计算引擎
+        ↕ 银行侧 BFF / 服务适配
+      账户 / 流水 / 报价 / 偏好 / 审计</pre>
+<h2>三种入口</h2><ul><li><code>index.html</code>：独立演示，合成数据，可保存到本地浏览器。</li><li><code>host-demo.html</code>：模拟宿主，iframe可切为390px宽，可测试拒绝、超时和宿主保存。全部账户为合成数据。</li><li><code>embedded.html</code>：不读取独立案例的浏览器存储，不显示案例选择和账户编辑工具；只能从宿主取得账户。无授权或超时显示错误，不回退到模拟账户。</li></ul>
+<h2>项目自定义接口</h2><table><tr><th>方法</th><th>数据与责任</th></tr><tr><td>getSnapshot</td><td>归一化 state：asOf、accounts（id、name、currency、liquid、openingDate、opening）、transactions、plan。金额为整数分。plan.start=asOf。须提供期初余额和完整范围的已入账流水；不能把当前余额当期初又加流水。冻结资金分出为liquid:false账户，不计入支付资金。</td></tr><tr><td>getRates({refresh})</td><td>返回与official-rates.json相同的来源、时间、币种市场、买卖方向及单位。仅接受HKD per CNY/CNH。银行须映射用户实际适用价格，并提供费用、到账和有效期。本原型估算不充当成交报价。</td></tr><tr><td>savePreferences</td><td>只提交计划、预算、排除标志和分类覆盖；不修改银行账户或流水。模拟宿主存内存，刷新整个宿主页会丢失；生产由银行按身份隔离保存并审计。</td></tr><tr><td>openFxReview</td><td>只传source、target、debit、quoteAsOf等复核意图。宿主重新校验最新余额、费用、限制和报价；用户在银行界面确认及认证。没有executeTrade方法，不执行交易。</td></tr></table>
+<h2>消息边界</h2><pre>request = {channel:'gangxue.host.v1', type:'request', id, method, params}
+response = {channel:'gangxue.host.v1', type:'response', id, result /* 或 error */}</pre><p>校验准确origin、parent window、channel、type和请求ID；8秒超时清理监听器；不接受通配origin。parentOrigin在runtime-config.js部署时配置，不从用户URL读取。Native WebView可由银行实现相同四方法的适配器，不能据此声称已支持工行JSBridge。</p>
+<h2>接入时需要改什么</h2><ol><li>替换runtime-config.js中准确宿主来源等配置；用银行核准设计规范调整bank-theme.css。</li><li>Web宿主加载embedded.html并实现四方法。Native App根据真实容器实现transport；若不支持H5，需要重做原生展示，不能承诺少量修改。</li><li>银行BFF将内部账户／流水／报价映射为契约，负责会话与服务端授权。生产不把令牌、账号、密码或OTP放URL或localStorage。</li><li>完善分页和增量同步、时区、冲正与重复入账、覆盖声明、报价有效期、受限余额、会话撤销通知、审计、留存及本地化，之后才评估生产就绪。</li></ol>
+<p>server.cjs只是监听127.0.0.1的独立演示外壳。支持/module/子路径验证相对资源路径，不是银行API代理。生产由银行部署静态资源与BFF，配置精确frame-ancestors、CSP、CSRF和访问控制。演示iframe的same-origin sandbox用于UI兼容性，不作为同源恶意脚本的安全隔离。</p><h2>验收边界</h2><p>已验证项目自定义模块契约及模拟容器。没有取得银行真实登录、内部API、生产桥接或沙盒连通结果。接入前需银行团队完成只读沙盒验证后评估改造量。</p><p><a href="host-demo.html">运行接入演示</a> · <a href="icbc-comparison.html">功能对比证据</a></p></body></html>

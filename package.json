@@ -1,1 +1,1 @@
-{"name":"gangxue-poc","version":"0.3.0","private":true,"engines":{"node":">=20"},"scripts":{"start":"node server.cjs","test":"node --test tests/*.test.cjs","fixtures":"node generate.cjs","evidence":"node evidence.cjs"}}
+{"name":"gangxue-poc","version":"0.4.0","private":true,"engines":{"node":">=20"},"scripts":{"start":"node server.cjs","test":"node --test tests/*.test.cjs","fixtures":"node generate.cjs","evidence":"node evidence.cjs"}}
