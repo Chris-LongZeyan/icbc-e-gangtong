@@ -1,0 +1,3 @@
+const fs=require('node:fs'),F=require('./fixtures'),E=require('./engine'),P=require('./planner'),O=require('./octopus');
+const out={schema:'gangxue-evidence-v1',data:'synthetic',asOf:'2026-10-02',cases:F.ids.map(id=>{const s=F.make(id),f=E.forecast(s),p=P.optimize(s);return {id,name:s.name,headroom:f.headroom,firstGap:f.firstGap?.date||null,optimizerStatus:p.status,minimumCny:p.solution?.cny??null,hkdReceived:p.solution?.hkd??null,minCnyRemaining:p.solution?.minCNY??null,latestOrder:p.latestOrder};}),octopus:O.summary(O.preview([],O.sample).records)};
+fs.mkdirSync('docs',{recursive:true});fs.writeFileSync('docs/evidence.json',JSON.stringify(out,null,2)+'\n');console.log(JSON.stringify(out,null,2));
