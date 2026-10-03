@@ -1,1 +1,13 @@
-
+const {test}=require('node:test'),assert=require('node:assert/strict'),O=require('../octopus');
+const sample=()=>O.preview([],O.sample).records;
+test('synthetic sample separates HKD500 topup and HKD148 actual spending',()=>{const s=O.summary(sample());assert.equal(s.topup,50000);assert.equal(s.spending,14800);assert.equal(s.net,35200);assert.equal(s.status,'unknown');});
+test('same-minute laundry entries with different amounts are both kept',()=>{const rs=sample().filter(t=>t.time==='22:15');assert.equal(rs.length,2);assert.equal(rs.reduce((s,t)=>s-t.amount,0),1560);});
+test('importing identical IDs twice is idempotent',()=>{const r=O.preview(sample(),O.sample);assert.equal(r.accepted,0);assert.equal(r.duplicates,6);});
+test('conflicting ID rejects entire batch without mutation',()=>{const rs=sample(),before=JSON.stringify(rs);assert.throws(()=>O.preview(rs,O.sample.replace('500.00','600.00')),/ID/);assert.equal(JSON.stringify(rs),before);});
+test('different IDs with identical fields are warned, not silently removed',()=>{const r=O.preview(sample(),O.sample.replaceAll('demo-','copy-'));assert.equal(r.accepted,6);assert.equal(r.warnings.length,6);});
+test('hall name alone stays unknown, laundry and MTR have stated reasons',()=>{assert.equal(O.suggest('Starr Hall, HKU').category,'未分类');assert.equal(O.suggest('Hall Laundry').category,'洗衣');assert.equal(O.suggest('MTR Corporation Limited').category,'交通');});
+test('balanced arithmetic requires opening and closing, discrepancy remains visible',()=>{assert.equal(O.summary(sample(),10000,45200).status,'balanced');assert.equal(O.summary(sample(),10000,45201).difference,-1);assert.equal(O.summary(sample(),null,45200).status,'unknown');});
+test('wrong account, currency, type and timestamp rejected',()=>{for(const csv of [O.sample.replace('octopus','bank'),O.sample.replace('HKD','CNY'),O.sample.replace(',topup,',',income,'),O.sample.replace('09:00','25:00')])assert.throws(()=>O.preview([],csv));});
+test('refund reduces net spend without being mistaken for topup',()=>{const rs=sample();rs.push({...rs[2],id:'refund',amount:2800,type:'refund'});assert.equal(O.summary(rs).spending,12000);assert.equal(O.summary(rs).topup,50000);});
+test('bank matching returns candidates and excludes CNY topups',()=>{const bank=[{id:'b1',type:'topup',currency:'HKD',amount:-50000,date:'2026-09-28'},{id:'b2',type:'topup',currency:'CNY',amount:-50000,date:'2026-09-28'}];assert.deepEqual(O.topupCandidates(sample(),bank)[0].candidates,['b1']);});
+test('reimport retains user corrected category',()=>{const rs=sample();rs[2].category='日用';assert.equal(O.preview(rs,O.sample).records[2].category,'日用');});
