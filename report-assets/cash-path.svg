@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="1000" height="420" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="1000" height="420"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-420)" style="clip-path: url(#clip)">
+		<g transform="">
+			<text x="32" y="382" style="font-family: CN; font-size: 22px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,764) scale(1,-1)">逐日余额与动态用途红线（合成案例 / HKD）</text>
+			<g transform="">
+				<g transform="">
+					<g transform="">
+						<path d="M 98,78 L 928,78 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<path d="M 98,78 L 98,73 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 305.5,78 L 305.5,73 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 513,78 L 513,73 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 720.5,78 L 720.5,73 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 928,78 L 928,73 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,98,73)">
+							<text x="-18.05908203125" y="-13.0" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-26) scale(1,-1)">10-02</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,305.5,73)">
+							<text x="-18.05908203125" y="-13.0" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-26) scale(1,-1)">10-17</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,513,73)">
+							<text x="-18.05908203125" y="-13.0" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-26) scale(1,-1)">11-01</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,720.5,73)">
+							<text x="-18.05908203125" y="-13.0" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-26) scale(1,-1)">11-16</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,928,73)">
+							<text x="-18.05908203125" y="-13.0" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-26) scale(1,-1)">12-01</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 98,78 L 98,333 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<path d="M 98,78 L 93,78 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 98,141.75 L 93,141.75 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 98,205.5 L 93,205.5 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 98,269.25 L 93,269.25 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 98,333 L 93,333 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,93,78)">
+							<text x="-7.623535156250001" y="-5.2" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-10) scale(1,-1)">0</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,93,141.75)">
+							<text x="-41.24707031250001" y="-5.2" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-10) scale(1,-1)">20,000</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,93,205.5)">
+							<text x="-41.24707031250001" y="-5.2" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-10) scale(1,-1)">40,000</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,93,269.25)">
+							<text x="-41.24707031250001" y="-5.2" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-10) scale(1,-1)">60,000</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,93,333)">
+							<text x="-41.24707031250001" y="-5.2" style="font-family: CN; font-size: 13px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-10) scale(1,-1)">80,000</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<polyline points="98 333, 111.8333 332.575, 125.6667 332.15, 139.5 312.6, 153.3333 312.175, 167.1667 311.75, 181 311.325, 194.8333 310.9, 208.6667 310.475, 222.5 310.05, 236.3333 309.625, 250.1667 309.2, 264 308.775, 277.8333 308.35, 291.6667 307.925, 305.5 307.5, 319.3333 307.075, 333.1667 306.65, 347 306.225, 360.8333 305.8, 374.6667 305.375, 388.5 304.95, 402.3333 304.525, 416.1667 144.725, 430 144.3, 443.8333 143.875, 457.6667 143.45, 471.5 143.025, 485.3333 142.6, 499.1667 142.175, 513 141.75, 526.8333 141.325, 540.6667 140.9, 554.5 140.475, 568.3333 120.925, 582.1667 120.5, 596 120.075, 609.8333 119.65, 623.6667 119.225, 637.5 118.8, 651.3333 118.375, 665.1667 117.95, 679 117.525, 692.8333 117.1, 706.6667 116.675, 720.5 116.25, 734.3333 115.825, 748.1667 115.4, 762 114.975, 775.8333 114.55, 789.6667 114.125, 803.5 113.7, 817.3333 113.275, 831.1667 112.85, 845 112.425, 858.8333 112, 872.6667 111.575, 886.5 111.15, 900.3333 110.725, 914.1667 110.3, 928 109.875" style="stroke: rgb(70%,10%,14%); stroke-linecap: round; stroke-width: 2.5; fill: None; fill-rule: evenodd;"/>
+					<polyline points="98 291.5625, 111.8333 291.5625, 125.6667 291.5625, 139.5 272.4375, 153.3333 272.4375, 167.1667 272.4375, 181 272.4375, 194.8333 272.4375, 208.6667 272.4375, 222.5 272.4375, 236.3333 272.4375, 250.1667 272.4375, 264 272.4375, 277.8333 272.4375, 291.6667 272.4375, 305.5 272.4375, 319.3333 272.4375, 333.1667 272.4375, 347 272.4375, 360.8333 272.4375, 374.6667 272.4375, 388.5 272.4375, 402.3333 272.4375, 416.1667 113.0625, 430 113.0625, 443.8333 113.0625, 457.6667 113.0625, 471.5 113.0625, 485.3333 113.0625, 499.1667 113.0625, 513 113.0625, 526.8333 113.0625, 540.6667 113.0625, 554.5 113.0625, 568.3333 93.9375, 582.1667 93.9375, 596 93.9375, 609.8333 93.9375, 623.6667 93.9375, 637.5 93.9375, 651.3333 93.9375, 665.1667 93.9375, 679 93.9375, 692.8333 93.9375, 706.6667 93.9375, 720.5 93.9375, 734.3333 93.9375, 748.1667 93.9375, 762 93.9375, 775.8333 93.9375, 789.6667 93.9375, 803.5 93.9375, 817.3333 93.9375, 831.1667 93.9375, 845 93.9375, 858.8333 93.9375, 872.6667 93.9375, 886.5 93.9375, 900.3333 93.9375, 914.1667 93.9375, 928 93.9375" style="stroke: rgb(53%,53%,53%); stroke-linecap: round; stroke-width: 2; fill: None; fill-rule: evenodd; stroke-dasharray: 5, 3;"/>
+				</g>
+			</g>
+			<text x="100" y="30" style="font-family: CN; font-size: 15px;fill: rgb(70%,10%,14%); stroke:none;" transform="translate(0,60) scale(1,-1)">红色实线：逐日余额</text>
+			<text x="310" y="30" style="font-family: CN; font-size: 15px;fill: rgb(40%,40%,40%); stroke:none;" transform="translate(0,60) scale(1,-1)">灰虚线：尚未支付的保护用途 + 应急金</text>
+		</g>
+	</g>
+</svg>
