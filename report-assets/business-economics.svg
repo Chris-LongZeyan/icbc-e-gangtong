@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="570" viewBox="0 0 1100 570" role="img" aria-labelledby="title desc">
+<title id="title">五千有效用户下的假设首年净贡献</title><desc id="desc">三个假设情景分别亏损355000元、亏损55000元和盈利155000港币。均已扣除首期和年度固定成本300000元，不是收入预测。</desc>
+<rect width="1100" height="570" rx="12" fill="#faf8f7"/>
+<g font-family="Microsoft YaHei, PingFang SC, sans-serif" fill="#292929">
+<text x="38" y="52" font-size="28" font-weight="700">正的单位贡献，仍可能不足以覆盖首期投入</text><text x="38" y="88" font-size="19" fill="#666">演算假设 · N = 5,000 人 · I + F = 300,000 港币 · 不代表银行收入预测</text>
+<g stroke="#ded8d6" stroke-width="1"><path d="M295 146V407M395 146V407M495 146V407M595 146V407M795 146V407M895 146V407"/></g>
+<path d="M695 137V409" stroke="#666" stroke-width="2"/>
+<text x="38" y="186" font-size="22">留存较少</text><text x="38" y="213" font-size="17" fill="#666">u = −11 元／人年</text><rect x="340" y="158" width="355" height="53" rx="3" fill="#b51c26"/><text x="708" y="192" font-size="23" fill="#b51c26">−355,000</text>
+<text x="38" y="273" font-size="22">中间情景</text><text x="38" y="300" font-size="17" fill="#666">u = 49 元／人年</text><rect x="640" y="245" width="55" height="53" rx="3" fill="#ce8486"/><text x="708" y="279" font-size="23" fill="#b51c26">−55,000</text>
+<text x="38" y="360" font-size="22">留存较多</text><text x="38" y="387" font-size="17" fill="#666">u = 91 元／人年</text><rect x="695" y="332" width="155" height="53" rx="3" fill="#527d70"/><text x="864" y="366" font-size="23" fill="#345f51">155,000</text>
+<g font-size="18" fill="#666" text-anchor="middle"><text x="295" y="438">−400,000</text><text x="495" y="438">−200,000</text><text x="695" y="438">0</text><text x="895" y="438">200,000</text></g>
+<text x="599" y="480" font-size="19" fill="#666" text-anchor="middle">首年项目净贡献（港币）</text><text x="38" y="535" font-size="20">Π₁ = N × u − I − F；完整参数及敏感性见第15.3节。</text>
+</g></svg>

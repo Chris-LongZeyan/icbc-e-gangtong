@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="610" viewBox="0 0 1100 610" role="img" aria-labelledby="title desc">
+<title id="title">充值是资金转移，消费是最终使用</title><desc id="desc">假设八达通期初为零且无费用，银行充值500港币，随后消费148港币，钱包余352港币。银行流出500，个人消费148，352不是可直接付学费的银行资金。</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#b51c26" stroke-width="1.6"/></marker></defs>
+<rect width="1100" height="610" rx="12" fill="#faf8f7"/>
+<g font-family="Microsoft YaHei, PingFang SC, sans-serif" fill="#292929">
+<text x="38" y="53" font-size="28" font-weight="700">一笔充值，两种观察口径</text><text x="38" y="89" font-size="19" fill="#666">核算示例 · 单位：港币 · 钱包期初为零 · 不计费用及其他交易</text>
+<g fill="#fff" stroke="#ded8d6" stroke-width="2"><rect x="38" y="132" width="277" height="174" rx="10"/><rect x="412" y="132" width="277" height="174" rx="10"/><rect x="786" y="132" width="277" height="174" rx="10"/></g>
+<text x="61" y="174" font-size="23">银行账户</text><text x="61" y="224" font-size="33" font-weight="700">流出 500</text><text x="61" y="272" font-size="19" fill="#666">银行看见：一笔充值</text>
+<text x="436" y="174" font-size="23">八达通钱包</text><text x="436" y="224" font-size="33" font-weight="700">转入 500</text><text x="436" y="272" font-size="19" fill="#666">资金位置改变，尚未消费</text>
+<text x="810" y="174" font-size="23">交通、餐饮等</text><text x="810" y="224" font-size="33" font-weight="700" fill="#b51c26">消费 148</text><text x="810" y="272" font-size="19" fill="#666">实际消费发生时分类</text>
+<g stroke="#b51c26" stroke-width="3" fill="none" marker-end="url(#arrow)"><path d="M326 212H398"/><path d="M701 212H773"/></g>
+<rect x="38" y="345" width="1025" height="99" rx="9" fill="#f1e5e4"/>
+<text x="61" y="385" font-size="23" font-weight="700">500 元充值本金 = 148 元已消费 + 352 元钱包余额</text><text x="61" y="421" font-size="20">整体消费统计为 148 元；不能再把 500 元充值重复计入消费。</text>
+<text x="38" y="497" font-size="23" font-weight="700">钱包剩余 352 元，仍须区分用途与可达性</text><text x="38" y="538" font-size="21">可参与个人资金核对；未经确认的转出路径，不能用来填补银行付款缺口。</text><text x="38" y="576" font-size="19" fill="#666">换汇亦须单独记录：币种变化不等于消费；费用与实际到账另行核对。</text>
+</g></svg>
