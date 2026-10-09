@@ -8,7 +8,7 @@ test('HTTP health, nested mount, HEAD and private-path protections',async t=>{
  const server=createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));t.after(()=>new Promise(r=>server.close(r)));
  const base='http://127.0.0.1:'+server.address().port;
  const health=await fetch(base+'/healthz');assert.equal(health.status,200);assert.equal((await health.json()).version,'0.8.0');
- const page=await fetch(base+'/module/');assert.equal(page.status,200);assert.match(await page.text(),/双币 e 管家/);assert.match(page.headers.get('content-security-policy'),/frame-ancestors 'self'/);
+ const page=await fetch(base+'/module/');assert.equal(page.status,200);assert.match(await page.text(),/工银e港通/);assert.match(page.headers.get('content-security-policy'),/frame-ancestors 'self'/);
  assert.equal((await fetch(base+'/.git/config')).status,404);assert.equal((await fetch(base+'/server.cjs')).status,404);
  assert.equal((await fetch(base+'/',{method:'POST'})).status,405);
  assert.equal(await (await fetch(base+'/',{method:'HEAD'})).text(),'');
