@@ -1,10 +1,12 @@
 # 演示指南
 
+先从[产品导览](https://dual-currency-e-manager.onrender.com/)了解方案；[交互体验](https://dual-currency-e-manager.onrender.com/experience.html)提供四个场景按钮及“重置本场景”。下述功能路径均在体验页内。
+
 [项目首页](../.github/README.md) · [开发指南](DEVELOPMENT.md) · [完整报告](../REPORT.md)
 
 ## 开始前
 
-打开[在线原型](https://dual-currency-e-manager.onrender.com/)，无需登录。使用新的浏览器窗口或确认当前为合成案例；在“演示设置”中选择“小林 · 资金已到位”。准备录屏时可先访问一次，避免免费实例休眠影响开场。
+打开[在线原型](https://dual-currency-e-manager.onrender.com/experience.html)，无需登录。使用新的浏览器窗口或确认当前为合成案例；在“演示设置”中选择“小林 · 资金已到位”。准备录屏时可先访问一次，避免免费实例休眠影响开场。
 
 账户数据是演示案例；汇率是具有来源和日期的公开参考报价。页面不执行支付或换汇。
 
