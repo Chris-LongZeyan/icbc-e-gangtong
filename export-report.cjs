@@ -4,7 +4,7 @@ const root=__dirname,base='https://dual-currency-e-manager.onrender.com/';
 let html=fs.readFileSync(path.join(root,'report.html'),'utf8');
 html=html.replace('<link rel="stylesheet" href="report.css">','<style>'+fs.readFileSync(path.join(root,'report.css'),'utf8')+'</style>');
 html=html.replace(/src="(report-assets\/[a-z0-9-]+\.(png|jpg|svg))"/g,(_,file,ext)=>'src="data:'+({png:'image/png',jpg:'image/jpeg',svg:'image/svg+xml'}[ext])+';base64,'+fs.readFileSync(path.join(root,file)).toString('base64')+'"');
-html=html.replace(/href="(\/|host-demo\.html|index\.html)"/g,(_,link)=>'href="'+base+(link==='/'?'':link)+'"');
+html=html.replace(/href="(\/|experience\.html|host-demo\.html|index\.html)"/g,(_,link)=>'href="'+base+(link==='/'?'':link)+'"');
 if(/src="report-assets\//.test(html))throw Error('Unbundled report asset');
 const output=path.resolve(process.argv[2]||path.join(root,'artifacts/report-offline.html'));
 fs.mkdirSync(path.dirname(output),{recursive:true});fs.writeFileSync(output,html);

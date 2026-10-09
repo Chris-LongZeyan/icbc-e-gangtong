@@ -2,7 +2,7 @@
 const E=Gangxue,F=GangxueFixtures,$=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(v,c='HKD')=>(c==='HKD'?'HK$ ':c==='CNY'?'¥ ':'')+(v/100).toLocaleString('en-HK',{minimumFractionDigits:2,maximumFractionDigits:2});
 let state=F.make('reserve'),tab='overview',scenario={},pending=null,editing=null;
-if(!embedded)try{const saved=localStorage.getItem('gangxue-poc-v1');if(saved){const s=JSON.parse(saved);E.forecast(s);E.quality(s);state=s;$('#persona').value=s.id;}}catch{localStorage.removeItem('gangxue-poc-v1');}
+if(!embedded&&document.body.dataset.experience!=='true')try{const saved=localStorage.getItem('gangxue-poc-v1');if(saved){const s=JSON.parse(saved);E.forecast(s);E.quality(s);state=s;$('#persona').value=s.id;}}catch{localStorage.removeItem('gangxue-poc-v1');}
 const notify=(s,error=false)=>$('#notice').innerHTML='<div class="'+(error?'error':'success')+'">'+esc(s)+'</div>';
 const button=(text,attrs='',secondary=false)=>'<button class="button '+(secondary?'secondary':'')+'" '+attrs+'>'+text+'</button>';
 function chart(a,b){
@@ -53,6 +53,7 @@ function render(){
  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===({planner:'calendar',wealth:'calendar',scenario:'calendar',octopus:'ledger',setup:'profile'}[tab]||tab)));simplifyPage();bind();bindFeatures();bindCore();afterUX();bindProfile();
  $('#persona option[value="manual"]').disabled=state.id!=='manual'&&!caseSessions.has('manual');
  $('#reset').disabled=state.id==='manual';
+ if(typeof updateExperienceGuide==='function')updateExperienceGuide();
 }
 function download(filename,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
 function bind(){

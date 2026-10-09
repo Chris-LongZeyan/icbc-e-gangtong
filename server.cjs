@@ -2,9 +2,10 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=__dirname;
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.csv':'text/csv; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml'};
-const pages=new Set(['index.html','embedded.html','host-demo.html','icbc-comparison.html','integration-guide.html','feature-map.html','v05-notes.html','report.html']);
+const pages=new Set(['index.html','experience.html','embedded.html','host-demo.html','icbc-comparison.html','integration-guide.html','feature-map.html','v05-notes.html','report.html']);
 const scripts=new Set(['app.js','engine.js','fixtures.js','planner.js','octopus.js','features.js','core.js','core-ui.js','beyond.js','minimal-ui.js','ux.js','ux-ui.js','runtime-config.js','embedded-config.js','host-adapter.js','host-demo.js','shell.js','profile.js','profile-ui.js']);
 const styles=new Set(['style.css','bank-theme.css','minimal.css','friendly.css','controls.css','report.css','profile.css']);
+scripts.add('entry.js');scripts.add('experience.js');styles.add('landing.css');styles.add('experience.css');
 function publicFile(relative){return pages.has(relative)||scripts.has(relative)||styles.has(relative)||relative==='official-rates.json'||relative==='docs/evidence.json'||relative==='data/import-example.csv'||/^data\/(reserve|timing|currency|career|purchase)\.(json|csv)$/.test(relative)||/^report-assets\/[a-z0-9-]+\.(png|jpg|svg)$/.test(relative);}
 function createServer(){
  let cachedRates=null,cachedAt=0,pendingRates=null;
