@@ -6,7 +6,7 @@
 
 面向赴港学生与初入职场青年的人民币 / 港币资金规划助手。把学费、房租和日常预算一起纳入付款能力检查，帮助用户判断：**这笔钱现在能不能花，需要换多少，能否按时付款。**
 
-[体验原型](https://dual-currency-e-manager.onrender.com/) · [阅读完整报告](../REPORT.md) · [五分钟演示](../docs/DEMO.md) · [开发与部署](../docs/DEVELOPMENT.md)
+[产品导览](https://dual-currency-e-manager.onrender.com/) · [交互体验](https://dual-currency-e-manager.onrender.com/experience.html) · [阅读完整报告](../REPORT.md) · [五分钟演示](../docs/DEMO.md) · [开发与部署](../docs/DEVELOPMENT.md)
 
 `v0.8.0` · `Node.js 24` · `无第三方运行依赖` · `136 项测试通过¹`
 
