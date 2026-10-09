@@ -1,0 +1,31 @@
+{
+  "figures": [
+    {
+      "figure": "fig-wallet-accounting",
+      "source": "来源：报告第2.1节合成算例；期初银行余额500、钱包余额0，无费用或退款。\n堆叠总高为期初资金＝剩余资金＋累计消费，不表示总资产保持不变。",
+      "png_sha256": "a8afed0d03b1cd6dbe720f2975b5863aef6dc5a562cdcc70330dffe49f33524e"
+    },
+    {
+      "figure": "fig-reserve-path",
+      "source": "来源：fixtures.js reserve合成案例，经engine.js与core.js导出；金额为港币。\n不提前计入预计生活费；追加支出以期初立即扣款表示，期末余额恰好达到5,000元应急底线。",
+      "png_sha256": "e682e7c650f153a248d223fe352b2fa0d67382f2ec7ceaea2aa7577b6d8ae6cb"
+    },
+    {
+      "figure": "fig-fx-minimum",
+      "source": "来源：core.js quote整数计算；中银香港CNH报价快照 2026-10-03T18:07:55+08:00。\n客户买入价1.176990 HKD/CNH，额外费用为0；情景测算，不是实时或可执行报价。",
+      "png_sha256": "28e0a7e70eeaf7978f1cc3475da363feba806443e707b5746a077d1c70e84eb0"
+    },
+    {
+      "figure": "fig-ablation",
+      "source": "来源：experiments/results.json；固定种子20261008，2,000组五日合成案例。\n各对照为自建删减模型，不是银行产品实测；结果不代表真实客户发生概率。",
+      "png_sha256": "60db61aee68f107d8ee05d918d9cba1d0f4f0ac48957a321f2d48d2b612ba916"
+    },
+    {
+      "figure": "fig-data-cost",
+      "source": "来源：Teller与Stripe Financial Connections官方标准价（2026-10-09核查）；交易US$0.30/月，余额US$0.10/次。\n左图汇率换算区间7.75—7.85；不含固定接入、核验、税费和支持费用，非八达通报价或收入预测。",
+      "png_sha256": "a5beb29c82ef2e8c31a5c1530c721f007fd90f7939e3c1de55b661bace9f1809"
+    }
+  ],
+  "matplotlib": "3.10.5",
+  "data_source_sha256": "bc823de03db7500e1e17b1d78483021cf3fc2da36c7a20c6e3d7c4de7873e040"
+}
