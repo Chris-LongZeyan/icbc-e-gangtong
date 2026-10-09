@@ -25,7 +25,7 @@ function octopusView(){
 }
 function bindFeatures(){
  $('#optimizer-form')?.addEventListener('submit',ev=>{ev.preventDefault();try{const d=new FormData(ev.target),o={rate:Number(d.get('rate')),feeBps:Number(d.get('feeBps')),fixedFee:E.money(d.get('fixedFee')),settlementDays:Number(d.get('settlementDays')),cnyReserve:E.money(d.get('cnyReserve')),includeExpected:d.get('includeExpected')==='on'};P.optimize(state,o);plannerOptions=o;render();}catch(e){notify(e.message,true);}});
- $('#export-plan')?.addEventListener('click',()=>download('gangxue-plan-evidence.json',JSON.stringify({model:'single-conversion-v1',asOf:state.asOf,plan:state.plan,result:P.optimize(state,plannerOptions)},null,2),'application/json'));
+ $('#export-plan')?.addEventListener('click',()=>download('e-gangtong-plan-evidence.json',JSON.stringify({model:'single-conversion-v1',asOf:state.asOf,plan:state.plan,result:P.optimize(state,plannerOptions)},null,2),'application/json'));
  $('#octopus-example')?.addEventListener('click',()=>{$('#octopus-csv').value=O.sample;octopusPending=null;$('#octopus-preview-result').innerHTML='';});
  $('#octopus-template')?.addEventListener('click',()=>download('octopus-synthetic-template.csv',O.sample,'text/csv;charset=utf-8'));
  $('#octopus-csv')?.addEventListener('input',()=>{octopusPending=null;$('#octopus-preview-result').innerHTML='';});

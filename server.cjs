@@ -32,5 +32,5 @@ function createServer(){
   });
  });
 }
-if(require.main===module){const port=Number(process.env.PORT||4173),host=process.env.HOST||(process.env.RENDER?'0.0.0.0':'127.0.0.1');createServer().listen(port,host,()=>console.log(`Dual Currency e Manager listening on ${host}:${port}`));}
+if(require.main===module){const port=Number(process.env.PORT||4173),host=process.env.HOST||(process.env.RENDER?'0.0.0.0':'127.0.0.1');createServer().listen(port,host,()=>console.log(`ICBC e Gangtong listening on ${host}:${port}`));}
 module.exports={createServer,publicFile};
