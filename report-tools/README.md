@@ -20,11 +20,11 @@ python report-tools/build_charts.py --out my-figures --font C:/Windows/Fonts/msy
 
 | 文件名 | 报告位置 | 证据类型及图形 |
 | --- | --- | --- |
-| fig-wallet-accounting | 2.1 资金转移与最终消费的核算边界 | 500元充值与148元消费的合成算例；堆叠条形图 |
-| fig-reserve-path | 9.3 学费与租金预留算例 | reserve案例的用途金额与引擎逐日输出；条形图和时间序列 |
-| fig-fx-minimum | 9.1 双币购买算例与兑换结果 | quote逐分计算；阶梯图 |
-| fig-ablation | 10.2 独立验证与约束消融结果 | results.json实测计数；横向条形图 |
-| fig-data-cost | 15.4 账户数据服务的可比成本估算 | 官方单价的成本敏感性测算；曲线与条形图 |
+| fig-wallet-accounting | 2.1 跨币种生活中的资金核算 | 500元充值与148元消费的合成算例；堆叠条形图 |
+| fig-reserve-path | 4.3 典型场景与计算结果 | reserve案例的用途金额与引擎逐日输出；条形图和时间序列 |
+| fig-fx-minimum | 4.3 典型场景与计算结果 | quote逐分计算；阶梯图 |
+| fig-ablation | 4.4 独立验证与实验结论 | results.json实测计数；横向条形图 |
+| fig-data-cost | 附录C.2 可比数据服务的敏感性分析 | 官方单价的成本敏感性测算；曲线与条形图 |
 
 `data/examples.json`由同一规划引擎导出。`experiments/results.json`保留原实验，不由制图脚本覆盖，避免无意改变报告性能数据。`chart-manifest.json`记录输入及PNG哈希。图中每个计数、金额和曲线都有确定来源，不以装饰图形代替实验。
 
