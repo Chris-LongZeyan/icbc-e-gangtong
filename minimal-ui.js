@@ -43,7 +43,7 @@ function simplifyPage(){
   const form=$('#payment-form'),grid=form?.querySelector('.form-grid');
   if(grid){const d=document.createElement('details');d.innerHTML='<summary>费用、到账时间与牌价行</summary>';const g=document.createElement('div');g.className='form-grid';[...grid.children].slice(3).forEach(n=>g.append(n));d.append(g);grid.after(d);}
   const card=form?.closest('.card');if(card){const d=document.createElement('details');d.innerHTML='<summary>参考报价来源与估算假设</summary>';[...card.children].filter(n=>n!==form&&!['H2','SPAN'].includes(n.tagName)).forEach(n=>d.append(n));form.after(d);}
-  fold(document.querySelector('#content > .grid-even'),'查看预留依据');
+  fold(document.querySelector('#payment-result > .grid-even'),'查看预留依据');
  }
  $('#wealth-form')?.addEventListener('submit',ev=>{ev.preventDefault();try{const d=new FormData(ev.target),p={currency:d.get('currency'),amount:E.money(d.get('amount')),bufferDays:Number(d.get('bufferDays')),interest:d.get('interest'),riskProfile:d.get('riskProfile'),lossBudget:E.money(d.get('lossBudget'))};B.recommend(state,p);state.wealth=p;render();notify('候选方案已更新；保存后可继续使用这些偏好。');}catch(e){notify(e.message,true);}});
  document.querySelectorAll('[data-care]').forEach(b=>b.onclick=()=>{const kind=b.dataset.care,r=B.review(state,reportMonth);if(kind==='ledger'&&(r.unknown.length||!r.current.rows.length)){notify('请先在账本核对用途未明确的记录；空账本不能标记完成。',true);return;}state.care||={};state.care[kind+'Stamp']=B.stamp(state,kind,reportMonth);render();notify('已记录你的核实声明。相关数据改变后需要重新核实；可点击保存保留。');});

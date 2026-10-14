@@ -1,9 +1,9 @@
 'use strict';
 let assistantSession=null,assistantStatus=null,assistantRequest=null,assistantRecorder=null,assistantAudioRequest=null;
 const assistantCopy={
- zh:{title:'说说你的安排',placeholder:'例如：10月8日想买一台人民币12000元的电脑',send:'填入下方表单',voice:'语音输入',stop:'结束录音',clear:'重新描述',ready:'已填入下方。请核对后计算。',off:'智能输入待启用，可直接填写下方表单。',privacy:'文字和录音由 Qwen 处理；请使用示例信息。',busy:'正在整理…',record:'正在录音，最长30秒。结束后可修改文字再提交。'},
- yue:{title:'讲下你嘅安排',placeholder:'例如：10月8号想买部人民币12000蚊嘅电脑',send:'填入下面表格',voice:'语音输入',stop:'结束录音',clear:'重新描述',ready:'已填好，请核对后再计算。',off:'智能输入待启用，可以直接填下面表格。',privacy:'文字同录音会交由 Qwen 处理；请用示例资料。',busy:'整理紧…',record:'录音中，最多30秒。完成后可以改文字再提交。'},
- en:{title:'Describe your plan',placeholder:'For example: buy a CNY 12,000 laptop on 8 October',send:'Fill the form below',voice:'Voice input',stop:'Stop recording',clear:'Start over',ready:'Fields filled. Review them before calculating.',off:'Smart input is awaiting activation. You can fill the form below.',privacy:'Qwen processes your text and audio. Use example information.',busy:'Preparing…',record:'Recording, up to 30 seconds. Review the transcript before submitting.'}
+ zh:{title:'说说你的安排',placeholder:'例如：10月8日想买一台人民币12000元的电脑',send:'填入下方表单',voice:'语音输入',stop:'结束录音',clear:'重新描述',ready:'已填入下方。请核对后计算。',off:'智能输入待启用，可直接填写下方表单。',privacy:'文字、录音及表单草案由 Qwen 处理；请使用示例信息。',busy:'正在整理…',record:'正在录音，最长30秒。结束后可修改文字再提交。'},
+ yue:{title:'讲下你嘅安排',placeholder:'例如：10月8号想买部人民币12000蚊嘅电脑',send:'填入下面表格',voice:'语音输入',stop:'结束录音',clear:'重新描述',ready:'已填好，请核对后再计算。',off:'智能输入待启用，可以直接填下面表格。',privacy:'文字、录音同表格草稿会交由 Qwen 处理；请用示例资料。',busy:'整理紧…',record:'录音中，最多30秒。完成后可以改文字再提交。'},
+ en:{title:'Describe your plan',placeholder:'For example: buy a CNY 12,000 laptop on 8 October',send:'Fill the form below',voice:'Voice input',stop:'Stop recording',clear:'Start over',ready:'Fields filled. Review them before calculating.',off:'Smart input is awaiting activation. You can fill the form below.',privacy:'Qwen processes your text, audio and form draft. Use example information.',busy:'Preparing…',record:'Recording, up to 30 seconds. Review the transcript before submitting.'}
 };
 function assistantContext(){return state.id+':'+state.asOf+':'+tab;}
 function stopAssistantRecording(){if(assistantRecorder){assistantRecorder.cancelled=true;if(assistantRecorder.recorder.state!=='inactive')assistantRecorder.recorder.stop();assistantRecorder.stream.getTracks().forEach(t=>t.stop());clearTimeout(assistantRecorder.timer);assistantRecorder=null;}}

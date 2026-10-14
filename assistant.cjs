@@ -34,7 +34,8 @@ function input(value){
 const parameters={type:'object',additionalProperties:false,properties:{name:{type:'string',description:'用户提供的事项名称，最多60字'},currency:{type:['string','null'],enum:['CNY','HKD',null]},amount:{type:['string','null'],description:'原币元金额的十进制字符串，最多两位小数；缺失则null'},date:{type:['string','null'],description:'YYYY-MM-DD；相对日期以给定余额日计算，缺失或有歧义则null'},question:{type:'string',description:'缺失或歧义时简短追问；信息明确则空字符串'}},required:['name','currency','amount','date','question']};
 const toolSpecs=[['check_purchase','试算一笔购买是否影响已登记付款及预留，确认后执行计算'],['reserve_payment','预览新增一笔未来必要付款的资金影响，确认后执行计算']].map(([name,description])=>({type:'function',function:{name,description,parameters}}));
 const setupProperties={name:{type:'string'},question:{type:'string',description:'缺失必要信息或歧义时追问，明确时为空'}};
-for(const key of setupAmounts)setupProperties[key]={type:['string','null'],description:'原币元，非负十进制字符串；未提供为null。生活费为整个规划期总额，月预算先追问覆盖期。'};
+const amountLabels={HKD:'港币账户余额',CNY:'人民币账户余额',reserve:'港币应急金',cnyReserve:'人民币应急金',living:'全规划期港币生活费',cnyLiving:'全规划期人民币生活费',tuition:'下一笔学费原币金额',rent:'下一笔房租原币金额'};
+for(const key of setupAmounts)setupProperties[key]={type:['string','null'],description:amountLabels[key]+'，原币元，非负十进制字符串；未提供为null。生活费为整个规划期总额，月预算先追问覆盖期。'};
 for(const key of setupDates)setupProperties[key]={type:['string','null'],description:'YYYY-MM-DD，缺失为null'};
 for(const key of ['tuitionCurrency','rentCurrency'])setupProperties[key]={type:['string','null'],enum:['HKD','CNY',null]};
 toolSpecs.push({type:'function',function:{name:'prepare_setup',description:'填写新的手动试算表单：双币余额、余额日、规划结束日、双币应急金、全期生活预算、下一笔学费及房租。预算币种由字段名明确。已有试算和真实账户保持不变。',parameters:{type:'object',additionalProperties:false,properties:setupProperties,required:setupKeys}}});
