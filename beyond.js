@@ -24,6 +24,39 @@ function match(state,options={}){
  if(r.status==='evaluated')reason=amount>r.max?'拟存金额会占用已规划的资金。':amount<catalog.minimum?'未达到此公开存款方案的 50,000 原币起存额。':'金额与期限初筛通过；客户资格、营业时段、到期处理和当日条款仍须银行确认。';
  return {...r,amount,fits,reason};});
 }
+// Demonstration types: parameters are explicit test assumptions, not marketed products or risk ratings.
+const productTypes=[
+ {id:'cash',name:'现金管理类基金',months:1,risk:1,lossBps:500,minimum:10000},
+ {id:'bond',name:'债券类基金',months:3,risk:2,lossBps:1500,minimum:10000},
+ {id:'equity',name:'权益类基金',months:6,risk:3,lossBps:4000,minimum:10000}
+];
+function recommend(state,options={}){
+ const {currency='HKD',amount=0,bufferDays=2,interest='deposit',riskProfile='unassessed',lossBudget=0}=options;
+ const levels={unassessed:0,conservative:1,balanced:2,growth:3};
+ if(!Object.hasOwn(levels,riskProfile)||!['deposit','investment'].includes(interest))throw Error('产品偏好无效');
+ for(const x of [amount,lossBudget])if(!Number.isSafeInteger(x)||x<0||x>1e12)throw Error('金额须为非负整数分');
+ const deposits=match(state,{currency,amount,bufferDays});
+ if(interest==='deposit')return {deposits,investments:[]};
+ const f=E.forecast(state);
+ const investments=productTypes.map(product=>{
+  const cap=capacity(state,{currency,months:product.months,bufferDays});
+  const after=f.rows.filter(r=>r.date>cap.available);
+  let futureHeadroom=Number.MAX_SAFE_INTEGER;
+  for(const row of after)futureHeadroom=Math.min(futureHeadroom,row['low'+currency]-C.redline(state,row.date).floor[currency]);
+  const budgetCap=Number(BigInt(lossBudget)*10000n/BigInt(product.lossBps));
+  const stressCap=futureHeadroom===Number.MAX_SAFE_INTEGER?Number.MAX_SAFE_INTEGER:Number(BigInt(Math.max(0,futureHeadroom))*10000n/BigInt(product.lossBps));
+  const max=cap.status==='evaluated'?Math.min(cap.max,budgetCap,stressCap):0;
+  const stressLoss=Number((BigInt(amount)*BigInt(product.lossBps)+9999n)/10000n);
+  const checks=[
+   {id:'profile',label:'偏好匹配',ok:levels[riskProfile]>=product.risk,detail:riskProfile==='unassessed'?'请选择体验风险偏好':levels[riskProfile]>=product.risk?'符合所选体验偏好':'超出所选体验偏好'},
+   {id:'cash',label:'付款保护',ok:cap.status==='evaluated'&&amount<=cap.max,detail:cap.status==='evaluated'?'资金容量 '+(cap.max/100).toFixed(2)+' '+currency+' · 约束日 '+cap.binding:cap.reason},
+   {id:'stress',label:'压力承受',ok:stressLoss<=lossBudget&&amount<=stressCap,detail:'假设回撤 '+(product.lossBps/100)+'%，情景损失 '+(stressLoss/100).toFixed(2)+' '+currency},
+   {id:'minimum',label:'样例门槛',ok:amount>=product.minimum,detail:'样例金额下限 '+(product.minimum/100).toFixed(2)+' '+currency}
+  ];
+  return {...product,currency,amount,max,stressLoss,available:cap.available,binding:cap.binding,checks,fits:checks.every(x=>x.ok),reason:checks.filter(x=>!x.ok).map(x=>x.detail).join('；')||'金额、期限、偏好及压力条件通过'};
+ });
+ return {deposits,investments};
+}
 function review(state,month){
  const current=C.monthly(state,month),d=new Date(month+'-01T00:00:00Z');d.setUTCMonth(d.getUTCMonth()-1);const previousMonth=d.toISOString().slice(0,7),previous=C.monthly(state,previousMonth);
  const budgets=(state.budgets||[]).filter(b=>b.month===month).map(b=>({...b,spent:current.groups[b.category]?.[b.currency]||0}));
@@ -50,5 +83,5 @@ function tasks(state,month){const r=review(state,month),care=state.care||{};retu
  {id:'ledger',label:'核对本月分类与忽略项',done:!r.unknown.length&&r.current.rows.length>0&&care.ledgerStamp===stamp(state,'ledger',month)},
  {id:'budget',label:'设置本月分类预算',done:r.budgets.some(b=>b.amount>0)}
  ];}
-return {catalog,addMonths,capacity,match,review,stamp,tasks};
+return {catalog,productTypes,addMonths,capacity,match,recommend,review,stamp,tasks};
 });

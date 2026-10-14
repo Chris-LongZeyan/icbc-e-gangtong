@@ -47,11 +47,11 @@ function render(){
  if(!hostReady){$('#content').innerHTML='<div class="card embed-loading"><h2>'+ (hostFailure?'暂时无法读取账户':'正在读取宿主授权数据')+'</h2><p>'+esc(hostFailure||'请稍候…')+'</p><p>没有使用模拟账户替代宿主账户。</p></div>';return;}
  if(tab==='integration')tab='overview';
  if(embedded&&tab==='octopus')tab='overview';beforeUX();
- $('#page-title').textContent={overview:'双币资金总览',ledger:'账本',calendar:'付款计划',scenario:'情景试算',report:'月度回顾',wealth:'闲置资金期限',integration:'银行接入 · 证据与边界',planner:'购买与换汇',octopus:'八达通',profile:'我的',setup:'手动试算'}[tab];
+ $('#page-title').textContent={overview:'双币资金总览',ledger:'账本',calendar:'付款计划',scenario:'情景试算',report:'月度回顾',wealth:'资金与产品匹配',integration:'银行接入 · 证据与边界',planner:'购买与换汇',octopus:'八达通',profile:'我的',setup:'手动试算'}[tab];
  if(!embedded)document.querySelector('.demo-bar b').textContent=state.experience==='manual'?'手动试算':'示例数据';
  $('#data-label').textContent=state.asOf+' 余额日'+(state.transactions.some(t=>t.source!=='模拟数据')?' · 含录入记录':'');
  $('#content').innerHTML=(tab==='overview'?experienceStrip():'')+sectionLinks()+({overview:simpleHome,ledger:coreLedger,calendar:coreCalendar,scenario:scenarioView,planner:corePlanner,octopus:octopusView,report:modernReview,wealth:wealthView,profile:profileView,setup:setupView,integration}[tab])();
- document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===({planner:'calendar',wealth:'calendar',scenario:'calendar',octopus:'ledger',setup:'profile'}[tab]||tab)));simplifyPage();bind();bindFeatures();bindCore();afterUX();bindProfile();
+ document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===({planner:'calendar',wealth:'calendar',scenario:'calendar',octopus:'ledger',setup:'profile'}[tab]||tab)));simplifyPage();bind();bindFeatures();bindCore();afterUX();bindProfile();if(typeof mountAssistant==='function')mountAssistant();
  $('#persona option[value="manual"]').disabled=state.id!=='manual'&&!caseSessions.has('manual');
  $('#reset').disabled=state.id==='manual';
  if(typeof updateExperienceGuide==='function')updateExperienceGuide();
