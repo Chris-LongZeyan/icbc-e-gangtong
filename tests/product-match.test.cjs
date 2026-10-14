@@ -1,0 +1,12 @@
+const {test}=require('node:test'),a=require('node:assert/strict'),B=require('../beyond'),F=require('../fixtures'),U=require('../ux');
+function state(){const s=F.make('purchase');s.plan.end='2027-06-30';s.accounts[0].opening=10000000;return s;}
+const options={currency:'HKD',amount:100000,bufferDays:2,interest:'investment',riskProfile:'balanced',lossBudget:5000};
+test('product checks expose profile cash stress and minimum evidence',()=>{const x=B.recommend(state(),options).investments[0];a.equal(x.fits,true);a.equal(x.stressLoss,5000);a.deepEqual(x.checks.map(c=>c.id),['profile','cash','stress','minimum']);});
+test('one cent above stress allowance blocks a candidate',()=>{const x=B.recommend(state(),{...options,amount:100001}).investments[0];a.equal(x.stressLoss,5001);a.equal(x.fits,false);});
+test('unassessed preference prevents investment passing',()=>{a(B.recommend(state(),{...options,riskProfile:'unassessed'}).investments.every(x=>!x.fits));});
+test('increasing preference cannot release protected tuition',()=>{const s=state();s.plan.events=[{id:'t',name:'Tuition',date:'2027-05-01',currency:'HKD',kind:'expense',amount:-9990000}];const x=B.recommend(s,{...options,riskProfile:'growth',lossBudget:1000000}).investments;a(x.every(r=>!r.fits));a(x.every(r=>r.max<=10000));});
+test('stress after redemption protects later unprotected payments',()=>{const s=state();s.plan.events=[{id:'b',name:'Bill',date:'2027-05-01',currency:'HKD',kind:'expense',protect:false,amount:-9999000}];const x=B.recommend(s,{...options,lossBudget:1000000}).investments[0];a.equal(x.max,20000);a.equal(x.fits,false);});
+test('another currency deficit blocks all investment types',()=>{const s=state();s.plan.cnyReserve=1000001;a(B.recommend(s,options).investments.every(r=>!r.fits));});
+test('expected income cannot increase product allocation',()=>{const s=state(),x=B.recommend(s,options);s.plan.events.push({id:'i',name:'Income',date:'2026-10-20',currency:'HKD',kind:'income',amount:10000000});a.deepEqual(B.recommend(s,options),x);});
+test('product preferences round trip and invalid budgets are rejected',()=>{const s=state();s.wealth=options;a.deepEqual(U.restore(U.backup(s)).wealth,options);for(const v of [-1,NaN,1.5])a.throws(()=>B.recommend(s,{...options,lossBudget:v}));a.throws(()=>B.recommend(s,{...options,riskProfile:'fake'}));});
+test('deposit matches retain existing bank term calculations',()=>{const s=state();a.deepEqual(B.recommend(s,{amount:5000000}).deposits,B.match(s,{amount:5000000}));a.equal(B.recommend(s).investments.length,0);});
