@@ -6,6 +6,11 @@ const full={tool:'check_purchase',name:'电脑',amount:'12000',currency:'CNY',da
 const request={text:'10月8号买人民币12000元电脑',asOf:'2026-10-02'};
 function provider(value=full){const {tool,...args}=value;return async()=>new Response(JSON.stringify({choices:[{message:{tool_calls:[{function:{name:tool,arguments:JSON.stringify(args)}}]}}]}));}
 test('assistant is disabled without key and explicit activation',()=>{assert.equal(A.config({}).enabled,false);assert.equal(A.config({DASHSCOPE_API_KEY:'x'}).enabled,false);assert.equal(A.config({DASHSCOPE_API_KEY:'x',ASSISTANT_ENABLED:'true'}).enabled,true);assert.throws(()=>A.config({QWEN_REGION:'http://localhost'}));});
+test('workspace endpoint stays within the configured official region and never accepts arbitrary destinations',()=>{
+ const base='https://ws-example.cn-beijing.maas.aliyuncs.com/compatible-mode/v1';
+ assert.equal(A.config({QWEN_REGION:'beijing',QWEN_BASE_URL:base+'/'}).base,base);
+ for(const url of [base.replace('https:','http:'),base.replace('cn-beijing','ap-southeast-1'),base.replace('aliyuncs.com','aliyuncs.com.evil.example'),base+'?token=x',base+'#x',base.replace('https://','https://user:pass@'),base.replace('/compatible-mode/v1','/api/v1'),'http://127.0.0.1:4173'])assert.throws(()=>A.config({QWEN_REGION:'beijing',QWEN_BASE_URL:url}));
+});
 test('Qwen request uses real compatible tool protocol and minimal context',async()=>{
  let sent;const result=await A.propose(request,{config:cfg,fetch:async(url,options)=>{sent={url,...options};return provider()(url,options);}});
  assert.deepEqual(result.draft,full);assert.equal(result.requiresConfirmation,true);
