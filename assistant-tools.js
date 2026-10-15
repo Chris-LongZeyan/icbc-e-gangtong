@@ -58,6 +58,7 @@ function transactionFields(state,draft,currentAccount='',language='zh'){
  let question=missing(draft,language);
  if(!question&&!chosen)question=language==='en'?'Select the account below.':'请在下方选择收支账户。';
  if(draft.date&&draft.date>state.asOf){map.date='';question=language==='en'?'Enter a transaction date on or before the balance date.':'请填写余额日或之前已发生的交易日期；未来付款请加入计划。';}
+ if(chosen&&draft.date&&draft.date<chosen.openingDate){map.date='';question=language==='en'?'This transaction predates the opening balance. Check the opening date and balance before adding historical records.':'这笔交易早于期初余额日。补录历史流水前，请先核实账本的期初日期与余额。';}
  if(draft.type==='refund')question+=(language==='en'?' Select the original transaction for this refund.':' 请填写退款对应的原流水编号。');
  return {map,question};
 }
