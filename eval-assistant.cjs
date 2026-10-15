@@ -1,6 +1,7 @@
 'use strict';
 // Live semantic evaluation only. No test-provider fallback. Requires explicit local env configuration.
 const {propose,config}=require('./assistant.cjs');
+const {money}=require('./engine');
 const cases=[
  ['zh','10月8日买人民币12000元的电脑',{amount:'12000',currency:'CNY',date:'2026-10-08'}],
  ['yue','十月八号想买部一万二千蚊人民币嘅电脑',{amount:'12000',currency:'CNY',date:'2026-10-08'}],
@@ -18,6 +19,6 @@ const cases=[
 (async()=>{
  if(!config().enabled){console.error('Live evaluation not run: configure DASHSCOPE_API_KEY and ASSISTANT_ENABLED=true first.');process.exitCode=2;return;}
  let passed=0;const start=Date.now();
- for(let i=0;i<cases.length;i++){const [language,text,expected]=cases[i];try{const {draft}=await propose({text,language,asOf:'2026-10-02'});const ok=Object.entries(expected).every(([k,v])=>k==='question'?!!draft.question:draft[k]===v);if(ok)passed++;console.log(JSON.stringify({case:i+1,language,pass:ok,expected,actual:draft}));}catch(e){console.log(JSON.stringify({case:i+1,language,pass:false,error:e.message}));}}
+ for(let i=0;i<cases.length;i++){const [language,text,expected]=cases[i];try{const {draft}=await propose({text,language,asOf:'2026-10-02'});const ok=Object.entries(expected).every(([k,v])=>k==='question'?!!draft.question:k==='amount'&&v!==null&&draft[k]!==null?money(draft[k])===money(v):draft[k]===v);if(ok)passed++;console.log(JSON.stringify({case:i+1,language,pass:ok,expected,actual:draft}));}catch(e){console.log(JSON.stringify({case:i+1,language,pass:false,error:e.message}));}}
  console.log(JSON.stringify({kind:'live-qwen-semantic-evaluation',model:config().model,total:cases.length,passed,elapsedMs:Date.now()-start}));if(passed!==cases.length)process.exitCode=1;
 })();

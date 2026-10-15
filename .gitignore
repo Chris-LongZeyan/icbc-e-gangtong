@@ -7,3 +7,6 @@ artifacts/
 *.log
 coverage/
 tmp/
+
+# Exported credentials must never enter version control
+*apiKey*.csv
