@@ -13,7 +13,8 @@ function consumptionLedger(state,adjusted=true){
   if(target&&net>=0&&net<=-target.amount){valid.set(month,target);residuals.set(target.id,net);}
   else pending.push({month,reason:target?'明细净额超出所选汇总，请检查关联':'请选择这些明细是否已计入钱包汇总'});
  }
- const transactions=bank.flatMap(t=>{if(!residuals.has(t.id))return [t];const n=t.amount+residuals.get(t.id);return n?[{...t,amount:n,residual:true,description:t.description+' · 尚未细分'}]:[];});
+ const credited=new Set(records.filter(t=>t.type==='topup').flatMap(t=>{const id=state.octopus?.topupLinks?.[t.id],b=bank.find(x=>x.id===id),account=state.accounts.find(a=>a.id===b?.account);return b&&account?.liquid===false&&b.type==='topup'&&b.amount===t.amount&&b.currency===t.currency&&b.date===t.date?[id]:[];}));
+ const transactions=bank.flatMap(t=>{if(credited.has(t.id))return [];if(!residuals.has(t.id))return [t];const n=t.amount+residuals.get(t.id);return n?[{...t,amount:n,residual:true,description:t.description+' · 尚未细分'}]:[];});
  for(const t of records){const month=t.date.slice(0,7),parent=valid.get(month);transactions.push({...t,id:'octopus:'+t.id,originalId:t.id,refundOf:t.refundOf?'octopus:'+t.refundOf:undefined,account:'octopus',origin:'octopus',aggregateId:parent?.id,pending:t.type!=='topup'&&!valid.has(month)});}
  return {transactions,pending};
 }
@@ -29,6 +30,20 @@ function spending(state,filter={}){
  for(const t of rows.filter(t=>!t.excluded&&!t.pending)){const n=-t.amount;totals[t.currency]+=n;const g=groups[t.category||'未分类']||={HKD:0,CNY:0};g[t.currency]+=n;}
  const ledgerRows=dataset.transactions.filter(matches).filter(t=>filter.showExcluded||!excluded(t)).map(t=>({...t,excluded:excluded(t)})).sort((a,b)=>b.date.localeCompare(a.date)||String(b.time||'').localeCompare(String(a.time||''))||b.id.localeCompare(a.id));
  return {rows,ledgerRows,totals,groups,pending:dataset.pending,excludedCount:all.filter(excluded).length};
+}
+// Cash leaving payment accounts includes wallet top-ups; consumption does not.
+function accountOutflow(state,filter={}){
+ const r=spending(state,{...filter,basis:'book',includeOctopus:false}),accounts=new Map(state.accounts.map(a=>[a.id,a]));
+ const rows=r.ledgerRows.filter(t=>accounts.get(t.account)?.liquid&&!t.excluded&&(['expense','refund'].includes(t.type)||t.type==='topup'&&t.amount<0));
+ const totals={HKD:0,CNY:0};for(const t of rows)totals[t.currency]-=t.amount;
+ return {rows,totals};
+}
+function octopusBalance(state){
+ const account=state.accounts.find(a=>a.id===(state.octopus?.accountId||'wallet')&&a.currency==='HKD'&&!a.liquid);
+ if(account){const row=E.reconcile(state.accounts,state.transactions,state.asOf).accounts.find(a=>a.id===account.id);return {amount:row.balance,asOf:state.asOf,source:account.demoCard?'演示余额':'账户余额',accountId:account.id};}
+ const snapshot=state.octopus?.balanceSnapshot;
+ if(snapshot&&Number.isSafeInteger(snapshot.amount)&&snapshot.amount>=-5000&&snapshot.amount<=1e12){E.date(snapshot.asOf);if(snapshot.asOf<=state.asOf)return {...snapshot};}
+ return null;
 }
 function redline(state,day=state.asOf){
  E.date(day);const reserve={HKD:amount(state.plan.reserve),CNY:amount(state.plan.cnyReserve||0)};
@@ -80,5 +95,5 @@ function monthly(state,month){
  const result=spending(state,{from:month+'-01',to:end});
  return {...result,month,partial:end>state.asOf,redline:redline(state)};
 }
-return {spending,consumptionLedger,walletSummaries,redline,quote,solve,monthly};
+return {accountOutflow,octopusBalance,spending,consumptionLedger,walletSummaries,redline,quote,solve,monthly};
 });

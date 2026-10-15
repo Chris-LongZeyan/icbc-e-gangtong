@@ -14,5 +14,19 @@ function parse(html,now=new Date()){
  }
  return {source,provider:'工银亚洲',publishedAt,retrievedAt:now.toISOString(),products};
 }
-async function refresh(){const res=await fetch(source,{signal:AbortSignal.timeout(15000),headers:{'User-Agent':'e-Gangtong prototype public product reference'}});if(!res.ok)throw Error('官方页面暂不可用');return parse(await res.text());}
-module.exports={source,parse,refresh};
+const standardSource='https://www.icbcasia.com/hk/en/personal/banking/deposits/time-deposit/default.html';
+function parseStandard(html,now=new Date()){
+ const text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;|&#160;/g,' ').replace(/\s+/g,' ');
+ const hkd=text.match(/Hong Kong Dollar Time Deposit:\s*Minimum amount is HKD\s*([0-9,]+)/i),cny=text.match(/Renminbi Time Deposit:\s*Minimum amount is CNY\s*([0-9,]+)/i);
+ if(!hkd||!cny||!/overnight to 12 months/i.test(text))throw Error('普通存款条款格式已变化');
+ return ['HKD','CNY'].flatMap((currency,j)=>{const minimum=Number([hkd,cny][j][1].replace(/,/g,''))*100;if(!Number.isSafeInteger(minimum)||minimum<=0||minimum>1e10)throw Error('起存额无效');return [1,2,3,6,12].map(months=>({id:'standard-'+currency+'-'+months,kind:'standard',currency,months,minimum,maximum:null,annualRate:null,name:'工银亚洲普通定期存款',tier:'普通定期',channel:'分行／电子渠道',source:standardSource,retrievedAt:now.toISOString()}));});
+}
+async function refresh(){
+ const now=new Date(),read=async url=>{const res=await fetch(url,{signal:AbortSignal.timeout(15000),headers:{'User-Agent':'e-Gangtong prototype public product reference'}});if(!res.ok)throw Error('官方页面暂不可用');return res.text();};
+ const results=await Promise.allSettled([read(source).then(html=>parse(html,now)),read(standardSource).then(html=>parseStandard(html,now))]);
+ if(results.every(r=>r.status==='rejected'))throw Error('官方产品资料暂不可用');
+ const result=results[0].status==='fulfilled'?results[0].value:{source,provider:'工银亚洲',publishedAt:null,retrievedAt:now.toISOString(),products:[]};
+ if(results[1].status==='fulfilled')result.products.push(...results[1].value);
+ return result;
+}
+module.exports={source,standardSource,parse,parseStandard,refresh};

@@ -46,6 +46,21 @@ function live(id,day=today()){
  const a=s.accounts.find(a=>a.currency==='CNY');
  if(id==='purchase')for(const account of s.accounts)account.openingDate=E.addDays(day,-30);
  for(const [description,amount,category,days] of expenses){const value=E.money(amount);a.opening+=value;s.transactions.push({id:id+'-cny-'+days,date:E.addDays(day,-days),account:a.id,currency:'CNY',amount:-value,type:'expense',category,description,source:'模拟数据'});}
+ // Presentation cases have both spending currencies and a usable savings horizon.
+ const targets={reserve:{HKD:80000,CNY:12000},timing:{HKD:30000,CNY:15000},currency:{HKD:50000,CNY:35000},career:{HKD:60000,CNY:35000},purchase:{HKD:20000,CNY:10000}}[id];
+ s.name={reserve:'小林 · 在读学生',timing:'小陈 · 到账安排',currency:'小周 · 跨境生活',career:'小许 · 初入职场',purchase:'小周 · 双币购买'}[id];
+ if(id==='purchase'){s.plan.end=E.addDays(day,65);s.plan.living=300000;}
+ s.plan.cnyLiving=90000;
+ for(const [description,amount,category,days] of [['校园午餐',58,'餐饮',2],['港铁出行',9.8,'交通',3],['日常用品',76,'日用',4]])s.transactions.push({id:id+'-hkd-'+days,date:E.addDays(day,-days),account:'hkd',currency:'HKD',amount:-E.money(amount),type:'expense',category,description,source:'模拟数据'});
+ if(!s.accounts.some(a=>a.id==='wallet'))s.accounts.push({id:'wallet',name:'八达通（模拟）',currency:'HKD',liquid:false,openingDate:E.addDays(day,-30),opening:0});
+ const walletDay=E.addDays(day,-1),linkId=id+'-recent-topup',summaryId=id+'-wallet-summary';
+ s.transactions.push(
+  {id:id+'-recent-topup-bank',date:walletDay,time:'09:00',account:'hkd',currency:'HKD',amount:-50000,type:'topup',category:'充值',description:'八达通充值',linkId,source:'模拟数据'},
+  {id:id+'-recent-topup-wallet',date:walletDay,time:'09:00',account:'wallet',currency:'HKD',amount:50000,type:'topup',category:'充值',description:'八达通到账',linkId,source:'模拟数据'},
+  {id:summaryId,date:walletDay,time:'23:00',account:'wallet',currency:'HKD',amount:-14800,type:'expense',category:'未细分钱包支出',description:'八达通消费汇总',source:'模拟数据'});
+ s.demoOctopus={date:walletDay,summaryId,opening:0,closing:35200};
+ for(const account of s.accounts){const target=account.id==='wallet'?35200:E.money(targets[account.currency]);account.opening=target-s.transactions.filter(t=>t.account===account.id).reduce((n,t)=>n+t.amount,0);account.expectedClosing=target;}
+ s.wealth={currency:['reserve','timing'].includes(id)?'CNY':'HKD',productTypes:['deposit']};
  const index=['reserve','timing','currency','career','purchase'].indexOf(id)+1;
  s.accounts.forEach((a,i)=>a.demoCard='DEMO '+String(index).padStart(4,'0')+' 0000 '+String(i+1).padStart(4,'0'));
  return s;

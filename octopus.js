@@ -51,5 +51,10 @@ const sample='id,date,account,currency,amount,type,description,time,category\n'+
 'demo-laundry1,2026-09-28,octopus,HKD,-5.20,expense,Example Hall Laundry,22:15,\n'+
 'demo-laundry2,2026-09-28,octopus,HKD,-10.40,expense,Example Hall Laundry,22:15,\n'+
 'demo-unknown,2026-09-29,octopus,HKD,-100.00,expense,Example Hall,18:30,\n';
-return {categories,suggest,preview,summary,topupCandidates,sample};
+function demoImport(state){
+ const config=state.demoOctopus,day=config?.date||E.addDays(state.asOf,-1),csv=sample.replace(/2026-09-2[89]/g,day),result=preview(state.octopus?.records||[],csv),hasWallet=state.accounts.some(a=>a.id==='wallet');
+ // The snapshot describes this synthetic sample, never an external real-time response.
+ return {...state.octopus,records:result.records,links:{...state.octopus?.links,[day.slice(0,7)]:config?.summaryId||'independent'},accountId:config&&hasWallet?'wallet':state.octopus?.accountId,topupLinks:config?{'demo-topup':state.id+'-recent-topup-wallet'}:{},complete:false,...(!hasWallet?{balanceSnapshot:{amount:35200,asOf:day,source:'演示余额'}}:{})};
+}
+return {categories,suggest,preview,summary,topupCandidates,sample,demoImport};
 });

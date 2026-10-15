@@ -27,7 +27,7 @@ function launchDemo(key){
  if(!Object.hasOwn(demoCases,key))key='reserve';
  activeDemo=key;const preset=demoCases[key];
  caseSessions.set(state.id,structuredClone(state));drafts.clear();showDemoCards=false;
- state=F.live(preset.id);applyReferenceRate();scenario={};plannerOptions={};pending=null;editing=null;octopusPending=null;
+ state=F.live(preset.id);if(key==='arrival')state.name='小陈 · 到账安排';applyReferenceRate();scenario={};plannerOptions={};pending=null;editing=null;octopusPending=null;
  spendFilter={from:'',to:state.asOf};reportMonth=state.asOf.slice(0,7);$('#persona').value=state.id;
  paymentOptions={target:state.id==='purchase'?'CNY':'HKD',purchase:state.id==='purchase'?1200000:0,due:E.addDays(state.asOf,1),market:'CNH',settlementDays:key==='arrival'?2:0,feeBps:0,fixedFee:0};
  tab=preset.view;history.replaceState(null,'','experience.html?scenario='+key+'#'+tab);render();

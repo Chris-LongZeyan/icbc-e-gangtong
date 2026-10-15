@@ -104,7 +104,7 @@ window.addEventListener('pagehide',()=>{assistantRequest?.abort();stopAssistantR
 
 function markPaymentDraft(){
  const result=document.querySelector('#payment-result'),form=document.querySelector('#payment-form');if(!result||!form)return;
- result.hidden=true;document.querySelector('#keep-purchase')?.closest('details')?.setAttribute('hidden','');
+ paymentOptions.checked=false;result.hidden=true;document.querySelector('#keep-purchase')?.closest('details')?.setAttribute('hidden','');
  if(!document.querySelector('#payment-update-note')){const note=document.createElement('p');note.id='payment-update-note';note.className='muted';note.textContent='输入已修改，请点击计算更新结果。';form.append(note);}
 }
 document.addEventListener('input',ev=>{if(ev.target.closest('#payment-form'))markPaymentDraft();});
