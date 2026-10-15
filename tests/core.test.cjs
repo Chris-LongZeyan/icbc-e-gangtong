@@ -1,5 +1,11 @@
 const {test}=require('node:test'),a=require('node:assert/strict'),C=require('../core'),E=require('../engine'),F=require('../fixtures'),R=require('../rates.cjs');
 const rate={customerSell:1.162840,customerBuy:1.176990};
+
+test('ledger lists income and transfers without counting them as consumption',()=>{
+ const s=F.make('reserve'),r=C.spending(s,{showExcluded:true});
+ a.equal(r.ledgerRows.length,s.transactions.length);a(r.ledgerRows.some(t=>t.type==='income'));a(r.rows.every(t=>['expense','refund'].includes(t.type)));
+ const q=r.ledgerRows.find(t=>t.type==='income');a.equal(C.spending(s,{query:q.id}).totals[q.currency],0);a.equal(C.spending(s,{query:q.id}).ledgerRows.length,1);
+});
 test('CNY purchase shortfall is covered by HKD with correct customer-buy side',()=>{const s=F.make('purchase'),r=C.solve(s,rate,{target:'CNY',purchase:1200000,due:'2026-10-08'});a.equal(r.required,200000);a.equal(r.solution.debit,235398);a.equal(r.solution.received,200000);a(r.previous.received<200000);a.equal(r.source,'HKD');});
 test('HKD rent redline blocks spending encumbered funds despite total assets',()=>{const s=F.make('purchase');s.plan.events=[{id:'rent',name:'rent',date:'2026-10-20',amount:-1900000,currency:'HKD',kind:'expense'}];const r=C.solve(s,rate,{target:'CNY',purchase:1200000,due:'2026-10-08'});a.equal(r.cap,100000);a.equal(r.status,'infeasible');});
 test('CNY to HKD uses customer-sell quote and minimal integer amount',()=>{const r=C.solve(F.make('currency'),rate);a.equal(r.status,'feasible');a(r.solution.received>=r.required);a(r.previous.received<r.required);a.equal(r.source,'CNY');});

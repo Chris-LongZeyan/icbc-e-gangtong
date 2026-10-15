@@ -15,3 +15,26 @@ test('plan confirmation does not accumulate and changing plan invalidates it',()
 test('review keeps original currencies, scopes budgets and does not infer zero prior month',()=>{const s=blank();a.equal(B.review(s,'2026-09').changes.HKD,null);s.budgets=[{month:'2026-08',category:'餐饮',currency:'HKD',amount:2000}];a.equal(B.review(s,'2026-09').budgets.length,0);});
 test('budget warning links included records and honors exclusions',()=>{const s=F.make('reserve');s.budgets=[{month:'2026-09',category:'餐饮',currency:'HKD',amount:1}];const r=B.review(s,'2026-09'),action=r.actions.find(x=>x.amount!=null);a(action.ids.length>0);s.exclusions=Object.fromEntries(action.ids.map(id=>[id,true]));a.equal(B.review(s,'2026-09').actions.some(x=>x.amount!=null),false);});
 test('host saves wealth preference and compact receipt without raw transaction descriptions',()=>{const s=F.make('reserve');s.wealth={currency:'HKD',amount:100000,bufferDays:2};s.care={ledgerStamp:B.stamp(s,'ledger','2026-09')};const p=H.preferences(s);a.deepEqual(p.wealth,s.wealth);a.equal(p.care.ledgerStamp.length<40,true);a.equal(JSON.stringify(p.care).includes(s.transactions[0].description),false);a.equal(p.transactions,undefined);});
+
+test('product filters combine independently without relaxing suitability constraints',()=>{
+ const s=blank(),options={amount:5000000,riskProfile:'unassessed',lossBudget:0,productTypes:['deposit','bond']};
+ const r=B.recommend(s,options);a.equal(r.deposits.length,5);a.deepEqual(r.investments.map(p=>p.id),['bond']);a.equal(r.investments[0].fits,false);
+ a.equal(B.recommend(s,{...options,productTypes:['cash','equity']}).deposits.length,0);
+ a.deepEqual(B.recommend(s,{...options,productTypes:[]}),{deposits:[],investments:[]});
+ a.throws(()=>B.recommend(s,{productTypes:['unknown']}));a.throws(()=>B.recommend(s,{productTypes:['bond','bond']}));
+});
+
+test('adjustment compares user-selected bills and currencies without mutating the ledger',()=>{
+ const s=blank();s.plan.events=[{id:'rent-user',name:'Rent',kind:'expense',currency:'HKD',amount:-400000,date:'2026-11-01'}];const before=structuredClone(s);
+ const r=B.adjustPlan(s,{eventId:'rent-user',eventDate:'2026-10-20',extra:20000,currency:'CNY',date:'2026-10-25'});
+ a.deepEqual(s,before);a.equal(r.adjusted.events.find(e=>e.id==='rent-user').date,'2026-10-20');
+ a.equal(r.adjusted.rows.at(-1).CNY,r.base.rows.at(-1).CNY-20000);
+ a.throws(()=>B.adjustPlan(s,{eventId:'unknown',eventDate:'2026-10-20'}));a.throws(()=>B.adjustPlan(s,{extra:100,date:'2026-10-02'}));a.throws(()=>B.adjustPlan(s,{extra:100,date:'2027-02-01'}));
+});
+
+test('adjustments include expected income only when explicitly selected',()=>{
+ const s=blank();s.plan.events=[{id:'salary',name:'Salary',kind:'income',currency:'CNY',amount:50000,date:'2026-10-10'}];
+ const conservative=B.adjustPlan(s,{delay:7}),expected=B.adjustPlan(s,{delay:7,includeExpected:true});
+ a.equal(conservative.base.rows.at(-1).CNY,conservative.adjusted.rows.at(-1).CNY);
+ a.equal(expected.adjusted.rows.find(r=>r.date==='2026-10-11').CNY,expected.base.rows.find(r=>r.date==='2026-10-11').CNY-50000);
+});

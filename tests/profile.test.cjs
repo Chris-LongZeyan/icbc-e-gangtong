@@ -15,6 +15,12 @@ test('manual setup rejects amounts that silently round, invalid dates and out-of
 test('manual setup accepts CNY tuition and zero balances without inventing funding',()=>{
  const s=P.createManual({...input,HKD:'0',CNY:'0',tuition:'12000',tuitionCurrency:'CNY',tuitionDate:'2026-10-10'});assert.equal(s.plan.events[0].amount,-1200000);assert.ok(E.forecast(s).firstGap);
 });
+
+test('blank optional setup fields introduce no budget, payment or sample records',()=>{
+ const s=P.createManual({name:'',asOf:'2026-10-15',end:'2026-12-01',HKD:'0',CNY:'0',reserve:'',cnyReserve:'',living:'',cnyLiving:''});
+ assert.equal(s.name,'我的账本');assert.equal(s.plan.living,0);assert.equal(s.plan.reserve,0);assert.deepEqual(s.plan.events,[]);assert.deepEqual(s.transactions,[]);assert.equal(s.wealth,undefined);
+ assert.throws(()=>P.createManual({asOf:'2026-10-15',end:'',HKD:'0',CNY:'0'}));
+});
 test('card presentation never invents a card for manual or host-provided accounts',()=>{
  const a={id:'hkd',currency:'HKD',liquid:true};assert.match(P.card(a,false,false).full,/^DEMO /);assert.equal(P.card(a,true,false).full,null);assert.equal(P.card(a,false,true).full,null);assert.equal(P.card(a,false,true).masked,'hkd');
 });
