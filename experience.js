@@ -1,8 +1,8 @@
 'use strict';
 const demoCases={
  reserve:{id:'reserve',title:'学费到账后，还能安排多少？',text:'先看可安排金额，再调整一笔租金，观察预留如何变化。',view:'overview',next:'calendar',action:'调整付款计划 →'},
- purchase:{id:'purchase',title:'买一件东西，需要换多少港币？',text:'修改购买金额，点击“计算”，查看换汇金额与付款后的余额。',view:'planner',next:'calendar',action:'增加一笔租金预留 →'},
- arrival:{id:'purchase',title:'资金能赶上付款日吗？',text:'先查看缺口，再调整付款日或到账时间，重新计算。',view:'planner',next:'planner',action:'修改付款日期 →'},
+ purchase:{id:'purchase',title:'买一件东西，需要换多少港币？',text:'修改购买金额，点击“计算”，查看换汇金额与付款后的余额。',view:'overview',next:'calendar',action:'增加一笔租金预留 →'},
+ arrival:{id:'purchase',title:'资金能赶上付款日吗？',text:'先查看缺口，再调整付款日或到账时间，重新计算。',view:'overview',next:'planner',action:'修改付款日期 →'},
  career:{id:'career',title:'首份工资到账前，怎样安排用钱？',text:'先看押金与房租预留，再比较工资晚到账时的资金变化。',view:'overview',next:'scenario',action:'比较收入与支出情景 →'}
 };
 let activeDemo='reserve';

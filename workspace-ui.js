@@ -36,8 +36,10 @@ function fundingChart(snapshot,payment){
 }
 function bindWorkspace(){
  const routeChanged=workspaceRoute!==tab;workspaceRoute=tab;
- const octopus=$('#octopus-detail');if(octopus&&$('#spend-filter'))$('#spend-filter').closest('.card').after(octopus);
- document.querySelectorAll('.transaction-item').forEach(item=>{const title=item.querySelector('.transaction-title'),actions=item.querySelector('.transaction-actions'),meta=title?.querySelector('small');if(meta){meta.title=meta.textContent;meta.textContent=meta.textContent.split(' · ')[0]+(meta.textContent.includes('八达通')?' · 八达通':'')+(item.classList.contains('is-excluded')?' · 已忽略':'');}if(actions?.children.length){const more=document.createElement('details');more.className='transaction-more';const summary=document.createElement('summary');summary.textContent='···';summary.setAttribute('aria-label','流水操作');more.append(summary,actions);title.append(more);}});
+ const header=$('.ledger-header'),octopus=$('#octopus-detail');
+ if(header&&octopus)header.append(octopus);
+ const totals=$('.consumption-totals');if(header&&totals)header.append(totals);
+ document.querySelectorAll('.transaction-item').forEach(item=>{const title=item.querySelector('.transaction-title'),actions=item.querySelector('.transaction-actions');if(actions?.children.length){const more=document.createElement('details');more.className='transaction-more';const summary=document.createElement('summary');summary.textContent='···';summary.setAttribute('aria-label','流水操作');more.append(summary,actions);title.append(more);}});
  const help=document.querySelector('.demo-help');if(help)help.hidden=tab!=='profile';
  if(tab==='profile'&&help)help.querySelector('summary').textContent='使用指南';
  $('#wealth-auto')?.addEventListener('submit',ev=>{ev.preventDefault();try{const d=new FormData(ev.target);state.wealth={currency:d.get('currency'),bufferDays:Number(d.get('bufferDays')),riskProfile:d.get('riskProfile'),lossBudget:E.money(d.get('lossBudget')||0),productTypes:['deposit','cash','bond','equity'].filter(x=>d.has('product-'+x))};render();$('#wealth-results')?.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){notify(e.message,true);}});

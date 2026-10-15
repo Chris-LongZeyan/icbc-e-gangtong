@@ -39,6 +39,6 @@ function afterUX(){
  updateSaveStatus();
 }
 function updateSaveStatus(){const el=$('#save-status');if(el)el.textContent=drafts.size?'有输入尚未应用':journal?.dirty?'有修改未保存':'';if($('#undo'))$('#undo').disabled=!journal?.canUndo;if($('#discard-drafts'))$('#discard-drafts').hidden=!drafts.size;}
-document.addEventListener('input',ev=>{const f=ev.target.closest('#content form[id]');if(!f||ev.target.type==='file')return;if(f.id==='repeat-form'){repeatPreview=null;$('#repeat-preview').innerHTML='';}const values={};for(const el of f.elements)if(el.name&&el.type!=='file')values[el.name]=el.type==='checkbox'?el.checked:el.value;drafts.set(state.id+':'+tab+':'+f.id,values);updateSaveStatus();});
+document.addEventListener('input',ev=>{const f=ev.target.closest('#content form[id]');if(!f||f.id==='spend-filter'||ev.target.type==='file')return;if(f.id==='repeat-form'){repeatPreview=null;$('#repeat-preview').innerHTML='';}const values={};for(const el of f.elements)if(el.name&&el.type!=='file')values[el.name]=el.type==='checkbox'?el.checked:el.value;drafts.set(state.id+':'+tab+':'+f.id,values);updateSaveStatus();});
 document.addEventListener('submit',ev=>{if(ev.target.closest('#content')){submitting=ev.target.id;submittedKey=state.id+':'+tab+':'+submitting;setTimeout(()=>{submitting='';submittedKey='';},0);}},true);
 window.addEventListener('beforeunload',ev=>{if(journal?.dirty||drafts.size||[...journalSessions.values()].some(j=>j.dirty)){ev.preventDefault();ev.returnValue='';}});
