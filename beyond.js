@@ -35,10 +35,12 @@ function recommend(state,options={}){
  const levels={unassessed:0,conservative:1,balanced:2,growth:3};
  if(!Object.hasOwn(levels,riskProfile)||!['deposit','investment'].includes(interest))throw Error('产品偏好无效');
  for(const x of [amount,lossBudget])if(!Number.isSafeInteger(x)||x<0||x>1e12)throw Error('金额须为非负整数分');
- const deposits=match(state,{currency,amount,bufferDays});
- if(interest==='deposit')return {deposits,investments:[]};
+ const selected=options.productTypes??(interest==='deposit'?['deposit']:['deposit',...productTypes.map(p=>p.id)]);
+ if(!Array.isArray(selected)||selected.some(id=>!['deposit',...productTypes.map(p=>p.id)].includes(id))||new Set(selected).size!==selected.length)throw Error('产品类别无效');
+ const deposits=match(state,{currency,amount,bufferDays}).filter(()=>selected.includes('deposit'));
+ if(!selected.some(id=>id!=='deposit'))return {deposits,investments:[]};
  const f=E.forecast(state);
- const investments=productTypes.map(product=>{
+ const investments=productTypes.filter(product=>selected.includes(product.id)).map(product=>{
   const cap=capacity(state,{currency,months:product.months,bufferDays});
   const after=f.rows.filter(r=>r.date>cap.available);
   let futureHeadroom=Number.MAX_SAFE_INTEGER;
@@ -83,5 +85,13 @@ function tasks(state,month){const r=review(state,month),care=state.care||{};retu
  {id:'ledger',label:'核对本月分类与忽略项',done:!r.unknown.length&&r.current.rows.length>0&&care.ledgerStamp===stamp(state,'ledger',month)},
  {id:'budget',label:'设置本月分类预算',done:r.budgets.some(b=>b.amount>0)}
  ];}
-return {catalog,productTypes,addMonths,capacity,match,recommend,review,stamp,tasks};
+function adjustPlan(state,options={}){
+ const next=structuredClone(state),{delay=0,extra=0,currency='HKD',date,eventId,eventDate,includeExpected=false}=options;
+ if(!Number.isSafeInteger(extra)||extra<0||extra>1e12||!currencies.includes(currency)||typeof includeExpected!=='boolean')throw Error('调整金额或币种无效');
+ const checkDate=value=>{E.date(value);if(value<=state.asOf||value>state.plan.end)throw Error('日期须在余额日之后、规划结束日以内');};
+ if(eventId||eventDate){const event=next.plan.events.find(e=>e.id===eventId&&e.kind==='expense');if(!event||!eventDate)throw Error('请选择付款事项及调整后的日期');checkDate(eventDate);event.date=eventDate;}
+ if(extra){checkDate(date);next.plan.events.push({id:'adjustment-'+next.plan.events.length,name:'新增支出',currency,date,amount:-extra,kind:'expense'});}
+ return {base:E.forecast(state,{includeExpected}),adjusted:E.forecast(next,{delay,includeExpected})};
+}
+return {catalog,productTypes,addMonths,capacity,match,recommend,review,stamp,tasks,adjustPlan};
 });

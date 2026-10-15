@@ -59,10 +59,11 @@ function simplifyExperience(){
   if(grid&&main){grid.before(main);fold(grid,'付款资金明细');}
  }
  if(tab==='calendar'){
+  const entry=content.querySelector('#new-event')?.closest('details.card'),timeline=[...content.children].find(c=>c.querySelector('h2')?.textContent==='时间顺序');if(entry&&timeline)timeline.after(entry);
   const heading=[...content.querySelectorAll('h2')].find(h=>h.textContent==='时间顺序');
   if(heading&&state.plan.events.length===0){const p=document.createElement('p');p.className='muted';p.textContent='还没有付款计划。下方添加第一笔。';heading.after(p);}
  }
- for(const p of content.querySelectorAll('.card > p'))if(p.textContent.length>85&&!p.closest('details'))fold(p,'了解详情');
+
  const pageTitle=document.querySelector('#page-title');if(tab==='setup')pageTitle.textContent='我的账本';
  if(tab==='profile'){const common=[...content.querySelectorAll('.card')].find(c=>c.querySelector('h2')?.textContent==='常用功能');fold(common,'账本与数据管理');}
 }

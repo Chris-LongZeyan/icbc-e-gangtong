@@ -11,7 +11,8 @@ function spending(state,filter={}){
  const rows=all.filter(t=>filter.showExcluded||!excluded(t)).map(t=>({...t,excluded:excluded(t)})).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
  const totals={HKD:0,CNY:0},groups=Object.create(null);
  for(const t of rows.filter(t=>!t.excluded)){const n=-t.amount;totals[t.currency]+=n;const g=groups[t.category||'未分类']||={HKD:0,CNY:0};g[t.currency]+=n;}
- return {rows,totals,groups,excludedCount:all.filter(excluded).length};
+ const ledgerRows=state.transactions.filter(matches).filter(t=>filter.showExcluded||!excluded(t)).map(t=>({...t,excluded:excluded(t)})).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
+ return {rows,ledgerRows,totals,groups,excludedCount:all.filter(excluded).length};
 }
 function redline(state,day=state.asOf){
  E.date(day);const reserve={HKD:amount(state.plan.reserve),CNY:amount(state.plan.cnyReserve||0)};
