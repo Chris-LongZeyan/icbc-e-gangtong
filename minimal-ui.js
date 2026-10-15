@@ -2,7 +2,7 @@
 const B=GangxueBeyond;
 let ledgerExpanded=false;
 function sectionLinks(){
- const group=['calendar','planner','wealth','scenario'].includes(tab)?[['calendar','付款与预留'],['planner','购买与换汇'],['wealth','闲钱安排']]:[];
+ const group=['calendar','planner','wealth','scenario'].includes(tab)?[['calendar','付款与预留'],['planner','购买与换汇'],['wealth','闲钱安排']]:['ledger','report'].includes(tab)?[['ledger','流水明细'],['report','收支分析']]:[];
  return group.length?'<div class="section-links">'+group.map(([id,label])=>`<a href="#${id}" ${tab===id?'aria-current="page"':''}>${label}</a>`).join('')+'</div>':'';
 }
 function minimalOverview(){
@@ -22,22 +22,9 @@ function wealthView(){
  ${result&&selected.some(id=>id!=='deposit')?(manual?'<div class="card empty-state"><h2>投资产品</h2><p>已保存筛选条件，等待银行产品目录接入。</p></div>':`<div class="card"><div class="row"><h2>投资类型匹配</h2><span class="badge">模拟产品参数</span></div>${result.investments.map(r=>`<div class="term-row"><div><b>${esc(r.name)}</b><small>${r.months} 个月 · 可用 ${r.available}</small></div><div><span class="badge">${r.fits?'符合筛选条件':'需调整条件'}</span><small>可安排上限 ${fmt(r.max,r.currency)}</small></div><p>${esc(r.reason)}</p><details><summary>匹配依据</summary>${r.checks.map(c=>`<p>${c.ok?'✓':'○'} ${esc(c.label)}：${esc(c.detail)}</p>`).join('')}</details></div>`).join('')}</div>`):''}
  <details class="card"><summary>产品来源与计算规则</summary><p><a href="${B.catalog.source}" target="_blank" rel="noopener">工银亚洲定期存款条款 ↗</a> · 核查于 ${B.catalog.checked}。开立时段：香港非公众假期周一至周五 08:00–22:00。实际条款及客户资格以银行确认为准。</p><p>按两种币种逐日保留付款、生活费和余额底线；存款本金在到期及所填缓冲期结束后可用。预计收入及收益分别计算，产品期限须在规划期内。</p>${manual?'':'<p>基金类别使用模拟期限、门槛和回撤参数演示匹配。正式投资须完成银行风险测评；实际损失可能超过压力假设。</p>'}</details>`;
 }
-function modernReview(){
- const r=B.review(state,reportMonth),tasks=B.tasks(state,reportMonth),done=tasks.filter(t=>t.done).length,o=state.octopus,os=o?O.summary(o.records,o.opening,o.closing):null;
- return `<div class="card"><div class="row"><h2>月度回顾</h2><form id="month-form" class="inline-form"><label>月份<input name="month" type="month" value="${reportMonth}" required></label><button class="button secondary">查看</button></form></div><div class="review-totals">${['HKD','CNY'].map(c=>`<div><span class="metric-label">已知净消费 · ${c}</span><div class="metric-value">${fmt(r.current.totals[c],c)}</div><small>${r.changes[c]===null?'暂无同期比较':`比 ${r.previousMonth} 已知记录${r.changes[c]>=0?'增加':'减少'} ${fmt(Math.abs(r.changes[c]),c)}`}</small></div>`).join('')}</div><p class="muted">${r.current.partial?'月份未结束或快照未覆盖月末。':''}按已导入记录统计，已忽略 ${r.current.excludedCount} 笔。</p></div>
- <div class="card"><h2>本月提示</h2>${r.actions.map(a=>`<div class="review-action"><p>${esc(a.text)}${a.amount!=null?' '+fmt(a.amount,a.currency):''}</p>${a.ids.length?`<details><summary>查看依据 · ${a.ids.length} 笔</summary><p class="audit">${a.ids.map(esc).join('、')}</p></details>`:''}</div>`).join('')}<div class="actions"><a href="#ledger">核对账本 →</a><a href="#calendar">调整付款计划 →</a></div></div>
- <details class="card"><summary>本月预算执行</summary>${r.budgets.map(b=>`<div class="list-row"><span>${esc(b.category)} · ${b.currency}</span><b>${fmt(b.spent,b.currency)} / ${fmt(b.amount,b.currency)}</b></div>`).join('')||'<p>尚未设置本月分类预算。</p>'}</details>
- <div class="card"><div class="row"><h2>账本核对</h2><span class="badge">${done} / 3 ${done===3?'· 本轮已核对':''}</span></div>${tasks.map(t=>`<div class="list-row"><span>${t.done?'✓':'○'} ${t.label}</span>${t.id==='budget'?'<a href="#ledger">设置预算</a>':`<button class="text-button" data-care="${t.id}" ${t.done?'disabled':''}>我已核实</button>`}</div>`).join('')}<small>数据变化后需重新核对。</small></div>
- ${!embedded?`<details class="card"><summary>八达通数据覆盖</summary><p>${os?`${os.count} 条独立记录；${os.status==='balanced'?'期初期末算术相符':os.status==='mismatch'?'期初期末不相符':'缺少独立余额核对'}；${o.complete?'用户声明覆盖完整':'完整性未确认'}。`:'尚未导入八达通明细。'}明细单独统计。</p><a href="#octopus">核对八达通记录 →</a></details>`:''}`;
-}
+function modernReview(){return coreLedger();}
 function simplifyPage(){
  function fold(node,label){if(!node)return;const d=document.createElement('details');d.className='card disclosure';const s=document.createElement('summary');s.textContent=label;d.append(s);node.replaceWith(d);d.append(node);node.classList.remove('card');const h=node.querySelector(':scope > h2');if(h?.textContent===label)h.remove();}
- if(tab==='ledger'){
-  fold($('#spend-filter'),'筛选日期、类别与账户');
-  for(const card of [...document.querySelectorAll('#content > .card')]){const h=card.querySelector('h2')?.textContent||'';if(h.startsWith('领域分布')||h.startsWith('月度分类预算'))fold(card,h);}
-  const body=document.querySelector('#transaction-table tbody');
-  if(body&&body.children.length>12){const rows=[...body.children];if(!ledgerExpanded)rows.slice(12).forEach(row=>row.hidden=true);const b=document.createElement('button');b.className='text-button';b.textContent=ledgerExpanded?'收起明细':`展开全部 ${rows.length} 笔`;b.onclick=()=>{ledgerExpanded=!ledgerExpanded;render();};body.closest('.card').append(b);}
- }
  if(tab==='calendar'){
   fold(document.querySelector('#content > .grid-even'),'查看两种币种的当前预留');
   for(const card of [...document.querySelectorAll('#content > .card')]){if(card.tagName==='DETAILS')continue;const h=card.querySelector('h2')?.textContent||'';if(h!=='时间顺序')fold(card,h);}

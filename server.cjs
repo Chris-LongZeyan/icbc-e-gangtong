@@ -5,7 +5,7 @@ const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=
 const pages=new Set(['index.html','experience.html','embedded.html','host-demo.html','icbc-comparison.html','integration-guide.html','feature-map.html','v05-notes.html','report.html']);
 const scripts=new Set(['app.js','engine.js','fixtures.js','planner.js','octopus.js','features.js','core.js','core-ui.js','beyond.js','minimal-ui.js','ux.js','ux-ui.js','runtime-config.js','embedded-config.js','host-adapter.js','host-demo.js','shell.js','profile.js','profile-ui.js']);
 const styles=new Set(['style.css','bank-theme.css','minimal.css','friendly.css','controls.css','report.css','profile.css']);
-scripts.add('assistant-ui.js');scripts.add('assistant-tools.js');styles.add('assistant.css');scripts.add('entry.js');scripts.add('experience.js');styles.add('landing.css');styles.add('experience.css');
+scripts.add('ledger-ui.js');scripts.add('assistant-ui.js');scripts.add('assistant-tools.js');styles.add('assistant.css');scripts.add('entry.js');scripts.add('experience.js');styles.add('landing.css');styles.add('experience.css');
 function publicFile(relative){return pages.has(relative)||scripts.has(relative)||styles.has(relative)||relative==='official-rates.json'||relative==='docs/evidence.json'||relative==='data/import-example.csv'||/^data\/(reserve|timing|currency|career|purchase)\.(json|csv)$/.test(relative)||/^report-assets\/[a-z0-9-]+\.(png|jpg|svg)$/.test(relative);}
 function createServer(options={}){
  const assistant=require('./assistant.cjs').createHandler(options.assistant);

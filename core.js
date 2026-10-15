@@ -2,17 +2,33 @@
 'use strict';
 const currencies=['HKD','CNY'];
 function amount(v){if(!Number.isSafeInteger(v)||v<0||v>1e12)throw Error('金额须为非负整数分');return v;}
+function walletSummaries(state,month){return state.transactions.filter(t=>t.type==='expense'&&t.currency==='HKD'&&t.date.slice(0,7)===month&&(t.category==='未细分钱包支出'||state.accounts.some(a=>a.id===t.account&&a.liquid===false)));}
+function consumptionLedger(state,adjusted=true){
+ const bank=state.transactions.map(t=>({...t,origin:'ledger'})),pending=[],residuals=new Map();
+ if(!adjusted)return {transactions:bank,pending};
+ const records=state.octopus?.records||[],links=state.octopus?.links||{},months=[...new Set(records.filter(t=>t.type!=='topup').map(t=>t.date.slice(0,7)))],valid=new Map();
+ for(const month of months){
+  const group=records.filter(t=>t.date.slice(0,7)===month&&t.type!=='topup'),net=group.reduce((n,t)=>n-t.amount,0),candidates=walletSummaries(state,month),link=links[month],target=candidates.find(t=>t.id===link);
+  if(link==='independent'||(!link&&!candidates.length)){valid.set(month,null);continue;}
+  if(target&&net>=0&&net<=-target.amount){valid.set(month,target);residuals.set(target.id,net);}
+  else pending.push({month,reason:target?'明细净额超出所选汇总，请检查关联':'请选择这些明细是否已计入钱包汇总'});
+ }
+ const transactions=bank.flatMap(t=>{if(!residuals.has(t.id))return [t];const n=t.amount+residuals.get(t.id);return n?[{...t,amount:n,residual:true,description:t.description+' · 尚未细分'}]:[];});
+ for(const t of records){const month=t.date.slice(0,7),parent=valid.get(month);transactions.push({...t,id:'octopus:'+t.id,originalId:t.id,refundOf:t.refundOf?'octopus:'+t.refundOf:undefined,account:'octopus',origin:'octopus',aggregateId:parent?.id,pending:t.type!=='topup'&&!valid.has(month)});}
+ return {transactions,pending};
+}
 function spending(state,filter={}){
  const from=filter.from||'0000-01-01',to=filter.to||state.asOf;
  if(from>to)throw Error('开始日期不能晚于结束日期');
- const matches=t=>t.date>=from&&t.date<=to&&(!filter.currency||t.currency===filter.currency)&&(!filter.account||t.account===filter.account)&&(!filter.category||t.category===filter.category)&&(!filter.query||(t.description+' '+t.id).toLowerCase().includes(filter.query.toLowerCase()));
- const excluded=t=>state.exclusions?.[t.id]===true||!!(t.refundOf&&state.exclusions?.[t.refundOf]===true);
- const all=state.transactions.filter(t=>['expense','refund'].includes(t.type)&&matches(t));
+ const dataset=consumptionLedger(state,filter.basis!=='book'&&filter.includeOctopus!==false);
+ const matches=t=>t.date>=from&&t.date<=to&&(!filter.source||t.origin===filter.source)&&(!filter.currency||t.currency===filter.currency)&&(!filter.account||t.account===filter.account)&&(!filter.category||t.category===filter.category)&&(!filter.query||(t.description+' '+t.id).toLowerCase().includes(filter.query.toLowerCase()));
+ const excluded=t=>state.exclusions?.[t.id]===true||!!(t.aggregateId&&state.exclusions?.[t.aggregateId])||!!(t.refundOf&&state.exclusions?.[t.refundOf]===true);
+ const all=dataset.transactions.filter(t=>['expense','refund'].includes(t.type)&&matches(t));
  const rows=all.filter(t=>filter.showExcluded||!excluded(t)).map(t=>({...t,excluded:excluded(t)})).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
  const totals={HKD:0,CNY:0},groups=Object.create(null);
- for(const t of rows.filter(t=>!t.excluded)){const n=-t.amount;totals[t.currency]+=n;const g=groups[t.category||'未分类']||={HKD:0,CNY:0};g[t.currency]+=n;}
- const ledgerRows=state.transactions.filter(matches).filter(t=>filter.showExcluded||!excluded(t)).map(t=>({...t,excluded:excluded(t)})).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
- return {rows,ledgerRows,totals,groups,excludedCount:all.filter(excluded).length};
+ for(const t of rows.filter(t=>!t.excluded&&!t.pending)){const n=-t.amount;totals[t.currency]+=n;const g=groups[t.category||'未分类']||={HKD:0,CNY:0};g[t.currency]+=n;}
+ const ledgerRows=dataset.transactions.filter(matches).filter(t=>filter.showExcluded||!excluded(t)).map(t=>({...t,excluded:excluded(t)})).sort((a,b)=>b.date.localeCompare(a.date)||String(b.time||'').localeCompare(String(a.time||''))||b.id.localeCompare(a.id));
+ return {rows,ledgerRows,totals,groups,pending:dataset.pending,excludedCount:all.filter(excluded).length};
 }
 function redline(state,day=state.asOf){
  E.date(day);const reserve={HKD:amount(state.plan.reserve),CNY:amount(state.plan.cnyReserve||0)};
@@ -64,5 +80,5 @@ function monthly(state,month){
  const result=spending(state,{from:month+'-01',to:end});
  return {...result,month,partial:end>state.asOf,redline:redline(state)};
 }
-return {spending,redline,quote,solve,monthly};
+return {spending,consumptionLedger,walletSummaries,redline,quote,solve,monthly};
 });

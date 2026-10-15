@@ -43,7 +43,7 @@ document.querySelector('#demo-resume').addEventListener('click',()=>{
 const requestedDemo=new URLSearchParams(location.search).get('scenario');
 const requestedView=location.hash.slice(1);
 if(personalMode){spendFilter={from:'',to:state.asOf};reportMonth=state.asOf.slice(0,7);if(state.onboarding)tab='setup';render();}else launchDemo(requestedDemo||'reserve');
-if(!personalMode&&!requestedDemo&&['overview','ledger','calendar','scenario','planner','octopus','report','wealth','integration','profile','setup'].includes(requestedView)){location.hash=requestedView;}
+if(!personalMode&&['overview','ledger','calendar','scenario','planner','octopus','report','wealth','integration','profile','setup'].includes(requestedView)){location.hash=requestedView;}
 
 function simplifyExperience(){
  const content=document.querySelector('#content');if(!content)return;

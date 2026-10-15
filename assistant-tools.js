@@ -25,14 +25,23 @@ function fields(draft,intent){
   if(typeof draft.name!=='string'||draft.name.length>40)throw Error('称呼无效');if(draft.name)result.name=draft.name;
   return result;
  }
- if(!draft||draft.tool!==intent||!['check_purchase','reserve_payment'].includes(intent))throw Error('识别的事项类型与当前表单不符');
+ if(!draft||draft.tool!==intent||!['check_purchase','reserve_payment','record_transaction'].includes(intent))throw Error('识别的事项类型与当前表单不符');
  if(draft.currency!==null&&!['CNY','HKD'].includes(draft.currency))throw Error('币种无效');
  if(draft.amount!==null&&(typeof draft.amount!=='string'||!/^\d{1,10}(\.\d{1,2})?$/.test(draft.amount)||E.money(draft.amount)<=0||E.money(draft.amount)>1e12))throw Error('金额无效');
  if(draft.date!==null)E.date(draft.date);
  if(typeof draft.name!=='string'||draft.name.length>60||typeof draft.question!=='string'||draft.question.length>200)throw Error('事项说明无效');
+ if(intent==='record_transaction'){
+  if(draft.type!==null&&!['expense','income','refund'].includes(draft.type))throw Error('收支类型无效');
+  if(typeof draft.category!=='string'||draft.category.length>40)throw Error('用途无效');
+  return {description:draft.name,currency:draft.currency||'',amount:draft.amount||'',date:draft.date||'',type:draft.type||'',category:draft.category||'未分类'};
+ }
  return intent==='check_purchase'?{target:draft.currency||'',purchase:draft.amount||'',due:draft.date||''}:{name:draft.name,currency:draft.currency||'',amount:draft.amount||'',date:draft.date||'',kind:'expense'};
 }
 function missing(draft,language='zh'){
+ if(draft.tool==='record_transaction'){
+  const labels=language==='en'?{currency:'currency',amount:'amount',date:'transaction date',type:'income, expense or refund',name:'description'}:{currency:'币种',amount:'金额',date:'交易日期',type:'收入、支出或退款',name:'商户或说明'};
+  const keys=Object.keys(labels).filter(k=>!draft[k]);return keys.length?(language==='en'?'Please provide: ':'请补充：')+keys.map(k=>labels[k]).join('、'):'';
+ }
  if(draft.tool==='prepare_setup'){
   const required=['HKD','CNY','asOf','end',...['tuition','rent'].filter(k=>Number(draft[k])>0).flatMap(k=>[k+'Currency',k+'Date'])];
   const labels={HKD:'港币余额',CNY:'人民币余额',asOf:'余额日',end:'规划结束日',tuitionCurrency:'学费币种',tuitionDate:'学费日期',rentCurrency:'房租币种',rentDate:'房租日期'};
@@ -42,5 +51,15 @@ function missing(draft,language='zh'){
  const labels={zh:{currency:'币种',amount:'金额',date:'付款日期'},yue:{currency:'币种',amount:'金额',date:'付款日期'},en:{currency:'currency',amount:'amount',date:'payment date'}},names=['currency','amount','date'].filter(k=>!draft[k]).map(k=>(labels[language]||labels.zh)[k]);
  return names.length?(language==='en'?'Please provide ':language==='yue'?'请补充返':'请补充')+names.join(language==='en'?', ':'、')+(language==='en'?'.':'。'):'';
 }
-return {run,fields,missing};
+function transactionFields(state,draft,currentAccount='',language='zh'){
+ const map=fields(draft,'record_transaction');
+ const accounts=state.accounts.filter(a=>a.currency===draft.currency),chosen=accounts.find(a=>a.id===currentAccount)||(accounts.length===1?accounts[0]:null);
+ map.account=chosen?.id||'';
+ let question=missing(draft,language);
+ if(!question&&!chosen)question=language==='en'?'Select the account below.':'请在下方选择收支账户。';
+ if(draft.date&&draft.date>state.asOf){map.date='';question=language==='en'?'Enter a transaction date on or before the balance date.':'请填写余额日或之前已发生的交易日期；未来付款请加入计划。';}
+ if(draft.type==='refund')question+=(language==='en'?' Select the original transaction for this refund.':' 请填写退款对应的原流水编号。');
+ return {map,question};
+}
+return {run,fields,missing,transactionFields};
 });
