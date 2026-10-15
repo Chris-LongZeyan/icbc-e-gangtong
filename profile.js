@@ -16,5 +16,7 @@
   if(!suffix)return {label:'账户标识',masked:String(account.id),full:null};
   return {label:account.liquid?'虚构演示卡号':'虚构钱包编号',masked:'DEMO •••• '+suffix,full:'DEMO 0000 0000 '+suffix};
  }
- return {createManual,card};
+ function blank(day){return {...createManual({asOf:day,end:E.addDays(day,60),name:'我的账本',HKD:'0',CNY:'0',reserve:'0',cnyReserve:'0',living:'0',cnyLiving:'0'}),onboarding:true};}
+ function restorePersonal(text){const s=JSON.parse(text);if(s.experience!=='manual'||s.id!=='manual')throw Error('请选择个人账本备份');E.forecast(s);E.quality(s);return s;}
+ return {createManual,card,blank,restorePersonal};
 });

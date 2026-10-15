@@ -1,5 +1,8 @@
 'use strict';
 const embedded=GangxueConfig.mode==='embedded';
+const personalMode=!embedded&&new URLSearchParams(location.search).get('mode')==='personal';
+const storageKey=personalMode?'e-gangtong-personal-v1':'gangxue-poc-v1';
+document.body.classList.toggle('personal-mode',personalMode);
 const hostBridge=embedded?GangxueHost.createBridge(window,GangxueConfig):null;
 let hostReady=!embedded,hostFailure='';
 document.documentElement.classList.toggle('embedded',embedded);
@@ -19,7 +22,7 @@ const dataAdapter={
  async save(){
   const saving=structuredClone(state),savingJournal=journal;
   if(embedded){await hostBridge.request('savePreferences',GangxueHost.preferences(saving));notify('规划偏好已交给宿主保存；没有修改账户或发起交易。');}
-  else{localStorage.setItem('gangxue-poc-v1',JSON.stringify(saving));notify('已保存到此浏览器；未加密，仅用于模拟 / 脱敏数据。');}
+  else{if(personalMode&&saving.experience!=='manual')throw Error('个人账本不能保存演示账户');localStorage.setItem(storageKey,JSON.stringify(saving));notify('已保存到此浏览器。');}
   savingJournal?.markSaved(saving);
  }
 };

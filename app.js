@@ -2,6 +2,7 @@
 const E=Gangxue,F=GangxueFixtures,$=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(v,c='HKD')=>(c==='HKD'?'HK$ ':c==='CNY'?'¥ ':'')+(v/100).toLocaleString('en-HK',{minimumFractionDigits:2,maximumFractionDigits:2});
 let state=F.make('reserve'),tab='overview',scenario={},pending=null,editing=null;
+if(personalMode){const d=new Date(),day=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');state=Profile.blank(day);tab='setup';try{const saved=localStorage.getItem(storageKey);if(saved){state=Profile.restorePersonal(saved);tab='overview';}}catch{}}
 if(!embedded&&document.body.dataset.experience!=='true')try{const saved=localStorage.getItem('gangxue-poc-v1');if(saved){const s=JSON.parse(saved);E.forecast(s);E.quality(s);state=s;$('#persona').value=s.id;}}catch{localStorage.removeItem('gangxue-poc-v1');}
 const notify=(s,error=false)=>$('#notice').innerHTML='<div class="'+(error?'error':'success')+'">'+esc(s)+'</div>';
 const button=(text,attrs='',secondary=false)=>'<button class="button '+(secondary?'secondary':'')+'" '+attrs+'>'+text+'</button>';
