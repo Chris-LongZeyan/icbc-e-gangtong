@@ -14,7 +14,7 @@
   if(manual)return {label:'本地试算账户',masked:account.currency+' · 未绑定银行卡',full:null};
   const suffix={hkd:'1001',cny:'2002',wallet:'3003'}[account.id];
   if(!suffix)return {label:'账户标识',masked:String(account.id),full:null};
-  return {label:account.liquid?'虚构演示卡号':'虚构钱包编号',masked:'DEMO •••• '+suffix,full:'DEMO 0000 0000 '+suffix};
+  return {label:account.liquid?'虚构演示卡号':'虚构钱包编号',masked:account.demoCard?account.demoCard.slice(0,9)+' •••• '+account.demoCard.slice(-4):'DEMO •••• '+suffix,full:account.demoCard||'DEMO 0000 0000 '+suffix};
  }
  function blank(day){return {...createManual({asOf:day,end:E.addDays(day,60),name:'我的账本',HKD:'0',CNY:'0',reserve:'0',cnyReserve:'0',living:'0',cnyLiving:'0'}),onboarding:true};}
  function restorePersonal(text){const s=JSON.parse(text);if(s.experience!=='manual'||s.id!=='manual')throw Error('请选择个人账本备份');E.forecast(s);E.quality(s);return s;}

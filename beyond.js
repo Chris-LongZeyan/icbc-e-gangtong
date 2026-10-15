@@ -93,5 +93,15 @@ function adjustPlan(state,options={}){
  if(extra){checkDate(date);next.plan.events.push({id:'adjustment-'+next.plan.events.length,name:'新增支出',currency,date,amount:-extra,kind:'expense'});}
  return {base:E.forecast(state,{includeExpected}),adjusted:E.forecast(next,{delay,includeExpected})};
 }
-return {catalog,productTypes,addMonths,capacity,match,recommend,review,stamp,tasks,adjustPlan};
+function automatic(state,options={}){
+ const next=structuredClone(state),days=Math.round((E.date(state.plan.end)-E.date(state.asOf))/86400000),historyDays=Math.min(60,Math.max(0,Math.round((E.date(state.asOf)-Math.max(...state.accounts.filter(a=>a.liquid).map(a=>E.date(a.openingDate))))/86400000)));
+ const patterns={};
+ for(const currency of currencies){const key=currency==='HKD'?'living':'cnyLiving',rows=C.spending(state,{currency,from:E.addDays(state.asOf,-historyDays),to:state.asOf}).rows.filter(t=>!t.excluded&&!t.pending&&['餐饮','日用','交通','洗衣','通讯','娱乐'].includes(t.category)),activeDays=new Set(rows.map(t=>t.date)).size;
+  const estimate=historyDays>=14&&activeDays>=5?Math.ceil(Math.max(0,-rows.reduce((n,t)=>n+t.amount,0))*days/(historyDays+1)*1.15):0;
+  next.plan[key]=Math.max(next.plan[key]||0,estimate);patterns[currency]={amount:next.plan[key],basis:estimate>(state.plan[key]||0)?'消费记录及15%缓冲':'已设生活预算',historyDays,activeDays};
+ }
+ const plans=[1,2,3,6,12].map(months=>capacity(next,{currency:options.currency||'HKD',months,bufferDays:options.bufferDays||2}));
+ return {state:next,patterns,plans};
+}
+return {catalog,productTypes,addMonths,capacity,match,recommend,review,stamp,tasks,adjustPlan,automatic};
 });

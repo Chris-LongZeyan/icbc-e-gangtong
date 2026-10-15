@@ -25,7 +25,7 @@ function wealthView(){
 function modernReview(){return coreLedger();}
 function simplifyPage(){
  function fold(node,label){if(!node)return;const d=document.createElement('details');d.className='card disclosure';const s=document.createElement('summary');s.textContent=label;d.append(s);node.replaceWith(d);d.append(node);node.classList.remove('card');const h=node.querySelector(':scope > h2');if(h?.textContent===label)h.remove();}
- if(tab==='calendar'){
+ if(false){
   fold(document.querySelector('#content > .grid-even'),'查看两种币种的当前预留');
   for(const card of [...document.querySelectorAll('#content > .card')]){if(card.tagName==='DETAILS')continue;const h=card.querySelector('h2')?.textContent||'';if(h!=='时间顺序')fold(card,h);}
   const timeline=[...document.querySelectorAll('#content > .card')].find(c=>c.querySelector('h2')?.textContent==='时间顺序');if(timeline)document.querySelector('.section-links').after(timeline);
@@ -33,7 +33,7 @@ function simplifyPage(){
  if(tab==='planner'){
   const form=$('#payment-form'),grid=form?.querySelector('.form-grid');
   if(grid){const d=document.createElement('details');d.innerHTML='<summary>费用、到账时间与牌价行</summary>';const g=document.createElement('div');g.className='form-grid';[...grid.children].slice(3).forEach(n=>g.append(n));d.append(g);grid.after(d);}
-  const card=form?.closest('.card');if(card){const d=document.createElement('details');d.innerHTML='<summary>参考报价来源与估算假设</summary>';[...card.children].filter(n=>n!==form&&!['H2','SPAN'].includes(n.tagName)).forEach(n=>d.append(n));form.after(d);}
+  const card=form?.closest('.card');if(false){const d=document.createElement('details');d.innerHTML='<summary>参考报价来源与估算假设</summary>';[...card.children].filter(n=>n!==form&&!['H2','SPAN'].includes(n.tagName)).forEach(n=>d.append(n));form.after(d);}
   fold(document.querySelector('#payment-result > .grid-even'),'查看预留依据');
  }
  $('#wealth-form')?.addEventListener('submit',ev=>{ev.preventDefault();try{const d=new FormData(ev.target),p={currency:d.get('currency'),amount:E.money(d.get('amount')),bufferDays:Number(d.get('bufferDays')),productTypes:['deposit','cash','bond','equity'].filter(id=>d.get('product-'+id)==='on'),riskProfile:d.get('riskProfile'),lossBudget:E.money(d.get('lossBudget')||'0')};B.recommend(state,p);state.wealth=p;render();notify('筛选已更新。');}catch(e){notify(e.message,true);}});

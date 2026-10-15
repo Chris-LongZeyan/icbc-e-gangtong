@@ -35,5 +35,20 @@ function make(id){
   {id:'rent2',name:'11 月房租',date:'2026-11-05',currency:'HKD',amount:-E.money(config.rent),kind:'expense'},
   {id:'allowance',name:'预计生活费（假设到账为港币）',date:'2026-10-20',currency:'HKD',amount:E.money(config.allowance),kind:'income'}]}};
 }
-return {make,ids:['reserve','timing','currency','career','purchase']};
+function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Hong_Kong',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
+function live(id,day=today()){
+ const s=make(id),delta=Math.round((E.date(day)-E.date(s.asOf))/86400000),shift=d=>E.addDays(d,delta);
+ for(const a of s.accounts)a.openingDate=shift(a.openingDate);
+ for(const t of s.transactions)t.date=shift(t.date);
+ for(const e of s.plan.events)e.date=shift(e.date);
+ s.plan.start=shift(s.plan.start);s.plan.end=shift(s.plan.end);s.asOf=day;
+ const expenses=[['视频网站会员',25,'娱乐',3],['深圳交通',32,'交通',5],['内地周末餐饮',86,'餐饮',6]];
+ const a=s.accounts.find(a=>a.currency==='CNY');
+ if(id==='purchase')for(const account of s.accounts)account.openingDate=E.addDays(day,-30);
+ for(const [description,amount,category,days] of expenses){const value=E.money(amount);a.opening+=value;s.transactions.push({id:id+'-cny-'+days,date:E.addDays(day,-days),account:a.id,currency:'CNY',amount:-value,type:'expense',category,description,source:'模拟数据'});}
+ const index=['reserve','timing','currency','career','purchase'].indexOf(id)+1;
+ s.accounts.forEach((a,i)=>a.demoCard='DEMO '+String(index).padStart(4,'0')+' 0000 '+String(i+1).padStart(4,'0'));
+ return s;
+}
+return {make,live,today,ids:['reserve','timing','currency','career','purchase']};
 });

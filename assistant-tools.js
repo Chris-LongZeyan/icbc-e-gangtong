@@ -9,7 +9,7 @@ function run(state,rates,draft,options={}){
  const opts={settlementDays:options.settlementDays??0,feeBps:options.feeBps??0,fixedFee:options.fixedFee??0};
  const copy=structuredClone(state);let result;
  if(draft.tool==='check_purchase')result=C.solve(copy,rates,{...opts,target:draft.currency,purchase:amount,due:draft.date});
- else{copy.plan.events.push({id:'assistant-preview',name:draft.name||'必要付款',currency:draft.currency,amount:-amount,date:draft.date,kind:'expense',protect:true});result=E.forecast(copy);}
+ else{const U=typeof module==='object'?require('./ux'):globalThis.GangxueUX;const events=U.recurring(copy,{name:draft.name||'计划事项',currency:draft.currency,amount,date:draft.date,kind:draft.kind||'expense',frequency:draft.frequency||'once',count:draft.frequency&&draft.frequency!=='once'?draft.count:1}).events;copy.plan.events.push(...events);result=E.forecast(copy);}
  return {tool:draft.tool,draft:{...draft},result,preview:copy};
 }
 function fields(draft,intent){
@@ -35,9 +35,10 @@ function fields(draft,intent){
   if(typeof draft.category!=='string'||draft.category.length>40)throw Error('用途无效');
   return {description:draft.name,currency:draft.currency||'',amount:draft.amount||'',date:draft.date||'',type:draft.type||'',category:draft.category||'未分类'};
  }
- return intent==='check_purchase'?{target:draft.currency||'',purchase:draft.amount||'',due:draft.date||''}:{name:draft.name,currency:draft.currency||'',amount:draft.amount||'',date:draft.date||'',kind:'expense'};
+ return intent==='check_purchase'?{target:draft.currency||'',purchase:draft.amount||'',due:draft.date||''}:{name:draft.name,currency:draft.currency||'',amount:draft.amount||'',date:draft.date||'',kind:draft.kind===undefined?'expense':draft.kind||'',...(draft.frequency!==undefined?{frequency:draft.frequency||'',count:draft.count??''}:{})};
 }
 function missing(draft,language='zh'){
+ if(draft.tool==='reserve_payment'&&draft.frequency!==undefined){const absent=[...(draft.kind===null?['付款或收入']:[]),...(!draft.frequency?['周期']:[]),...(draft.frequency!=='once'&&!draft.count?['期数']:[])];if(absent.length)return language==='en'?'Please specify payment/income, frequency and number of occurrences.':'请补充：'+absent.join('、');}
  if(draft.tool==='record_transaction'){
   const labels=language==='en'?{currency:'currency',amount:'amount',date:'transaction date',type:'income, expense or refund',name:'description'}:{currency:'币种',amount:'金额',date:'交易日期',type:'收入、支出或退款',name:'商户或说明'};
   const keys=Object.keys(labels).filter(k=>!draft[k]);return keys.length?(language==='en'?'Please provide: ':'请补充：')+keys.map(k=>labels[k]).join('、'):'';

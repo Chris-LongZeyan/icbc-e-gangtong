@@ -5,11 +5,11 @@ const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=
 const pages=new Set(['index.html','experience.html','embedded.html','host-demo.html','icbc-comparison.html','integration-guide.html','feature-map.html','v05-notes.html','report.html']);
 const scripts=new Set(['app.js','engine.js','fixtures.js','planner.js','octopus.js','features.js','core.js','core-ui.js','beyond.js','minimal-ui.js','ux.js','ux-ui.js','runtime-config.js','embedded-config.js','host-adapter.js','host-demo.js','shell.js','profile.js','profile-ui.js']);
 const styles=new Set(['style.css','bank-theme.css','minimal.css','friendly.css','controls.css','report.css','profile.css']);
-scripts.add('ledger-ui.js');scripts.add('assistant-ui.js');scripts.add('assistant-tools.js');styles.add('assistant.css');scripts.add('entry.js');scripts.add('experience.js');styles.add('landing.css');styles.add('experience.css');
+scripts.add('workspace-ui.js');scripts.add('ledger-ui.js');scripts.add('assistant-ui.js');scripts.add('assistant-tools.js');styles.add('assistant.css');scripts.add('entry.js');scripts.add('experience.js');styles.add('landing.css');styles.add('experience.css');
 function publicFile(relative){return pages.has(relative)||scripts.has(relative)||styles.has(relative)||relative==='official-rates.json'||relative==='docs/evidence.json'||relative==='data/import-example.csv'||/^data\/(reserve|timing|currency|career|purchase)\.(json|csv)$/.test(relative)||/^report-assets\/[a-z0-9-]+\.(png|jpg|svg)$/.test(relative);}
 function createServer(options={}){
  const assistant=require('./assistant.cjs').createHandler(options.assistant);
- let cachedRates=null,cachedAt=0,pendingRates=null;
+ let cachedRates=null,cachedAt=0,pendingRates=null,productRequest=null;
  return http.createServer(async(req,res)=>{
   const headers={'X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Cache-Control':'no-store','Content-Security-Policy':"default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'"};
   for(const [k,v] of Object.entries(headers))res.setHeader(k,v);
@@ -26,6 +26,10 @@ function createServer(options={}){
     }
     res.writeHead(200,{'Content-Type':'application/json'}).end(req.method==='HEAD'?undefined:JSON.stringify(cachedRates));
    }catch{res.writeHead(502,{'Content-Type':'application/json'}).end(req.method==='HEAD'?undefined:JSON.stringify({error:'官方来源暂不可用；保留有日期的快照，不伪装为实时。'}));}return;
+  }
+  if(pathname==='/api/products'){
+   try{if(!productRequest)productRequest=require('./products.cjs').refresh().finally(()=>{productRequest=null;});const data=await productRequest;res.writeHead(200,{'Content-Type':'application/json'}).end(req.method==='HEAD'?undefined:JSON.stringify(data));}
+   catch{res.writeHead(502,{'Content-Type':'application/json'}).end(JSON.stringify({error:'产品资料暂未更新'}));}return;
   }
   const relative=pathname==='/'?'index.html':pathname.slice(1);
   if(!publicFile(relative)){res.writeHead(404).end('Not found');return;}
