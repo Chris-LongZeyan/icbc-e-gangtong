@@ -85,8 +85,6 @@
 
 **在线原型：[打开工银e港通](https://dual-currency-e-manager.onrender.com/)**
 
-网址：https://dual-currency-e-manager.onrender.com/
-
 ![在线原型二维码。扫描后进入功能说明与场景选择。](report-assets/prototype-qr.png)
 
 首页分为“我的账本”和“演示账户”：前者从个人余额与计划开始，后者提供预设虚拟账户。页面提供学费与租金、双币购买、到账冲突及初入职场四种场景，并支持返回首页。
@@ -117,9 +115,9 @@
 
 日常支付币种改变后，用户需要在港币标价、人民币预算和本地生活成本之间建立新的金额参照。已兑换的港币也可能被单独视为“在港生活资金”，影响原有预算的使用方式。
 
-外币估值研究发现，名义金额会影响商品估值，汇率调整的充分程度受到经验与时间压力影响[1]。心理账户研究揭示了资金来源和用途分类对决策的作用[2]；支付形式研究则关注支付与消费之间联系的显著性[3]。这些研究为跨币种预算呈现提供理论依据，人民币—港币场景的具体行为效应仍需专项研究。
+外币估值研究发现，名义金额会影响商品估值，汇率调整的充分程度受到经验与时间压力影响<sup>[1]</sup>。心理账户研究揭示了资金来源和用途分类对决策的作用<sup>[2]</sup>；支付形式研究则关注支付与消费之间联系的显著性<sup>[3]</sup>。这些研究为保留原币参照和用途分类提供了理论依据。
 
-产品保留原币金额，显示分类预算及偏差，并在新增支出时检查未来必要付款。辅助折算标注汇率和日期，历史成本与当前估值分别呈现。原型验证集中于账务一致性和计算正确性；个人参照汇率与兑换批次成本可用于后续行为研究。
+产品保留原币金额，显示分类预算及偏差，并在新增支出时检查未来必要付款。辅助折算标注汇率和日期，历史成本与当前估值分别呈现。
 
 <a id="section-2-2"></a>
 
@@ -135,33 +133,27 @@
 
 ### 2.3　目标客群与服务范围
 
-UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过26,600人。该数字说明校园服务的客群基础；本方案的可服务人数还取决于双币需求、渠道触达、自愿授权及持续使用情况。
+UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过26,600人<sup>[4]</sup>。目标用户为其中具有双币管理需求、能够通过银行渠道触达并自愿授权的群体。
 
 校园阶段集中于学费、房租和生活费安排，毕业后延伸至租赁押金、首薪及两地资金管理。产品以这些资金任务界定客群，并通过银行现有校园及跨境服务渠道导入。
-
-资料来源：[UGC资料册](https://www.ugc.edu.hk/doc/eng/ugc/publication/pamphlets/UGC_Pamphlet_2025.pdf)。
 
 <a id="section-2-4"></a>
 
 ### 2.4　工商银行既有能力与方案增量
 
-工商银行已有账户明细、收支分析和月度账单服务。工银灵通账户卡官方介绍列有明细查询及电子银行月度账单分析；2026年4月系统维护公告列出收支分析、客户收支明细等服务。2026年6月16日生效的融e行隐私政策进一步说明，用户可在收支明细备注中上传照片。上述资料确认了账户记录、收支整理和交易信息补充的既有基础。
+工商银行已有账户明细、收支分析和月度账单服务。工银灵通账户卡官方介绍列有明细查询及电子银行月度账单分析<sup>[5]</sup>；2026年4月系统维护公告列出收支分析、客户收支明细等服务<sup>[6]</sup>。2026年6月16日生效的融e行隐私政策进一步说明，用户可在收支明细备注中上传照片<sup>[7]</sup>。
 
-从产品沿革看，工行“个人财务分析软件”已覆盖收支记账、资产负债、财务统计、预算、手工账户及计划提醒，并采用T+1联机数据和前一日汇率估值。这些历史能力体现工行长期开展个人财务管理服务的积累；当前手机银行的具体分类与筛选规则仍应以实际版本为准。
+从产品沿革看，工行“个人财务分析软件”已覆盖收支记账、资产负债、财务统计、预算、手工账户及计划提醒，并采用T+1联机数据和前一日汇率估值<sup>[8]</sup>。上述内容属于历史产品功能，现行手机银行按当前版本提供服务。
 
-工银e港通在记账和预算基础上增加付款判断：关联充值与最终消费，将统计筛选与实际资金变动分开，结合必要付款、原币余额和到账日期计算可安排金额。以下比较依据公开产品资料；第4章实验检验本方案的计算模型。
+工银e港通在记账和预算基础上增加付款判断：关联充值与最终消费，将统计筛选与实际资金变动分开，结合必要付款、原币余额和到账日期计算可安排金额。第4章检验其计算模型。
 
-资料来源：[工银灵通账户卡](https://www.icbc.com.cn/ICBC/个人金融/银行卡/标准借记卡/工银灵通卡.htm)；[2026年系统维护公告](https://www.icbc.com.cn/page/1218498731646148608.html)；[融e行隐私政策，第一部分第（一）项第3款第（13）目](https://m.icbc.com.cn/ICBC/disclaimer/2.htm)；[个人财务分析软件介绍](https://m.icbc.com.cn/page/721853596277555221.html)；[工行早期《财富生活》资料](https://www.icbc.com.cn/SiteCollectionDocuments/ICBC/Resources/ICBC/网上理财/电子杂志/财富生活/杂志/2012/2011082.pdf)。
+工商银行已披露“工银智涌”金融大模型及应用开发平台，并推进“领航AI+”行动<sup>[9,10]</sup>。本方案将跨币种付款计算封装为受限工具，银行接入时可评估以工银智涌承接需求解析，复用既有字段校验和计算规则。
 
-工商银行已披露“工银智涌”金融大模型及应用开发平台，并推进“领航AI+”行动。本方案将跨币种付款计算封装为受限工具，银行接入时可评估以工银智涌承接需求解析，复用既有字段校验和计算规则。
+内地工商银行与工银亚洲分属不同服务渠道。工银亚洲e账通提供两地账户相关查询，工银财富账户及货币买卖提供香港渠道服务基础<sup>[11,12]</sup>。正式适配须分别确认账户授权、交易权限和跨境通道。
 
-资料来源：[工银智涌大模型应用平台](https://www.zj.icbc.com.cn/page/1111696122533318656.html)；[工商银行2026年一季度经营信息](https://www.icbc.com.cn/page/1223260226921385984.html)。
+用途管理方面，工行智能资产配置涉及资金目标、期限与配置条件；工银亚洲智安存按其业务规则提供资金锁定<sup>[13,14]</sup>。本方案的用途预留用于规划计算，与实际冻结资金分别记录，使用户自主保留金额和银行可用余额共同参与判断。
 
-内地工商银行与工银亚洲分属不同服务渠道。工银亚洲e账通提供两地账户相关查询，工银财富账户及货币买卖提供香港渠道服务基础。正式适配须分别确认账户授权、交易权限和跨境通道。
-
-用途管理方面，工行智能资产配置涉及资金目标、期限与配置条件；工银亚洲智安存按其业务规则提供资金锁定。本方案的用途预留用于规划计算，与实际冻结资金分别记录，使用户自主保留金额和银行可用余额共同参与判断。
-
-资料来源：[工银亚洲e账通](https://www.icbcasia.com/hk/sc/promotion/mobile-banking-e-account-express-service.html)；[工银财富账户](https://www.icbcasia.com/hk/sc/personal/banking/integrated-account/wise-gold-account/default.html)；[智能资产配置](https://www.icbc.com.cn/column/1438058326864052368.html)；[工银亚洲智安存](https://www.icbcasia.com/hk/tc/personal/banking/deposits/money-safe/default.html)。
+表1　工商银行既有服务与本方案功能增量
 
 | 既有服务基础 | 本方案补充的处理 | 可验证的结果 |
 | --- | --- | --- |
@@ -170,7 +162,7 @@ UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过
 | 账户查询与资金目标管理 | 将学费、租金、生活预算及应急金纳入逐日原币路径 | 区分当前余额、用途预留及完整规划可安排额 |
 | 货币买卖与交易复核 | 联合检查来源资金用途、目标币种缺口及可用日期 | 给出最小兑换额及少一分不足的验算，或说明不可行原因 |
 
-增量验证围绕上述结果开展，第4.4节及附录B以相同输入下的约束消融和独立枚举检查模型。
+约束消融和独立枚举结果见第4.4节及附录B。
 
 <a id="section-3"></a>
 
@@ -213,7 +205,7 @@ UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过
 
 文字与普通话、粤语、英语录音共用结构化输入流程。模型提取事项、金额、币种和日期，回填可编辑表单；缺失或歧义字段通过追问补全，用户也可直接更正。例如，“明天买一台人民币一万二千元的电脑”结合当前日期形成购买参数，校验通过后自动计算并定位结果。手动与智能输入使用同一资金引擎，相同参数对应相同结论。
 
-产品衔接先确定各期限内可以暂不动用的金额，再结合风险偏好、产品类型、起投门槛和资金可用日筛选。普通定期存款依据工银亚洲公开条款，适用利率按官方披露或开户查询结果呈现。投资候选采用演示目录检验风险与流动性筛选，银行落地时接入经审核的真实产品目录。
+产品衔接先确定各期限内可以暂不动用的金额，再结合风险偏好、产品类型、起投门槛和资金可用日筛选。普通定期存款依据工银亚洲公开条款<sup>[15]</sup>，适用利率按官方披露或开户查询结果呈现。投资候选采用演示目录检验风险与流动性筛选，银行落地时接入经审核的真实产品目录。
 
 <a id="section-4"></a>
 
@@ -230,7 +222,7 @@ UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过
 
 金额计算采用整数分和确定性规则，费用舍入、用途保护及日期约束均写入模型。月度消费事实由规则汇总。自然语言输入经字段校验后进入相同流程，模型解析和金额计算分别验证。
 
-账户、交易、付款事项、规划参数和报价组成核心数据模型。金额以原币整数分参与运算[4][5]；输入按币种、日期、标识和金额范围校验。更正保留来源与版本，并触发计划重算。
+账户、交易、付款事项、规划参数和报价组成核心数据模型。金额以原币整数分参与运算<sup>[16,17]</sup>；输入按币种、日期、标识和金额范围校验。更正保留来源与版本，并触发计划重算。
 
 <a id="section-4-2"></a>
 
@@ -238,7 +230,7 @@ UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过
 
 规划以已到账资金为起点，逐日扣除已登记付款与生活预算，并保留应急底线。对新增购买，系统计算来源币种可换上限H、目标币种期间最大缺口D及首个缺口日期。兑换金额须在H以内，且资金需在缺口发生前可用。
 
-在固定买卖价、比例费用和固定费用条件下，扣款金额增加时，整数到账金额q(x)单调不减。系统通过二分搜索定位首个满足q(x)≥D的整数金额[6]，再验证两币种逐日余额；若q(x−1)＜D≤q(x)，即可确认以分为单位的最小性。完整定义、费用函数、求解步骤和适用条件见[附录A](#appendix-A)。
+在固定买卖价、比例费用和固定费用条件下，扣款金额增加时，整数到账金额q(x)单调不减。系统通过二分搜索定位首个满足q(x)≥D的整数金额<sup>[18]</sup>，再验证两币种逐日余额；若q(x−1)＜D≤q(x)，即可确认以分为单位的最小性。完整定义、费用函数、求解步骤和适用条件见[附录A](#appendix-A)。
 
 该模型把当前余额、未来用途和兑换时间纳入同一判断，适用于给定条件下的一次兑换。生产扩展需补充同币种账户可达性、营业日与报价生命周期。
 
@@ -246,11 +238,13 @@ UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过
 
 ### 4.3　典型场景与计算结果
 
-合成账户基准日2026年10月2日，HKD20,000、CNY10,000；10月8日购买CNY12,000；暂不另设生活费、应急金与费用。采用已保存的中银香港CNH公开电汇参考快照，2026年10月3日18:07:55（香港时间），客户买入价1.176990、卖出价1.162840，单位HKD/CNH。本例采用离岸人民币参考情景，执行时以适用银行报价及跨境通道为准。[报价来源](https://www.bochk.com/whk/rates/exchangeRatesHKD/exchangeRatesHKD-input.action?lang=en)
+合成账户基准日2026年10月2日，HKD20,000、CNY10,000；10月8日购买CNY12,000；暂不另设生活费、应急金与费用。采用已保存的中银香港CNH公开电汇参考快照，2026年10月3日18:07:55（香港时间），客户买入价1.176990、卖出价1.162840，单位HKD/CNH。本例采用固定离岸人民币参考价，实际交易使用银行适用报价<sup>[19]</sup>。
 
 人民币缺口2,000元，港币最小扣款＝2,000×1.176990＝2,353.98元。逐分验算：扣235,398港分到账200,000人民币分；扣235,397港分仅到账199,999人民币分。兑换后港币17,646.02元，人民币12,000元；购买后人民币为0元，符合本例零底线。现实用户若设置应急金，系统需额外覆盖该底线。
 
 ![图2　整数舍入下的最小兑换额。金额由报价函数逐分计算，使用带日期的历史参考价。](report-assets/fig-fx-minimum.png)
+
+表2　双币购买试算的约束与结果
 
 | 场景 | 关键约束 | 结果与解释 |
 | --- | --- | --- |
@@ -280,7 +274,7 @@ UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过
 
 ### 4.5　生成式交互与确定性工具调用
 
-生成式交互采用“意图解析—结构校验—信息补全—工具计算—结果回填”的工作流。Qwen通过Function Calling生成结构化草案[13]；Qwen语音识别将普通话、粤语和英语录音转写后送入相同流程[14]。输入日期以当前余额日为基准，金额按精度与范围检查，币种和事项类型受字段枚举约束。缺失项保持为空，补充对话携带已有草案，使用户可以逐步完善计划。
+生成式交互采用“意图解析—结构校验—信息补全—工具计算—结果回填”的工作流。Qwen通过Function Calling生成结构化草案<sup>[20]</sup>；Qwen语音识别将普通话、粤语和英语录音转写后送入相同流程<sup>[21]</sup>。输入日期以当前余额日为基准，金额按精度与范围检查，币种和事项类型受字段枚举约束。缺失项保持为空，补充对话携带已有草案，使用户可以逐步完善计划。
 
 模型负责把生活语言转换为业务参数，确定性工具负责形成金额结论。购买草案完整时自动试算；新增付款、收入或账户设置通过对应表单确认后写入。模型请求只携带本次描述与所需表单上下文，账户完整流水和卡号由账务模块管理。请求期间用户修改字段或切换场景时，过期响应失效，避免覆盖新输入。
 
@@ -303,9 +297,7 @@ UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过
 
 账户快照包含可用余额、冻结金额和来源时间；报价包含方向、费用、有效期、通道与资金可用日。每次决策关联账户、计划和报价版本，交易复核时重新检查，状态变化即重算，执行结果以银行回执入账。
 
-工银亚洲公开API平台提供合作申请线索。方案优先在银行自有渠道试点，生产接入须完成账户映射、鉴权、跨境通道、营业日及安全联调。
-
-资料来源：[工银亚洲API平台](https://www.icbcasia.com/hk/sc/personal/internet-banking/open-api-developer-portal/default.html)。
+工银亚洲公开API平台提供合作申请线索<sup>[22]</sup>。方案优先在银行自有渠道试点，生产接入须完成账户映射、鉴权、跨境通道、营业日及安全联调。
 
 <a id="section-5-2"></a>
 
@@ -313,13 +305,11 @@ UGC《2025年资料册》列示，2024/25年度资助课程非本地学生超过
 
 八达通明细能补充银行充值后的消费去向。用户提供的可见记录包含商户、时间、金额及充值条目，企业接入的关键在于取得约定范围的数据权利。
 
-MTR Mobile允许用户输入八达通资料、通过车站数码服务站或八达通App关联卡片；其个人资料收集声明涵盖识别号码及港铁乘车系统中的相关历史和当前交易。该案例提供卡片关联与限定用途数据利用的业务先例，覆盖范围为港铁自身乘车记录。
+MTR Mobile允许用户输入八达通资料、通过车站数码服务站或八达通App关联卡片；其个人资料收集声明涵盖识别号码及港铁乘车系统中的相关历史和当前交易。该案例提供卡片关联与限定用途数据利用的业务先例，覆盖范围为港铁自身乘车记录<sup>[23]</sup>。
 
-九巴club1933与The Point的推广条款还约定，经会员同意传送会员资料及指定路线乘车交易，体现跨机构、按目的共享记录的合作机制。
+九巴club1933与The Point的推广条款还约定，经会员同意传送会员资料及指定路线乘车交易，体现跨机构、按目的共享记录的合作机制<sup>[24]</sup>。
 
 拟由工银亚洲向八达通申请企业数据合作，协商消费明细范围、授权方式和同步责任。港铁案例支持卡片关联及特定用途的数据合作路径；全商户明细覆盖、更新频率和费用由双方合同确定。
-
-资料来源：[MTR Mobile条款及个人资料收集声明](https://www.mtr.com.hk/en/customer/main/mtr-mobile-terms-and-conditions.html)；[club1933登记条款及个人资料收集声明](https://club1933.kmb.hk/en/register?token=1)。
 
 <a id="section-5-3"></a>
 
@@ -346,11 +336,9 @@ MTR Mobile允许用户输入八达通资料、通过车站数码服务站或八�
 
 外部供应商可按实施费加年度维护费交付。银行评价项目收益时，同时计入供应商费用及渠道、客服等内部资源投入。
 
-星展2025年年报披露，使用个性化提示的客户相较未使用者，储蓄为2倍、投资为5倍、保险保障为3倍。这一关联为规划服务的商业逻辑提供参照，本项目据此建立资金留存与服务活跃度的观察框架，并在银行试点中按可比客群估计增量贡献。
+星展2025年年报披露，使用个性化提示的客户相较未使用者，储蓄为2倍、投资为5倍、保险保障为3倍<sup>[25]</sup>。这一关联为规划服务的商业逻辑提供参照，本项目据此建立资金留存与服务活跃度的观察框架，并在银行试点中按可比客群估计增量贡献。
 
-学费与租金按实际持有天数折算增量年均余额，再按币种、期限及内部资金定价核定资金贡献[10]。交易收益按实际兑换量与渠道承接计量；自助服务节省扣除导入纠错和异常处理成本。由此可比较服务带来的净收益与持续投入。
-
-资料来源：[星展2025年年报：个人银行与财富管理，Retail wealth management](https://www.dbs.com/annualreports/2025/consumer-banking-wealth-management.html)。
+学费与租金按实际持有天数折算增量年均余额，再按币种、期限及内部资金定价核定资金贡献<sup>[26]</sup>。交易收益按实际兑换量与渠道承接计量；自助服务节省扣除导入纠错和异常处理成本。由此可比较服务带来的净收益与持续投入。
 
 <a id="section-6-2"></a>
 
@@ -381,7 +369,7 @@ MTR Mobile允许用户输入八达通资料、通过车站数码服务站或八�
 
 ### 7.1　风险分类与模型治理
 
-参考巴塞尔委员会操作风险与第三方风险原则[11][12]，本项目按主要失效来源分为模型风险、操作风险、合规与行为风险、商业与战略风险。数据、信息科技和供应商依赖纳入操作风险，主责任按首要失效原因确定。
+参考巴塞尔委员会操作风险与第三方风险原则<sup>[27,28]</sup>，本项目按主要失效来源分为模型风险、操作风险、合规与行为风险、商业与战略风险。数据、信息科技和供应商依赖纳入操作风险，主责任按首要失效原因确定。
 
 数据缺失导致错误余额，由数据运营负责核对；公式错误由模型治理处理；将规划结果宣传为付款保证，则由对客披露与行为风险管理控制。潜在损害、影响范围、可检测性及恢复难度共同决定处置优先级，金额错误、越权访问和重复交易隐患须阻断相关操作。
 
@@ -397,9 +385,9 @@ MTR Mobile允许用户输入八达通资料、通过车站数码服务站或八�
 
 **运行与执行。** 余额、计划或报价变化使旧结果失效。银行在复核前刷新状态，以执行回执确认入账；结果未知的请求先查询状态，再决定后续操作。交易系统负责唯一请求标识、幂等控制和回执核对，服务故障时暂停受影响的执行衔接。
 
-**信息安全。** 访问控制、会话管理、传输与存储保护、敏感日志管理共同降低资金及生活轨迹泄露风险。原型对模型请求执行来源检查、输入大小、并发及频次限制，密钥由服务端环境变量持有。录音和文本按最小必要范围处理，生产部署由银行核定数据地域、留存、模型供应商及ASVS验证要求[9]。
+**信息安全。** 访问控制、会话管理、传输与存储保护、敏感日志管理共同降低资金及生活轨迹泄露风险。原型对模型请求执行来源检查、输入大小、并发及频次限制，密钥由服务端环境变量持有。录音和文本按最小必要范围处理，生产部署由银行核定数据地域、留存、模型供应商及ASVS验证要求<sup>[29]</sup>。
 
-**第三方依赖。** 合作合同明确数据权利、服务范围、持续监督、价格变更及退出安排[12]。银行承担管理责任，同步异常时标明最后覆盖时间，并保留主动导入作为替代入口。
+**第三方依赖。** 合作合同明确数据权利、服务范围、持续监督、价格变更及退出安排<sup>[28]</sup>。银行承担管理责任，同步异常时标明最后覆盖时间，并保留主动导入作为替代入口。
 
 <a id="section-7-3"></a>
 
@@ -423,7 +411,7 @@ MTR Mobile允许用户输入八达通资料、通过车站数码服务站或八�
 
 期限容量分析计算满足必要付款、生活预算及应急底线后，各币种在指定期限内可暂不动用的金额。存款候选按公开条款检查金额门槛及可用日期；投资候选进一步结合偏好等级、情景损失预算及赎回条件。用户提高风险偏好时，已有付款保护保持不变。
 
-原型使用演示投资目录检验筛选逻辑，期限、起投额和压力损失参数均明确标为情景假设。资金锁定期内检查全额占用，赎回可用后检查压力损失对剩余付款的影响。实际产品须由银行接入经审核的目录、风险评级和费用条款，并完成客户适当性评估[15]。情景损失用于预算压力检验，实际市场损失可能超出设定幅度。
+原型使用演示投资目录检验筛选逻辑，期限、起投额和压力损失参数均明确标为情景假设。资金锁定期内检查全额占用，赎回可用后检查压力损失对剩余付款的影响。实际产品须由银行接入经审核的目录、风险评级和费用条款，并完成客户适当性评估<sup>[30]</sup>。情景损失用于预算压力检验，实际市场损失可能超出设定幅度。
 
 自然语言规划负责把需求转成可确认的字段，规则月报负责汇总消费事实、预算偏差和数据覆盖。后续解释服务可引用计算结果与来源，使生成文本能够逐项追溯。评价指标包括字段准确率、追问有效性、解释一致性和单次服务成本。
 
@@ -443,35 +431,82 @@ MTR Mobile允许用户输入八达通资料、通过车站数码服务站或八�
 
 ## 参考文献
 
-参考文献支撑行为分析、计算方法、工程设计及经济性评价；银行产品、人口统计及合作服务的官方来源随正文列示。
+[1] RAGHUBIR P, SRIVASTAVA J. Effect of face value on product valuation in foreign currencies[J]. Journal of Consumer Research, 2002, 29(3): 335-347. DOI: 10.1086/344430.
 
-1. Raghubir, P., & Srivastava, J. (2002). [Effect of Face Value on Product Valuation in Foreign Currencies](https://academic.oup.com/jcr/article-abstract/29/3/335/1800909). *Journal of Consumer Research*, 29(3), 335–347. DOI: 10.1086/344430。
-2. Thaler, R. H. (1999). [Mental Accounting Matters](https://onlinelibrary.wiley.com/doi/10.1002/%28SICI%291099-0771%28199909%2912%3A3%3C183%3A%3AAID-BDM318%3E3.0.CO%3B2-F). *Journal of Behavioral Decision Making*, 12(3), 183–206。
-3. Raghubir, P., & Srivastava, J. (2008). [Monopoly Money: The Effect of Payment Coupling and Form on Spending Behavior](https://pubmed.ncbi.nlm.nih.gov/18808275/). *Journal of Experimental Psychology: Applied*, 14(3), 213–225. DOI: 10.1037/1076-898X.14.3.213。
+[2] THALER R H. Mental accounting matters[J]. Journal of Behavioral Decision Making, 1999, 12(3): 183-206. DOI: 10.1002/(SICI)1099-0771(199909)12:3<183::AID-BDM318>3.0.CO;2-F.
 
-4. Ecma International. [ECMAScript Language Specification: The BigInt Type](https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-ecmascript-language-types-bigint-type)。
-5. Bray, T. (Ed.). (2017). [RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format](https://www.rfc-editor.org/rfc/rfc8259.txt), §6。
-6. NIST. [Dictionary of Algorithms and Data Structures: Binary Search](https://xlinux.nist.gov/dads/HTML/binarySearch.html)。
-7. Node.js. [Node.js 24 Test Runner Documentation](https://nodejs.org/docs/latest-v24.x/api/test.html)。
+[3] RAGHUBIR P, SRIVASTAVA J. Monopoly money: the effect of payment coupling and form on spending behavior[J]. Journal of Experimental Psychology: Applied, 2008, 14(3): 213-225. DOI: 10.1037/1076-898X.14.3.213.
 
-8. WHATWG. [HTML Standard: Cross-document Messaging](https://html.spec.whatwg.org/multipage/web-messaging.html#web-messaging)。
-9. OWASP Foundation. [Application Security Verification Standard](https://owasp.org/projects/asvs)。
-10. Grant, J. (2011). [Liquidity Transfer Pricing: A Guide to Better Practice](https://www.bis.org/fsi/fsipapers10.pdf). Financial Stability Institute, FSI Papers No. 10。
+[4] 大学教育资助委员会. UGC pamphlet 2025[R/OL]. 香港: 大学教育资助委员会, 2025[2026-10-09]. <https://www.ugc.edu.hk/doc/eng/ugc/publication/pamphlets/UGC_Pamphlet_2025.pdf>.
 
-11. Basel Committee on Banking Supervision. (2021). [Revisions to the Principles for the Sound Management of Operational Risk](https://www.bis.org/bcbs/publ/d515.pdf)。
-12. Basel Committee on Banking Supervision. (2025). [Principles for the Sound Management of Third-party Risk](https://www.bis.org/bcbs/publ/d605.htm)。
+[5] 中国工商银行. 工银灵通卡[EB/OL].[2026-10-09]. <https://www.icbc.com.cn/ICBC/个人金融/银行卡/标准借记卡/工银灵通卡.htm>.
 
-13. 阿里云百炼. [Function Calling](https://help.aliyun.com/zh/model-studio/qwen-function-calling)。
-14. 阿里云百炼. [Qwen-ASR API参考](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference)。
-15. 香港证券及期货事务监察委员会. [Compliance with Suitability Obligations](https://www.sfc.hk/en/faqs/intermediaries/supervision/Compliance-with-Suitability-Obligations/Compliance-with-Suitability-Obligations)。
+[6] 中国工商银行. 系统维护公告[EB/OL].[2026-10-09]. <https://www.icbc.com.cn/page/1218498731646148608.html>.
 
-技术及行为文献核查于2026年10月9日至14日；港铁数据用途、星展经营披露及可比数据服务价格于10月17日复核。
+[7] 中国工商银行. 中国工商银行融e行个人信息保护政策[EB/OL].[2026-10-09]. <https://m.icbc.com.cn/ICBC/disclaimer/2.htm>.
+
+[8] 中国工商银行. 个人财务分析软件[EB/OL].[2026-10-09]. <https://m.icbc.com.cn/page/721853596277555221.html>.
+
+[9] 中国工商银行. 工银智涌大模型应用平台[EB/OL].[2026-10-14]. <https://www.zj.icbc.com.cn/page/1111696122533318656.html>.
+
+[10] 中国工商银行. 2026年一季度经营信息[EB/OL].[2026-10-14]. <https://www.icbc.com.cn/page/1223260226921385984.html>.
+
+[11] 中国工商银行（亚洲）有限公司. e账通[EB/OL].[2026-10-09]. <https://www.icbcasia.com/hk/sc/promotion/mobile-banking-e-account-express-service.html>.
+
+[12] 中国工商银行（亚洲）有限公司. 工银财富账户[EB/OL].[2026-10-09]. <https://www.icbcasia.com/hk/sc/personal/banking/integrated-account/wise-gold-account/default.html>.
+
+[13] 中国工商银行. 智能资产配置[EB/OL].[2026-10-09]. <https://www.icbc.com.cn/column/1438058326864052368.html>.
+
+[14] 中国工商银行（亚洲）有限公司. 智安存[EB/OL].[2026-10-09]. <https://www.icbcasia.com/hk/tc/personal/banking/deposits/money-safe/default.html>.
+
+[15] 中国工商银行（亚洲）有限公司. Time deposit[EB/OL].[2026-10-17]. <https://www.icbcasia.com/hk/en/personal/banking/deposits/time-deposit/default.html>.
+
+[16] Ecma International. ECMAScript language specification: the BigInt type[S/OL].[2026-10-09]. <https://tc39.es/ecma262/multipage/ecmascript-data-types-and-values.html#sec-ecmascript-language-types-bigint-type>.
+
+[17] BRAY T. The JavaScript Object Notation (JSON) data interchange format: RFC 8259[S/OL]. 2017[2026-10-09]. <https://www.rfc-editor.org/rfc/rfc8259.txt>.
+
+[18] National Institute of Standards and Technology. Dictionary of algorithms and data structures: binary search[EB/OL].[2026-10-09]. <https://xlinux.nist.gov/dads/HTML/binarySearch.html>.
+
+[19] 中国银行（香港）有限公司. 外币兑换价[EB/OL].[2026-10-09]. <https://www.bochk.com/whk/rates/exchangeRatesHKD/exchangeRatesHKD-input.action?lang=en>.
+
+[20] 阿里云. Function Calling[EB/OL].[2026-10-14]. <https://help.aliyun.com/zh/model-studio/qwen-function-calling>.
+
+[21] 阿里云. Qwen-ASR API参考[EB/OL].[2026-10-14]. <https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference>.
+
+[22] 中国工商银行（亚洲）有限公司. 开放API开发者平台[EB/OL].[2026-10-09]. <https://www.icbcasia.com/hk/sc/personal/internet-banking/open-api-developer-portal/default.html>.
+
+[23] 香港铁路有限公司. MTR Mobile terms and conditions and personal information collection statement[EB/OL].[2026-10-17]. <https://www.mtr.com.hk/en/customer/main/mtr-mobile-terms-and-conditions.html>.
+
+[24] 九巴. club1933: terms and conditions and personal information collection statement[EB/OL].[2026-10-14]. <https://club1933.kmb.hk/en/register?token=1>.
+
+[25] DBS Group Holdings. Annual report 2025: consumer banking/wealth management[R/OL]. Singapore: DBS Group Holdings, 2025[2026-10-17]. <https://www.dbs.com/annualreports/2025/consumer-banking-wealth-management.html>.
+
+[26] GRANT J. Liquidity transfer pricing: a guide to better practice[R/OL]. Basel: Bank for International Settlements, 2011[2026-10-09]. <https://www.bis.org/fsi/fsipapers10.pdf>.
+
+[27] Basel Committee on Banking Supervision. Revisions to the principles for the sound management of operational risk[R/OL]. Basel: Bank for International Settlements, 2021[2026-10-09]. <https://www.bis.org/bcbs/publ/d515.pdf>.
+
+[28] Basel Committee on Banking Supervision. Principles for the sound management of third-party risk[R/OL]. Basel: Bank for International Settlements, 2025[2026-10-09]. <https://www.bis.org/bcbs/publ/d605.htm>.
+
+[29] OWASP Foundation. Application security verification standard[S/OL].[2026-10-09]. <https://owasp.org/projects/asvs>.
+
+[30] 香港证券及期货事务监察委员会. Compliance with suitability obligations[EB/OL].[2026-10-14]. <https://www.sfc.hk/en/faqs/intermediaries/supervision/Compliance-with-Suitability-Obligations/Compliance-with-Suitability-Obligations>.
+
+[31] Node.js. Node.js v24 documentation: test runner[EB/OL].[2026-10-09]. <https://nodejs.org/docs/latest-v24.x/api/test.html>.
+
+[32] 香港铁路有限公司. Interim report 2025[R/OL]. 香港: 香港铁路有限公司, 2025: 69[2026-10-14]. <https://www.mtr.com.hk/archive/corporate/en/investor/interim2025/E15.pdf>.
+
+[33] 八达通卡有限公司. Become an Octopus merchant[EB/OL].[2026-10-14]. <https://www.octopus.com.hk/en/business/faq/octopus-for-businesses/become-octopus-merchant.html>.
+
+[34] Teller. Teller: pricing[EB/OL].[2026-10-17]. <https://teller.io/>.
+
+[35] Stripe. Pricing & fees: Financial Connections[EB/OL].[2026-10-17]. <https://stripe.com/pricing>.
+
+[36] 香港金融管理局. Hong Kong’s linked exchange rate system[R/OL].[2026-10-09]. <https://www.hkma.gov.hk/media/eng/publication-and-research/reference-materials/monetary/HKMA_LERS_English_version.pdf>.
 
 <a id="appendix-A"></a>
 
 ## 附录A　流动性模型与求解方法
 
-本附录补充正文第4.2节的变量定义、算法及最小性证明。
 
 <a id="appendix-A-1"></a>
 
@@ -526,7 +561,7 @@ H是可换出上限；H小于0说明来源币种本身已不满足保护条件�
 
 在0≤b＜10,000、固定费和价格不变时，每增加一分扣款，向上取整的比例费用最多增加一分，因此net(x)不下降；乘除正价格并向下取整后q(x)仍不下降。满足q(x)≥D的金额构成区间。二分查找返回该区间左端点；若同时有`q(x−1)<D≤q(x)`且x≤H，就给出以分为单位的最小性证书。
 
-源资金当日扣减x，目标资金从约定可用日增加q(x)，最后逐日检查两币种低点不小于F。二分搜索用于确定单调可行域的左端点[6]。
+源资金当日扣减x，目标资金从约定可用日增加q(x)，最后逐日检查两币种低点不小于F。二分搜索用于确定单调可行域的左端点<sup>[18]</sup>。
 
 模型假设资金在可用日付款前可支用；银行接入需结合营业日和截止时间给出保守可用日。算例使用固定历史参考报价，执行前须按有效报价重新计算。
 
@@ -540,7 +575,7 @@ H是可换出上限；H小于0说明来源币种本身已不满足保护条件�
 
 ## 附录B　实验设计与验证结果
 
-本附录补充正文第4.4节。测试案例为合成数据，对照模型由本项目构造。
+测试采用合成数据，对照组由完整模型删减指定约束构成。
 
 <a id="appendix-B-1"></a>
 
@@ -553,6 +588,8 @@ H是可换出上限；H小于0说明来源币种本身已不满足保护条件�
 <a id="appendix-B-2"></a>
 
 ### B.2　约束消融与适用范围
+
+表3　约束消融与独立枚举结果
 
 | 方法 | 不可行却放行／2,000 | 可行却拒绝／2,000 | 比较范围 |
 | --- | --- | --- | --- |
@@ -567,37 +604,32 @@ H是可换出上限；H小于0说明来源币种本身已不满足保护条件�
 
 ### B.3　计算性能与功能回归
 
-在Windows x64、Intel Core Ultra 9 285H、Node v24.19.0上，预热100次后计时2,000次求解；本次五日小案例P50为0.0764ms、P95为0.1504ms，仅为本机计算时间，网络、渲染及生产负载另行评估。2026年10月17日复核，185项基于Node.js内置测试运行器的自动回归全部通过[7]，覆盖日历、资金预留、双向兑换、钱包口径、导入、宿主、产品匹配和模型接口。其中9项产品匹配测试检验压力损失、跨币种缺口及预期收入隔离；15项模型与HTTP接口测试采用可控返回值，检验字段契约和故障处理。测量采用固定输入与单机环境，结果用于说明原型计算开销。
+在Windows x64、Intel Core Ultra 9 285H、Node v24.19.0上，预热100次后计时2,000次求解；本次五日小案例P50为0.0764ms、P95为0.1504ms，计时范围为本机求解过程。2026年10月17日复核，185项基于Node.js内置测试运行器的自动回归全部通过<sup>[31]</sup>，覆盖日历、资金预留、双向兑换、钱包口径、导入、宿主、产品匹配和模型接口。其中9项产品匹配测试检验压力损失、跨币种缺口及预期收入隔离；15项模型与HTTP接口测试采用可控返回值，检验字段契约和故障处理。
 
 <a id="appendix-C"></a>
 
 ## 附录C　合作成本与单位经济性测算
 
-本附录补充正文第6.2节，分别列示公开披露、可比标准价及待定经营参数。
 
 <a id="appendix-C-1"></a>
 
 ### C.1　八达通合作成本的公开披露
 
-港铁2025年中期报告第69页披露，上半年向八达通集团支付或应付中央结算服务费用7,000万港元；另有1,500万港元为港铁提供代理、发卡退款、设备及仓储等服务而收取或应收的费用。两项分别对应结算采购与服务收入，提供了机构合作的财务证据。
+港铁2025年中期报告第69页披露，上半年向八达通集团支付或应付中央结算服务费用7,000万港元；另有1,500万港元为港铁提供代理、发卡退款、设备及仓储等服务而收取或应收的费用。两项分别对应结算采购与服务收入，提供了机构合作的财务证据<sup>[32]</sup>。
 
-截至2026年10月14日，本次核查的八达通、MTR及club1933官方资料未披露适用于消费者历史明细的数据接口单价。商户受理费与交通结算费各有业务口径，明细服务的固定接入费、最低合同额及企业支持费保留为待定合同参数。
-
-资料来源：[港铁2025年中期报告，附注22(viii)](https://www.mtr.com.hk/archive/corporate/en/investor/interim2025/E15.pdf)；[八达通商户收费说明](https://www.octopus.com.hk/en/business/faq/octopus-for-businesses/become-octopus-merchant.html)。
+截至2026年10月14日，本次核查的八达通、MTR及club1933官方资料未披露适用于消费者历史明细的数据接口单价。商户受理费与交通结算费各有业务口径<sup>[33]</sup>，明细服务的固定接入费、最低合同额及企业支持费保留为待定合同参数。
 
 <a id="appendix-C-2"></a>
 
 ### C.2　可比数据服务及敏感性分析
 
-以授权账户交易数据服务作为功能相近的成本参照，Teller与Stripe官方交易订阅标准价均为US$0.30／月：Teller按enrollment计费，Stripe按机构及账户持有人计费。统一假设每位用户对应一个计费连接、连续订阅12个月，则交易数据费为US$3.60／用户年。
+以授权账户交易数据服务作为功能相近的成本参照，Teller与Stripe官方交易订阅标准价均为US$0.30／月：Teller按enrollment计费，Stripe按机构及账户持有人计费<sup>[34,35]</sup>。统一假设每位用户对应一个计费连接、连续订阅12个月，则交易数据费为US$3.60／用户年。
 
-按联系汇率制度7.75—7.85港元／美元的兑换保证区间换算，为HK$27.90—28.26／用户年。每1,000个连接年对应HK$27,900—28,260。这是海外同类功能的预算参照，范围仅反映汇率换算；八达通实际合同、付款价差及税费另行核定。
+按联系汇率制度7.75—7.85港元／美元的兑换保证区间<sup>[36]</sup>换算，为HK$27.90—28.26／用户年。每1,000个连接年对应HK$27,900—28,260。这是海外同类功能的预算参照，区间由汇率换算产生，八达通采购预算按实际合同核定。
 
-两家平台另列余额查询US$0.10／次：每月一次增加US$1.20／年，每日一次增加US$36.50／年。图5据此展示连接规模和查询频率的成本敏感性。预算宜将交易数据、余额核对、固定集成及运营分别列项，优先按业务所需字段和更新频率确定同步方案。
+两家平台另列余额查询US$0.10／次<sup>[34,35]</sup>：每月一次增加US$1.20／年，每日一次增加US$36.50／年。图5据此展示连接规模和查询频率的成本敏感性。预算宜将交易数据、余额核对、固定集成及运营分别列项，优先按业务所需字段和更新频率确定同步方案。
 
 ![图5　账户数据服务费用的规模与调用频率敏感性。海外同类服务公开标准价的预算参照。](report-assets/fig-data-cost.png)
-
-资料来源：[Teller官方价格](https://teller.io/)；[Stripe官方价格，Financial Connections](https://stripe.com/pricing)；[香港金管局联系汇率制度说明](https://www.hkma.gov.hk/media/eng/publication-and-research/reference-materials/monetary/HKMA_LERS_English_version.pdf)。
 
 <a id="appendix-C-3"></a>
 

@@ -49,7 +49,7 @@ for label,values,color in [('银行余额',bank,BLUE),('钱包未消费余额',w
  bottom=[a+b for a,b in zip(bottom,values)]
 ax.set_xticks(list(x),['充值前','充值 500 港元后','再消费 148 港元后']);ax.set_ylabel('港元');ax.set_ylim(0,620);ax.legend(ncol=3,loc='upper center',frameon=False)
 ax.set_title('充值与最终消费的资金核算');ax.yaxis.grid(True,alpha=.2);ax.set_axisbelow(True)
-finish(fig,'fig-wallet-accounting','来源：报告第2.1节合成算例；期初银行余额500、钱包余额0，无费用或退款。\n堆叠总高为期初资金＝剩余资金＋累计消费，不表示总资产保持不变。',[{'stage':i,'bank_hkd':bank[i],'wallet_hkd':wallet[i],'cumulative_consumption_hkd':spent[i]} for i in x])
+finish(fig,'fig-wallet-accounting','数据来源：本文第2.1节合成算例；期初银行余额500港元、钱包余额0。\n堆叠总高＝剩余银行资金＋钱包余额＋累计消费。',[{'stage':i,'bank_hkd':bank[i],'wallet_hkd':wallet[i],'cumulative_consumption_hkd':spent[i]} for i in x])
 
 # 2. Actual engine output, with the protected envelope and an additional HKD5,000 purchase.
 fig,(ax,bx)=plt.subplots(1,2,figsize=(11,4.8),gridspec_kw={'width_ratios':[1,1.65]})
@@ -59,21 +59,21 @@ for i,v in enumerate(vals):ax.text(v+800,i,f'{v:,}',va='center',fontsize=9)
 rows=data['projection'];ds=[datetime.fromisoformat(r['date']) for r in rows]
 for key,label,color,style in [('balance_cents','原计划余额',BLUE,'-'),('after_purchase_cents','追加5,000元支出后',RED,'-'),('protected_cents','剩余保护用途及应急金',GRAY,'--')]:bx.plot(ds,[r[key]/100 for r in rows],label=label,color=color,linestyle=style,lw=1.8)
 bx.axhline(5000,color=GREEN,lw=1,ls=':');bx.set_title('规划期港币逐日余额');bx.set_ylabel('港元');bx.xaxis.set_major_locator(mdates.DayLocator(interval=15));bx.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'));bx.legend(frameon=False,fontsize=8,loc='upper right');bx.grid(alpha=.18)
-finish(fig,'fig-reserve-path','来源：fixtures.js reserve合成案例，经engine.js与core.js导出；金额为港币。\n不提前计入预计生活费；追加支出以期初立即扣款表示，期末余额恰好达到5,000元应急底线。',rows)
+finish(fig,'fig-reserve-path','数据来源：本文第4.3节合成案例的逐日计算结果；金额为港元。\n追加支出于期初扣款，按已到账资金规划，期末保留5,000元应急金。',rows)
 
 # 3. Stepwise cent rounding around the optimum. No continuous interpolation.
 fig,ax=plt.subplots(figsize=(8.3,4.5));qs=data['quote'];xs=[q['debit']/100 for q in qs];ys=[q['received']/100 for q in qs]
 ax.step(xs,ys,where='post',color=BLUE);ax.scatter(xs,ys,s=15,color=BLUE);ax.axhline(2000,color=RED,ls='--',label='人民币缺口 2,000.00')
 ax.scatter([2353.98],[2000],color=RED,s=45,zorder=5);ax.annotate('最小扣款 HK$2,353.98\n少一分仅到账 ¥1,999.99',xy=(2353.98,2000),xytext=(2353.89,2000.04),arrowprops={'arrowstyle':'->','color':RED},fontsize=9)
 ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'));ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'));ax.set_xlabel('港币扣款（元）');ax.set_ylabel('人民币到账（元）');ax.set_ylim(1999.9,2000.11);ax.legend(frameon=False,loc='lower right');ax.set_title('整数舍入条件下的最小兑换额');ax.grid(alpha=.18)
-finish(fig,'fig-fx-minimum',f'来源：core.js quote整数计算；中银香港CNH报价快照 {data["rateTime"]}。\n客户买入价1.176990 HKD/CNH，额外费用为0；情景测算，不是实时或可执行报价。',qs)
+finish(fig,'fig-fx-minimum',f'数据来源：整数金额计算；中银香港参考报价[19]，快照 {data["rateTime"]}。\n客户买入价1.176990 HKD/CNH，额外费用为0；固定报价情景测算。',qs)
 
 # 4. Reuse stored experiment results; do not rerun performance measurements.
 fig,ax=plt.subplots(figsize=(9,4.5));names=['仅折算总资产','原币余额与费用','去掉到账限制','完整模型'];keys=['aggregate','currencyOnly','withoutSettlement'];counts=[exp['baselines'][k]['falseAccept'] for k in keys]+[len(exp['mismatches'])]
 rates=[v/exp['caseCount']*100 for v in counts];ax.barh(names,rates,color=[GRAY,GRAY,BLUE,RED],height=.58);ax.invert_yaxis();ax.set_xlim(0,52);ax.set_xlabel('错误放行数 ÷ 全部2,000组案例（%）');ax.set_title('约束消融实验的错误放行结果')
 for i,(v,n) in enumerate(zip(rates,counts)):ax.text(v+.8,i,f'{n} / 2,000  ({v:.2f}%)',va='center')
 ax.xaxis.grid(alpha=.18);ax.set_axisbelow(True)
-finish(fig,'fig-ablation','来源：experiments/results.json；固定种子20261008，2,000组五日合成案例。\n各对照为自建删减模型，不是银行产品实测；结果不代表真实客户发生概率。',[{'model':name,'false_accept':n,'denominator':exp['caseCount'],'percent':v} for name,n,v in zip(names,counts,rates)])
+finish(fig,'fig-ablation','数据来源：附录B合成实验；固定种子20261008，2,000组五日案例。\n对照组由完整模型删减指定约束构成。',[{'model':name,'false_accept':n,'denominator':exp['caseCount'],'percent':v} for name,n,v in zip(names,counts,rates)])
 
 # 5. Public-price arithmetic, no customer acquisition or profit forecast.
 fig,(ax,bx)=plt.subplots(1,2,figsize=(11,4.5));volumes=list(range(0,10001,1000));annual_usd=.30*12
@@ -82,6 +82,6 @@ ax.plot(volumes,[n*annual_usd*7.8 for n in volumes],color=RED,label='US$0.30/月
 query=[0,12,365];costs=[annual_usd+.10*n for n in query];labs=['仅交易订阅','另加每月一次余额查询','另加每日一次余额查询']
 bx.barh(labs,costs,color=[BLUE,GRAY,RED]);bx.invert_yaxis();bx.set_xlim(0,48);bx.set_xlabel('每个连接每年费用（美元）');bx.set_title('独立付费查询的频率影响')
 for i,v in enumerate(costs):bx.text(v+.5,i,f'{v:.2f}',va='center')
-finish(fig,'fig-data-cost','来源：Teller与Stripe Financial Connections官方标准价（2026-10-09核查）；交易US$0.30/月，余额US$0.10/次。\n左图汇率换算区间7.75—7.85；不含固定接入、核验、税费和支持费用，非八达通报价或收入预测。',[{'connections':n,'subscription_usd':n*annual_usd,'hkd_at_7_75':round(n*annual_usd*7.75,2),'hkd_at_7_85':round(n*annual_usd*7.85,2)} for n in volumes])
+finish(fig,'fig-data-cost','数据来源：Teller、Stripe标准价[34-35]及联系汇率区间[36]；交易US$0.30/月，余额US$0.10/次。\n按海外同类服务计费口径测算，固定集成、核验、税费及支持费另列。',[{'connections':n,'subscription_usd':n*annual_usd,'hkd_at_7_75':round(n*annual_usd*7.75,2),'hkd_at_7_85':round(n*annual_usd*7.85,2)} for n in volumes])
 (args.out/'chart-manifest.json').write_text(json.dumps({'figures':manifest,'matplotlib':matplotlib.__version__,'data_source_sha256':hashlib.sha256((ROOT/'experiments/results.json').read_bytes()).hexdigest()},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(f'Generated {len(manifest)} figures (PNG/PDF/CSV) in {args.out}')
