@@ -1,0 +1,561 @@
+{
+  "schema": 1,
+  "evidence": "Synthetic report examples, not customer observations",
+  "rateSource": "https://www.bochk.com/whk/rates/exchangeRatesHKD/exchangeRatesHKD-input.action?lang=en",
+  "rateTime": "2026-10-03T18:07:55+08:00",
+  "rate": {
+    "customerSell": 1.16284,
+    "customerBuy": 1.17699
+  },
+  "projection": [
+    {
+      "date": "2026-10-02",
+      "balance_cents": 8000000,
+      "after_purchase_cents": 7500000,
+      "protected_cents": 6700000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-03",
+      "balance_cents": 7986667,
+      "after_purchase_cents": 7486667,
+      "protected_cents": 6700000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-04",
+      "balance_cents": 7973334,
+      "after_purchase_cents": 7473334,
+      "protected_cents": 6700000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-05",
+      "balance_cents": 7360000,
+      "after_purchase_cents": 6860000,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-06",
+      "balance_cents": 7346667,
+      "after_purchase_cents": 6846667,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-07",
+      "balance_cents": 7333334,
+      "after_purchase_cents": 6833334,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-08",
+      "balance_cents": 7320000,
+      "after_purchase_cents": 6820000,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-09",
+      "balance_cents": 7306667,
+      "after_purchase_cents": 6806667,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-10",
+      "balance_cents": 7293334,
+      "after_purchase_cents": 6793334,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-11",
+      "balance_cents": 7280000,
+      "after_purchase_cents": 6780000,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-12",
+      "balance_cents": 7266667,
+      "after_purchase_cents": 6766667,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-13",
+      "balance_cents": 7253334,
+      "after_purchase_cents": 6753334,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-14",
+      "balance_cents": 7240000,
+      "after_purchase_cents": 6740000,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-15",
+      "balance_cents": 7226667,
+      "after_purchase_cents": 6726667,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-16",
+      "balance_cents": 7213334,
+      "after_purchase_cents": 6713334,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-17",
+      "balance_cents": 7200000,
+      "after_purchase_cents": 6700000,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-18",
+      "balance_cents": 7186667,
+      "after_purchase_cents": 6686667,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-19",
+      "balance_cents": 7173334,
+      "after_purchase_cents": 6673334,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-20",
+      "balance_cents": 7160000,
+      "after_purchase_cents": 6660000,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-21",
+      "balance_cents": 7146667,
+      "after_purchase_cents": 6646667,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-22",
+      "balance_cents": 7133334,
+      "after_purchase_cents": 6633334,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-23",
+      "balance_cents": 7120000,
+      "after_purchase_cents": 6620000,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-24",
+      "balance_cents": 7106667,
+      "after_purchase_cents": 6606667,
+      "protected_cents": 6100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-25",
+      "balance_cents": 2093334,
+      "after_purchase_cents": 1593334,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-26",
+      "balance_cents": 2080000,
+      "after_purchase_cents": 1580000,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-27",
+      "balance_cents": 2066667,
+      "after_purchase_cents": 1566667,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-28",
+      "balance_cents": 2053334,
+      "after_purchase_cents": 1553334,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-29",
+      "balance_cents": 2040000,
+      "after_purchase_cents": 1540000,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-30",
+      "balance_cents": 2026667,
+      "after_purchase_cents": 1526667,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-10-31",
+      "balance_cents": 2013334,
+      "after_purchase_cents": 1513334,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-01",
+      "balance_cents": 2000000,
+      "after_purchase_cents": 1500000,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-02",
+      "balance_cents": 1986667,
+      "after_purchase_cents": 1486667,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-03",
+      "balance_cents": 1973334,
+      "after_purchase_cents": 1473334,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-04",
+      "balance_cents": 1960000,
+      "after_purchase_cents": 1460000,
+      "protected_cents": 1100000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-05",
+      "balance_cents": 1346667,
+      "after_purchase_cents": 846667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-06",
+      "balance_cents": 1333334,
+      "after_purchase_cents": 833334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-07",
+      "balance_cents": 1320000,
+      "after_purchase_cents": 820000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-08",
+      "balance_cents": 1306667,
+      "after_purchase_cents": 806667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-09",
+      "balance_cents": 1293334,
+      "after_purchase_cents": 793334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-10",
+      "balance_cents": 1280000,
+      "after_purchase_cents": 780000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-11",
+      "balance_cents": 1266667,
+      "after_purchase_cents": 766667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-12",
+      "balance_cents": 1253334,
+      "after_purchase_cents": 753334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-13",
+      "balance_cents": 1240000,
+      "after_purchase_cents": 740000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-14",
+      "balance_cents": 1226667,
+      "after_purchase_cents": 726667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-15",
+      "balance_cents": 1213334,
+      "after_purchase_cents": 713334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-16",
+      "balance_cents": 1200000,
+      "after_purchase_cents": 700000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-17",
+      "balance_cents": 1186667,
+      "after_purchase_cents": 686667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-18",
+      "balance_cents": 1173334,
+      "after_purchase_cents": 673334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-19",
+      "balance_cents": 1160000,
+      "after_purchase_cents": 660000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-20",
+      "balance_cents": 1146667,
+      "after_purchase_cents": 646667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-21",
+      "balance_cents": 1133334,
+      "after_purchase_cents": 633334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-22",
+      "balance_cents": 1120000,
+      "after_purchase_cents": 620000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-23",
+      "balance_cents": 1106667,
+      "after_purchase_cents": 606667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-24",
+      "balance_cents": 1093334,
+      "after_purchase_cents": 593334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-25",
+      "balance_cents": 1080000,
+      "after_purchase_cents": 580000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-26",
+      "balance_cents": 1066667,
+      "after_purchase_cents": 566667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-27",
+      "balance_cents": 1053334,
+      "after_purchase_cents": 553334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-28",
+      "balance_cents": 1040000,
+      "after_purchase_cents": 540000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-29",
+      "balance_cents": 1026667,
+      "after_purchase_cents": 526667,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-11-30",
+      "balance_cents": 1013334,
+      "after_purchase_cents": 513334,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    },
+    {
+      "date": "2026-12-01",
+      "balance_cents": 1000000,
+      "after_purchase_cents": 500000,
+      "protected_cents": 500000,
+      "reserve_cents": 500000
+    }
+  ],
+  "quote": [
+    {
+      "debit": 235388,
+      "fee": 0,
+      "received": 199991
+    },
+    {
+      "debit": 235389,
+      "fee": 0,
+      "received": 199992
+    },
+    {
+      "debit": 235390,
+      "fee": 0,
+      "received": 199993
+    },
+    {
+      "debit": 235391,
+      "fee": 0,
+      "received": 199994
+    },
+    {
+      "debit": 235392,
+      "fee": 0,
+      "received": 199994
+    },
+    {
+      "debit": 235393,
+      "fee": 0,
+      "received": 199995
+    },
+    {
+      "debit": 235394,
+      "fee": 0,
+      "received": 199996
+    },
+    {
+      "debit": 235395,
+      "fee": 0,
+      "received": 199997
+    },
+    {
+      "debit": 235396,
+      "fee": 0,
+      "received": 199998
+    },
+    {
+      "debit": 235397,
+      "fee": 0,
+      "received": 199999
+    },
+    {
+      "debit": 235398,
+      "fee": 0,
+      "received": 200000
+    },
+    {
+      "debit": 235399,
+      "fee": 0,
+      "received": 200000
+    },
+    {
+      "debit": 235400,
+      "fee": 0,
+      "received": 200001
+    },
+    {
+      "debit": 235401,
+      "fee": 0,
+      "received": 200002
+    },
+    {
+      "debit": 235402,
+      "fee": 0,
+      "received": 200003
+    },
+    {
+      "debit": 235403,
+      "fee": 0,
+      "received": 200004
+    },
+    {
+      "debit": 235404,
+      "fee": 0,
+      "received": 200005
+    },
+    {
+      "debit": 235405,
+      "fee": 0,
+      "received": 200005
+    },
+    {
+      "debit": 235406,
+      "fee": 0,
+      "received": 200006
+    },
+    {
+      "debit": 235407,
+      "fee": 0,
+      "received": 200007
+    },
+    {
+      "debit": 235408,
+      "fee": 0,
+      "received": 200008
+    }
+  ],
+  "targetCents": 200000,
+  "allocation": {
+    "opening": 80000,
+    "tuition": 50000,
+    "rent": 12000,
+    "reserve": 5000,
+    "living": 8000,
+    "free": 5000
+  },
+  "wallet": {
+    "opening": 500,
+    "topup": 500,
+    "consumed": 148,
+    "remaining": 352
+  }
+}
