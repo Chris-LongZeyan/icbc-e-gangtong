@@ -2,7 +2,7 @@
 
 面向赴港学生及初入职场青年的双币资金管理原型。以分类账本为基础，把必要付款、资金可用日期、最小换汇与产品期限匹配连接到同一套计算流程。
 
-[在线体验](https://dual-currency-e-manager.onrender.com/) · [项目建议书](REPORT.md) · [Qwen 部署与验证](AI_SETUP.md) · [演示讲解稿](DEMO_SCRIPT.md)
+[在线体验](https://dual-currency-e-manager.onrender.com/) · [项目建议书](REPORT.md) · [建议书 PDF](docs/submission/工银e港通_项目建议书.pdf) · [图表代码索引](report-tools/FIGURE_INDEX.md) · [Qwen 部署与验证](AI_SETUP.md) · [演示讲解稿](DEMO_SCRIPT.md)
 
 ## 主要能力
 
